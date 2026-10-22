@@ -49,10 +49,12 @@ source .venv/bin/activate
 python -m pip install -r backend/requirements.lock
 (cd backend && python -m pytest -q)           # тесты бэка
 (cd backend && ruff check .)                  # линтер
+(cd backend && alembic upgrade head)          # миграции (нужен DATABASE_URL)
+(cd backend && python -m app.seed)            # синтетические данные и rules_v1
 python data/reference/engine.py data/rules.yaml data/personas --json data/reference/expected.json  # пересчитать эталон
 ```
 
-Последняя команда запускается из корня репозитория. Docker Compose, PostgreSQL, воркер и фронт ещё в работе; актуальный статус — в `docs/PROGRESS.md`.
+Последняя команда запускается из корня репозитория. Для локальной проверки можно использовать `DATABASE_URL=sqlite:///./credit-dev.db`; CI проверяет миграцию на PostgreSQL 16. Docker Compose, воркер и фронт ещё в работе; актуальный статус — в `docs/PROGRESS.md`.
 
 ## Обязательные правила
 
