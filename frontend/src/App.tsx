@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Application, BankItem, Me, Offer, request, rubles } from './api'
 import { ReviewPanel, RiskQueue } from './bank/ReviewPanel'
+import { RulesAdmin } from './bank/RulesAdmin'
 import { ForecastCard } from './client/ForecastCard'
 import { OfferPanel } from './client/OfferPanel'
 import { Answers, Questionnaire } from './client/Questionnaire'
@@ -15,6 +16,7 @@ const accounts = [
   { login: 'p3a_acc', title: 'Зайцева Марина', note: 'Бухгалтер по МЧД', badge: 'Сотрудник' },
   { login: 'uw1', title: 'Смирнова Е.', note: 'Очередь ручной проверки', badge: 'Андеррайтер' },
   { login: 'risk1', title: 'Волков А.', note: 'Решения свыше 5 млн ₽', badge: 'Риск' },
+  { login: 'admin1', title: 'Ким Д.', note: 'Версии правил и прогон на персонах', badge: 'Правила' },
 ]
 const statusName: Record<string, string> = {
   DRAFT: 'Черновик', AWAITING_SIGNATURE: 'Ждёт подписи', SUBMITTED: 'Отправлена', VALIDATION: 'Проверяем',
@@ -40,7 +42,7 @@ export default function App() {
       </nav>
       <div className="profile"><div className="avatar">{me.full_name[0]}</div><div><b>{me.full_name}</b><small>{me.role}</small></div><button onClick={logout}>↗</button></div>
     </aside>
-    <main>{bank ? <BankDashboard token={token} me={me} /> : <ClientDashboard token={token} me={me} />}</main>
+    <main>{me.role === 'RULES_ADMIN' ? <RulesAdmin token={token} /> : bank ? <BankDashboard token={token} me={me} /> : <ClientDashboard token={token} me={me} />}</main>
   </div>
 }
 
