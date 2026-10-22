@@ -1,8 +1,17 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Application, BankItem, Me, Offer, productName, request, rubles } from './api'
+import { Application, BankItem, Me, Offer, request, rubles } from './api'
+import { ReviewPanel, RiskQueue } from './bank/ReviewPanel'
+import { ForecastCard } from './client/ForecastCard'
+import { OfferPanel } from './client/OfferPanel'
+import { Answers, Questionnaire } from './client/Questionnaire'
+import { Bell } from './common/Bell'
+import { Chat } from './common/Chat'
 
 const accounts = [
   { login: 'p3b', title: 'Иванов Артём', note: 'Кофейня · главный сценарий', badge: 'Клиент' },
+  { login: 'p3a', title: 'ООО «СтройБаза»', note: 'Рефинансирование 5,5 млн · сезонность', badge: 'Клиент' },
+  { login: 'p1b', title: 'Клиент с долгом', note: 'Контрпредложение: рефинансирование', badge: 'Клиент' },
+  { login: 'p_stop', title: 'Просрочка в БКИ', note: 'Отказ со стоп-фактором', badge: 'Клиент' },
   { login: 'p3a_acc', title: 'Зайцева Марина', note: 'Бухгалтер по МЧД', badge: 'Сотрудник' },
   { login: 'uw1', title: 'Смирнова Е.', note: 'Очередь ручной проверки', badge: 'Андеррайтер' },
   { login: 'risk1', title: 'Волков А.', note: 'Решения свыше 5 млн ₽', badge: 'Риск' },
@@ -10,7 +19,7 @@ const accounts = [
 const statusName: Record<string, string> = {
   DRAFT: 'Черновик', AWAITING_SIGNATURE: 'Ждёт подписи', SUBMITTED: 'Отправлена', VALIDATION: 'Проверяем',
   ENRICHMENT: 'Собираем данные', SCORING: 'Рассчитываем', MANUAL_REVIEW: 'Проверяет специалист',
-  APPROVED: 'Одобрено', REJECTED: 'Отказ', CONTRACT_SIGNED: 'Договор подписан', ISSUED: 'Деньги выданы',
+  APPROVED: 'Одобрено', REJECTED: 'Отказ', COUNTER_OFFER: 'Контрпредложение', INFO_REQUESTED: 'Нужны документы', CONTRACT_SIGNED: 'Договор подписан', ISSUED: 'Деньги выданы',
 }
 
 export default function App() {
@@ -50,37 +59,76 @@ function Login({ onLogin, error, setError }: { onLogin: (token: string) => void;
 function ClientDashboard({ token, me }: { token: string; me: Me }) {
   const business = me.businesses[0]
   const [offer, setOffer] = useState<Offer | null>(null)
+  const [answers, setAnswers] = useState<Answers | null>(null)
   const [application, setApplication] = useState<Application | null>(null)
-  const [amount, setAmount] = useState(240000)
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const call = async (fn: () => Promise<void>) => { setBusy(true); setMessage(''); try { await fn() } catch (e) { setMessage((e as Error).message) } finally { setBusy(false) } }
-  const calculate = () => call(async () => {
-    await request(`/api/v1/businesses/${business.id}/consents`, { method: 'POST', body: JSON.stringify({ kinds: ['BKI', 'FNS'] }) }, token)
-    setOffer(await request(`/api/v1/businesses/${business.id}/pre-offers`, { method: 'POST', body: JSON.stringify({ purpose: 'cash_gap', amount_kopecks: amount * 100, term_months: 12, frequency: 'always', urgency: 'days' }) }, token))
+  const calculate = (a: Answers) => call(async () => {
+    setAnswers(a); setApplication(null)
+    if (business.permissions.includes('CONSENT')) {
+      await request(`/api/v1/businesses/${business.id}/consents`, { method: 'POST', body: JSON.stringify({ kinds: ['BKI', 'FNS'] }) }, token)
+    }
+    const { amount, ...rest } = a
+    setOffer(await request(`/api/v1/businesses/${business.id}/pre-offers`, { method: 'POST', body: JSON.stringify({ ...rest, amount_kopecks: amount * 100 }) }, token))
   })
   const create = () => call(async () => setApplication(await request('/api/v1/applications', { method: 'POST', body: JSON.stringify({ pre_offer_id: offer!.id }) }, token)))
   const submit = () => call(async () => setApplication(await request(`/api/v1/applications/${application!.id}/submit`, { method: 'POST', headers: { 'Idempotency-Key': application!.id } }, token)))
-  const refresh = () => call(async () => setApplication(await request(`/api/v1/applications/${application!.id}`, {}, token)))
-  return <div className="page"><header><div><span className="eyebrow">{business.name}</span><h1>Добрый день, {me.full_name.split(' ')[1] ?? me.full_name}</h1><p>Подберём финансирование на основе оборотов вашего бизнеса.</p></div><button className="icon-button">●</button></header>
-    <section className="hero-card"><div><span className="pill">Предложение на ваших данных</span><h2>Закройте кассовый разрыв<br/>без остановки бизнеса</h2><p>Мы уже знаем обороты и регулярные платежи. Осталось подтвердить сумму.</p><label>Нужная сумма <b>{new Intl.NumberFormat('ru-RU').format(amount)} ₽</b></label><input type="range" min="100000" max="500000" step="10000" value={amount} onChange={e => setAmount(Number(e.target.value))}/><button className="primary" disabled={busy} onClick={calculate}>Рассчитать предложение</button></div><div className="forecast"><span>Прогноз на 30 дней</span><strong>12 ноября</strong><p>возможен кассовый разрыв</p><b>≈ 211 000 ₽</b><div className="spark"><i/><i/><i/><i/><i/></div></div></section>
+  const sign = (code: string) => call(async () => setApplication(await request(`/api/v1/applications/${application!.id}/sign`, { method: 'POST', body: JSON.stringify({ code }) }, token)))
+  const refresh = () => request<Application>(`/api/v1/applications/${application!.id}`, {}, token).then(setApplication).catch(() => undefined)
+  useEffect(() => {
+    if (!application || ['DRAFT', 'ISSUED', 'REJECTED', 'CANCELLED'].includes(application.status)) return
+    const t = setInterval(refresh, 5000); return () => clearInterval(t)
+  }, [application?.id, application?.status])
+  const overdraft = offer?.product === 'OVERDRAFT' ? offer.limit_kopecks : undefined
+  return <div className="page"><header><div><span className="eyebrow">{business.name}</span><h1>Добрый день, {me.full_name.split(' ')[1] ?? me.full_name}</h1><p>Подберём финансирование по оборотам вашего бизнеса — без справок и визита в офис.</p></div><Bell token={token} /></header>
+    <section className="hero-card"><Questionnaire onSubmit={calculate} busy={busy} /><ForecastCard token={token} businessId={business.id} overdraftKopecks={overdraft} /></section>
     {message && <div className="error">{message}</div>}
-    {offer && <section className="offer-card"><div><span className="eyebrow">Предварительно одобрено</span><h2>{productName(offer.product)}</h2><strong className="money">{rubles(offer.limit_kopecks)}</strong><p>до {offer.term_months} месяцев · ставка {offer.rate}% годовых</p></div><div className="offer-side"><h3>Как получить больше</h3>{offer.advice.map(a => <div className="advice" key={a.code}><span>↗</span><div><b>{a.text}</b><small>Лимит до {rubles(a.new_limit_kopecks)}</small></div></div>)}{!application && <button className="primary wide" onClick={create}>Продолжить</button>}</div></section>}
-    {application && <ApplicationTracker application={application} onSubmit={submit} onRefresh={refresh} busy={busy} />}
+    {offer && <OfferPanel token={token} offer={offer} onOffer={o => { setOffer(o); setApplication(null) }} onContinue={create}
+      canContinue={!application && business.permissions.includes('FILL')} repayment={answers?.repayment ?? 'equal'} />}
+    {application && <ApplicationTracker token={token} application={application} canSubmit={business.permissions.includes('SUBMIT')}
+      onSubmit={submit} onSign={sign} onRefresh={refresh} busy={busy} />}
   </div>
 }
 
-function ApplicationTracker({ application, onSubmit, onRefresh, busy }: { application: Application; onSubmit: () => void; onRefresh: () => void; busy: boolean }) {
+function ApplicationTracker({ token, application, canSubmit, onSubmit, onSign, onRefresh, busy }: {
+  token: string; application: Application; canSubmit: boolean; onSubmit: () => void; onSign: (code: string) => void; onRefresh: () => void; busy: boolean
+}) {
+  const [code, setCode] = useState('')
   const timeline = application.timeline ?? []
-  return <section className="tracker"><div className="section-title"><div><span className="eyebrow">Заявка {application.id.slice(0, 8)}</span><h2>{statusName[application.status] ?? application.status}</h2></div><button className="secondary" onClick={onRefresh}>Обновить</button></div><div className="timeline">{(timeline.length ? timeline : [{ to_status: application.status, comment: 'Заявка создана', at: '' }]).map((item, index) => <div className="timeline-row" key={`${item.to_status}-${index}`}><span className="timeline-dot">✓</span><div><b>{statusName[item.to_status] ?? item.to_status}</b><small>{item.comment}</small></div></div>)}</div>{application.decision && <div className="decision"><span>Решение банка</span><b>{application.decision.explanation}</b></div>}{application.status === 'DRAFT' && <button className="primary" disabled={busy} onClick={onSubmit}>Отправить заявку</button>}{application.status === 'SUBMITTED' && <p className="hint">Воркер обрабатывает заявку. Обновите статус через несколько секунд.</p>}</section>
+  return <section className="tracker"><div className="tracker-grid"><div>
+    <div className="section-title"><div><span className="eyebrow">Заявка {application.id.slice(0, 8)}</span><h2>{statusName[application.status] ?? application.status}</h2></div><button className="secondary" onClick={onRefresh}>Обновить</button></div>
+    <div className="timeline">{(timeline.length ? timeline : [{ to_status: application.status, comment: 'Заявка создана', at: '' }]).map((item, index) => <div className="timeline-row" key={`${item.to_status}-${index}`}><span className="timeline-dot">✓</span><div><b>{statusName[item.to_status] ?? item.to_status}</b><small>{item.comment}</small></div></div>)}</div>
+    {application.decision && <div className="decision"><span>Решение банка</span><b>{application.decision.explanation}</b>
+      {application.decision.limit_kopecks > 0 && <small>{rubles(application.decision.limit_kopecks)}{application.decision.rate ? ` · ${application.decision.rate}%` : ''}</small>}</div>}
+    {application.status === 'DRAFT' && (canSubmit
+      ? <button className="primary" disabled={busy} onClick={onSubmit}>Отправить заявку</button>
+      : <p className="hint">Заявка подготовлена. Отправить её может руководитель.</p>)}
+    {application.status === 'APPROVED' && <div className="sign"><input value={code} maxLength={6} onChange={e => setCode(e.target.value)} placeholder="Код из SMS (демо: 0000)" />
+      <button className="primary" disabled={busy || code.length < 4} onClick={() => onSign(code)}>Подписать договор</button></div>}
+    {['SUBMITTED', 'VALIDATION', 'ENRICHMENT', 'SCORING', 'CONTRACT_SIGNED'].includes(application.status) && <p className="hint">Обрабатываем — статус обновится сам.</p>}
+  </div>
+  {application.status !== 'DRAFT' && <Chat token={token} applicationId={application.id} side="CLIENT" />}</div></section>
 }
 
 function BankDashboard({ token, me }: { token: string; me: Me }) {
   const [items, setItems] = useState<BankItem[]>([])
   const [selected, setSelected] = useState<BankItem | null>(null)
+  const [filter, setFilter] = useState('')
   const [message, setMessage] = useState('')
-  const load = () => request<{ items: BankItem[] }>('/api/v1/bank/applications', {}, token).then(d => setItems(d.items)).catch(e => setMessage(e.message))
-  useEffect(() => { void load() }, [])
-  const assign = async () => { if (!selected) return; try { await request(`/api/v1/bank/applications/${selected.id}/assign`, { method: 'POST' }, token); setMessage('Заявка назначена вам'); load() } catch (e) { setMessage((e as Error).message) } }
-  return <div className="page bank-page"><header><div><span className="eyebrow">Кабинет банка</span><h1>{me.role === 'RISK_MANAGER' ? 'Согласования риска' : 'Очередь заявок'}</h1><p>Решения, которым требуется внимание специалиста.</p></div><div className="metric"><b>{items.filter(i => i.status === 'MANUAL_REVIEW').length}</b><span>на проверке</span></div></header>{message && <div className="notice">{message}</div>}<div className="bank-layout"><section className="queue"><div className="filters"><button className="chip active">Все</button><button className="chip">Ручная проверка</button><button className="chip">Мои</button></div><div className="table-head"><span>Клиент</span><span>Сумма</span><span>Класс</span><span>Статус</span></div>{items.length === 0 && <div className="empty"><b>Очередь пуста</b><span>Заявки появятся после обработки клиентского сценария.</span></div>}{items.map(item => <button className={`table-row ${selected?.id === item.id ? 'selected' : ''}`} key={item.id} onClick={() => setSelected(item)}><span><b>{item.business_name}</b><small>ИНН {item.inn}</small></span><strong>{rubles(item.amount_kopecks)}</strong><em>{item.decision_class ?? '—'}</em><i>{statusName[item.status] ?? item.status}</i></button>)}</section><aside className="review-card">{selected ? <><span className="eyebrow">Заявка {selected.id.slice(0, 8)}</span><h2>{selected.business_name}</h2><div className="score"><span>Класс риска</span><b>{selected.decision_class}</b><small>{selected.score} баллов</small></div><dl><div><dt>Продукт</dt><dd>{productName(selected.product)}</dd></div><div><dt>Сумма</dt><dd>{rubles(selected.amount_kopecks)}</dd></div><div><dt>Сегмент</dt><dd>{selected.segment_code}</dd></div></dl>{selected.status === 'MANUAL_REVIEW' && <button className="primary wide" onClick={assign}>{selected.assignee_id ? 'Открыть решение' : 'Взять в работу'}</button>}</> : <div className="empty"><b>Выберите заявку</b><span>Здесь появятся детали расчёта и действия.</span></div>}</aside></div></div>
+  const load = () => request<{ items: BankItem[] }>(`/api/v1/bank/applications${filter ? `?status=${filter}` : ''}`, {}, token)
+    .then(d => { setItems(d.items); setSelected(s => (s ? d.items.find(i => i.id === s.id) ?? null : null)) }).catch(e => setMessage(e.message))
+  useEffect(() => { void load(); const t = setInterval(load, 5000); return () => clearInterval(t) }, [filter])
+  const changed = (msg: string) => { setMessage(msg); void load() }
+  return <div className="page bank-page"><header><div><span className="eyebrow">Кабинет банка</span><h1>{me.role === 'RISK_MANAGER' ? 'Согласования риска' : 'Очередь заявок'}</h1><p>Решения, которым требуется внимание специалиста. Просроченные вопросы клиентов — наверху.</p></div><div className="header-actions"><div className="metric"><b>{items.filter(i => i.status === 'MANUAL_REVIEW').length}</b><span>на проверке</span></div><Bell token={token} /></div></header>
+    {message && <div className="notice">{message}</div>}
+    {me.role === 'RISK_MANAGER' && <RiskQueue token={token} onChanged={changed} />}
+    <div className="bank-layout"><section className="queue"><div className="filters">{[['', 'Все'], ['MANUAL_REVIEW', 'Ручная проверка'], ['APPROVED', 'Одобренные'], ['ISSUED', 'Выданные']].map(([c, l]) =>
+      <button key={c} className={`chip ${filter === c ? 'active' : ''}`} onClick={() => setFilter(c)}>{l}</button>)}</div>
+      <div className="table-head"><span>Клиент</span><span>Сумма</span><span>Класс</span><span>Статус</span></div>
+      {items.length === 0 && <div className="empty"><b>Очередь пуста</b><span>Заявки появятся после отправки клиентом.</span></div>}
+      {items.map(item => <button className={`table-row ${selected?.id === item.id ? 'selected' : ''}`} key={item.id} onClick={() => setSelected(item)}>
+        <span><b>{item.business_name}</b><small>ИНН {item.inn}{item.question_overdue ? ' · ⚠ вопрос без ответа' : item.open_question_due_at ? ' · вопрос в чате' : ''}</small></span>
+        <strong>{rubles(item.amount_kopecks)}</strong><em>{item.decision_class ?? '—'}</em><i>{statusName[item.status] ?? item.status}</i></button>)}</section>
+      {selected ? <ReviewPanel token={token} me={me} item={selected} onChanged={changed} /> : <aside className="review-card"><div className="empty"><b>Выберите заявку</b><span>Здесь появятся факторы расчёта, действия и чат.</span></div></aside>}</div></div>
 }
