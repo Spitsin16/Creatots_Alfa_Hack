@@ -20,7 +20,8 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
-from app.models import AuditLog, DataSnapshot, PreOffer, Rule, Statement, User
+from app.models import AuditLog, DataSnapshot, Outbox, PreOffer, Rule, Statement, User
+from app.services.explain.llm import configured as llm_configured
 from app.services.explain.templates import explain_for_client
 from app.services.forecast.cashflow import forecast_for_client
 from app.services.scoring.engine import decide, derive
@@ -78,7 +79,9 @@ def pre_offer_explanation(
     fixture = _fixture(session, pre_offer.business_id)
     context = {"days": fixture["bki"].get("current_overdue_days", "")}
     result = explain_for_client(snapshot, _rules(session, pre_offer.rules_version), context)
-    result["source"] = "TEMPLATE"
+    llm = (pre_offer.explanation or {}).get("llm") or {}
+    result["summary"] = llm.get("text")
+    result["source"] = "LLM" if llm.get("text") else "TEMPLATE"
     result["statement_applied"] = bool((pre_offer.explanation or {}).get("statement_id"))
     return result
 
@@ -214,6 +217,8 @@ async def upload_statement(
     )
     session.add(new_offer)
     session.flush()
+    if llm_configured():
+        session.add(Outbox(event="EXPLAIN_PRE_OFFER", payload={"pre_offer_id": new_offer.id}))
     session.add(
         AuditLog(
             actor_id=user.id,

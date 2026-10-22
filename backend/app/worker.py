@@ -5,12 +5,15 @@ import time
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
+import yaml
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db import make_session_factory
-from app.models import Application, AuditLog, Business, Decision, Outbox, PreOffer
+from app.models import Application, AuditLog, Business, Decision, Outbox, PreOffer, Rule
 from app.services.application_flow import transition_application
+from app.services.explain.llm import rephrase
+from app.services.explain.templates import facts_for_llm
 from app.services.integrations.external import FetchResult, fetch_all
 
 
@@ -36,6 +39,27 @@ def _enrich(session: Session, application: Application) -> FetchResult | None:
         return None
     business = session.get(Business, application.business_id)
     return fetch_all(business.inn, base_url=base_url)
+
+
+def _explain_pre_offer(session: Session, pre_offer_id: str) -> None:
+    """Текст от LLM подменяет шаблон, когда готов; при любой проблеме остаётся шаблон."""
+    pre_offer = session.get(PreOffer, pre_offer_id)
+    if pre_offer is None or not (pre_offer.explanation or {}).get("decision_snapshot"):
+        return
+    rule = session.get(Rule, pre_offer.rules_version)
+    facts = facts_for_llm(pre_offer.explanation["decision_snapshot"], yaml.safe_load(rule.yaml))
+    result = rephrase(facts)
+    pre_offer.explanation = {**pre_offer.explanation, "llm": result}
+    session.add(
+        AuditLog(
+            actor_id=None,
+            action="EXPLANATION_GENERATED",
+            entity="pre_offer",
+            entity_id=pre_offer.id,
+            before=None,
+            after={"source": result["source"], "reason": result["reason"]},
+        )
+    )
 
 
 def process_one(session: Session) -> bool:
@@ -65,6 +89,11 @@ def process_one(session: Session) -> bool:
                     after={"status": "ISSUED"},
                 )
             )
+        event.status = "DONE"
+        session.commit()
+        return True
+    if event.event == "EXPLAIN_PRE_OFFER":
+        _explain_pre_offer(session, event.payload["pre_offer_id"])
         event.status = "DONE"
         session.commit()
         return True
