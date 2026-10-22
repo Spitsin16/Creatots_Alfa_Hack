@@ -14,8 +14,9 @@ from app.seed import DATA, seed_all, seed_rules
 BACKEND = Path(__file__).resolve().parents[1]
 
 
-def test_initial_migration_and_idempotent_seed(tmp_path: Path) -> None:
+def test_initial_migration_and_idempotent_seed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     db_url = f"sqlite+pysqlite:///{tmp_path / 'credit.db'}"
+    monkeypatch.setenv("DATABASE_URL", db_url)
     config = Config(str(BACKEND / "alembic.ini"))
     config.set_main_option("sqlalchemy.url", db_url)
     command.upgrade(config, "head")
