@@ -15,6 +15,7 @@ from app.services.application_flow import transition_application
 from app.services.explain.llm import rephrase
 from app.services.explain.templates import facts_for_llm
 from app.services.integrations.external import FetchResult, fetch_all
+from app.services.sla_sweep import release_overdue
 
 
 def _decision_text(result: dict) -> str:
@@ -181,9 +182,14 @@ def process_one(session: Session) -> bool:
 
 def main() -> None:
     factory = make_session_factory()
+    last_sweep = 0.0
     while True:
         with factory() as session:
             processed = process_one(session)
+            if time.monotonic() - last_sweep > 60:
+                release_overdue(session)
+                session.commit()
+                last_sweep = time.monotonic()
         if not processed:
             time.sleep(1)
 
