@@ -18,6 +18,8 @@ class BankApplicationItem(BaseModel):
     score: int | None
     assignee_id: str | None
     created_at: datetime
+    open_question_due_at: datetime | None = None
+    question_overdue: bool = False
 
 
 class BankApplicationPage(BaseModel):
