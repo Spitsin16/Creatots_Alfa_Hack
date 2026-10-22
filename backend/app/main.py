@@ -5,6 +5,7 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 
+from app.api.bank import router as bank_router
 from app.api.errors import APIError, api_error_handler, validation_error_handler
 from app.api.routes import router
 
@@ -16,6 +17,7 @@ def create_app(database_url: str | None = None) -> FastAPI:
     application.add_exception_handler(APIError, api_error_handler)
     application.add_exception_handler(RequestValidationError, validation_error_handler)
     application.include_router(router)
+    application.include_router(bank_router)
 
     @application.middleware("http")
     async def request_id(request: Request, call_next):

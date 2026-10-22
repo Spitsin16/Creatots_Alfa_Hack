@@ -1,14 +1,8 @@
-from pathlib import Path
-
-import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
-from sqlalchemy.orm import Session
 
-from app.db import Base, make_engine
-from app.main import app, create_app
+from app.main import app
 from app.models import Application, AuditLog, Business, Contract, Decision, Outbox, StatusHistory
-from app.seed import seed_all
 from app.worker import process_one
 
 
@@ -16,18 +10,6 @@ def test_health() -> None:
     response = TestClient(app).get("/health")
     assert response.status_code == 200
     assert response.json() == {"status": "alive"}
-
-
-@pytest.fixture
-def api(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    database_url = f"sqlite+pysqlite:///{tmp_path / 'api.db'}"
-    monkeypatch.setenv("JWT_SECRET", "test-secret")
-    engine = make_engine(database_url)
-    Base.metadata.create_all(engine)
-    with Session(engine) as session, session.begin():
-        seed_all(session)
-    with TestClient(create_app(database_url)) as client:
-        yield client
 
 
 def login(api: TestClient, username: str = "p3b", password: str = "demo") -> dict[str, str]:

@@ -40,7 +40,7 @@ class PreOfferRequest(BaseModel):
     amount_kopecks: int = Field(ge=100)
     term_months: int = Field(ge=1, le=120)
     frequency: Literal["once", "sometimes", "always"] = "once"
-    urgency: Literal["days", "week", "month"] = "month"
+    urgency: Literal["days", "week", "month", "planned"] = "month"
     priority: Literal["small_payment", "low_overpayment", "speed"] = "small_payment"
     repayment: Literal["equal", "seasonal"] = "equal"
     assets: list[str] = Field(default_factory=lambda: ["none"])
