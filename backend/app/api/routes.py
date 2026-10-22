@@ -211,6 +211,7 @@ def create_pre_offer(
         "outcome": result["outcome"],
         "advice": [item.model_dump() for item in advice],
         "decision_snapshot": result,
+        "scenario": scenario,
     }
     pre_offer = PreOffer(
         business_id=business_id,
