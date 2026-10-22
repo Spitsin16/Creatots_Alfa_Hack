@@ -16,6 +16,7 @@ export type Application = {
 export type BankItem = {
   id: string; business_name: string; inn: string; amount_kopecks: number; product: string; segment_code: string;
   status: string; decision_class: string | null; score: number | null; assignee_id: string | null
+  open_question_due_at?: string | null; question_overdue?: boolean
 }
 
 const base = import.meta.env.VITE_API_URL ?? ''
@@ -40,3 +41,22 @@ export const rubles = (kopecks: number) =>
 export const productName = (value: string) => ({
   OVERDRAFT: 'Овердрафт', WORKING_CAPITAL: 'Оборотный кредит', CREDIT_LINE: 'Кредитная линия', REFINANCE: 'Рефинансирование',
 }[value] ?? value)
+
+export type Explanation = {
+  outcome: string; headline: string; product: string; why_amount: string | null; reason: string | null;
+  counter: string | null; strengths: string[]; weaknesses: string[]; terms?: string;
+  advice: { code: string; text: string; new_limit: number | null; new_rate: number | null; costs?: string }[]
+}
+export type Forecast = {
+  start_balance: number; series: { date: string; balance: number }[]; headline: string; details: string[];
+  suggestion: string | null; gap: { date: string; shortfall: number; overdraft_suggestion: number } | null
+}
+export type SeasonalSchedule = {
+  schedule: { date: string; payment: number; interest: number; principal: number; balance: number }[]
+  annuity_payment: number; max_payment: number; min_payment: number; overpayment: number; annuity_overpayment: number
+}
+export type ChatMessage = { id: string; author_side: 'CLIENT' | 'BANK'; author_name: string; text: string; created_at: string }
+export type Chat = { items: ChatMessage[]; open_question_due_text: string | null; overdue: boolean }
+export type NotificationItem = { id: string; title: string; text: string; application_id: string | null; created_at: string; read: boolean }
+
+export const rub = (value: number) => `${new Intl.NumberFormat('ru-RU').format(Math.round(value))} ₽`
