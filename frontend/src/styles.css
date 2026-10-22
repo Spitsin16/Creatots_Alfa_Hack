@@ -58,3 +58,4 @@
 .version-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid #eee}.version-row b,.version-row small{display:block}.version-row small{color:#888}
 .version-row em{font-style:normal;font-size:12px;color:#3f7035}
 @media(max-width:900px){.rules-layout{grid-template-columns:1fr}}
+.summary{background:#f6f6f4;border-radius:12px;padding:14px;margin:14px 0}.summary p{margin:0}.summary small{color:#888;display:block;margin-top:6px}

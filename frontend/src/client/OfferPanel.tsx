@@ -13,10 +13,13 @@ export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, rep
 
   useEffect(() => {
     setEx(null); setSchedule(null)
-    request<Explanation>(`/api/v1/pre-offers/${offer.id}/explanation`, {}, token).then(setEx).catch(() => setEx(null))
+    const fetchEx = () => request<Explanation>(`/api/v1/pre-offers/${offer.id}/explanation`, {}, token).then(setEx).catch(() => undefined)
+    void fetchEx()
+    const later = setTimeout(fetchEx, 8000)  // текст от LLM (если включена) приходит асинхронно
     if (repayment === 'seasonal') {
       request<SeasonalSchedule>(`/api/v1/pre-offers/${offer.id}/seasonal-schedule`, {}, token).then(setSchedule).catch(() => setSchedule(null))
     }
+    return () => clearTimeout(later)
   }, [offer.id, repayment, token])
 
   const upload = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,6 +46,7 @@ export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, rep
         <p className="muted">Вы запросили {rubles(offer.requested_amount_kopecks)}{offer.requested_amount_kopecks <= offer.limit_kopecks ? ' — укладываемся' : ''}</p></>}
       {ex?.reason && <div className="callout">{ex.reason}</div>}
       {ex?.counter && <div className="callout">{ex.counter}</div>}
+      {ex?.summary && <div className="summary"><p>{ex.summary}</p><small>Сформулировано ИИ по данным расчёта, цифры сверены</small></div>}
       {ex?.why_amount && <><h3>Почему такая сумма</h3><p>{ex.why_amount}</p></>}
       {ex && (ex.strengths.length > 0 || ex.weaknesses.length > 0) && <ul className="factors">
         {ex.strengths.map(s => <li key={s} className="plus">{s}</li>)}

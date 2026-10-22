@@ -44,7 +44,7 @@ export const productName = (value: string) => ({
 
 export type Explanation = {
   outcome: string; headline: string; product: string; why_amount: string | null; reason: string | null;
-  counter: string | null; strengths: string[]; weaknesses: string[]; terms?: string;
+  counter: string | null; strengths: string[]; weaknesses: string[]; terms?: string; summary?: string | null; source?: string;
   advice: { code: string; text: string; new_limit: number | null; new_rate: number | null; costs?: string }[]
 }
 export type Forecast = {
