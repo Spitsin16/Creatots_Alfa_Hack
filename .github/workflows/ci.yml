@@ -94,6 +94,7 @@ jobs:
               -H 'Content-Type: application/json' \
               -d "{\"login\":\"$who\",\"password\":\"demo\"}" | grep -q access_token
           done
+          curl -fsS http://localhost:8100/health | grep -q '"personas":7'
           test "$(docker compose ps worker --format '{{.State}}')" = running
       - name: Restart keeps data (seed is idempotent)
         run: |

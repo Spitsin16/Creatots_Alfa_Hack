@@ -11,6 +11,7 @@ COPY backend/requirements.lock ./requirements.lock
 RUN pip install -r requirements.lock
 
 COPY data /app/data
+COPY mocks /app/mocks
 COPY backend /app/backend
 
 RUN useradd --create-home --uid 1000 app && chown -R app /app

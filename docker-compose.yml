@@ -8,6 +8,7 @@ x-backend-env: &backend-env
   JWT_SECRET: ${JWT_SECRET:-local-demo-secret-change-me}
   DEMO_SIGN_CODE: ${DEMO_SIGN_CODE:-0000}
   DEMO_TODAY: ${DEMO_TODAY:-2026-10-22}
+  MOCKS_URL: http://mocks:8100
   LLM_BASE_URL: ${LLM_BASE_URL:-}
   LLM_API_KEY: ${LLM_API_KEY:-}
   LLM_MODEL: ${LLM_MODEL:-}
@@ -57,6 +58,22 @@ services:
     depends_on:
       api:
         condition: service_healthy  # миграции и сид выполняет api при старте
+    restart: unless-stopped
+
+  mocks:
+    image: alfa-credit-backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    working_dir: /app
+    command: ["uvicorn", "mocks.app:app", "--host", "0.0.0.0", "--port", "8100"]
+    ports:
+      - "8100:8100"  # Swagger моков и переключатель сбоев: http://localhost:8100/docs
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8100/health', timeout=3)"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
     restart: unless-stopped
 
   frontend:
