@@ -1,0 +1,318 @@
+# Правила кредитного решения — rules_v1
+# Все числа — демо-параметры для хакатона, не условия Альфа-Банка.
+# Бэк читает этот файл при старте и кладёт в таблицу rules как версию 1.
+# Админ правил меняет значения в кабинете банка -> новая версия; решение ссылается на версию.
+# Деньги — в рублях (в БД храним в копейках), ставки — в процентах годовых.
+
+version: 1
+as_of: "2026-10-22"
+
+market:
+  key_rate: 14.0              # ключевая ставка ЦБ, % (с 11.09.2026)
+  rate_floor_over_key: 1.0    # ставка не ниже ключевой + 1 п.п.
+
+# ---------------------------------------------------------------------------
+# 1. Стоп-факторы: проверяются первыми, уже на предварительном расчёте
+# ---------------------------------------------------------------------------
+stop_factors:
+  - code: BUSINESS_TOO_YOUNG
+    when: "business_age_months < 3"
+    outcome: REJECTED
+    client_text: "Бизнесу меньше 3 месяцев — пока не по чему оценить выручку. Вернитесь {return_date}."
+  - code: LIQUIDATION
+    when: "registry.status in ['LIQUIDATING', 'CLOSED']"
+    outcome: REJECTED
+    client_text: "По данным реестра бизнес ликвидируется или закрыт."
+  - code: BANKRUPTCY
+    when: "registry.bankruptcy == true"
+    outcome: REJECTED
+    client_text: "В реестре есть сведения о банкротстве."
+  - code: CURRENT_OVERDUE
+    when: "bki.current_overdue_days >= 30"
+    outcome: REJECTED
+    client_text: "Есть текущая просрочка {days} дней по кредиту в другом банке. Погасите её — и возвращайтесь: заявку можно подать сразу после погашения."
+  - code: TAX_ACCOUNT_BLOCK
+    when: "fns.account_block == true"
+    outcome: REJECTED
+    client_text: "ФНС заблокировала операции по счетам. Вернитесь после снятия блокировки."
+  - code: INVALID_LEGAL_ADDRESS
+    when: "registry.address_invalid == true"
+    outcome: REJECTED
+    client_text: "В ЕГРЮЛ есть отметка о недостоверности адреса. Исправьте данные в ЕГРЮЛ и вернитесь."
+  - code: STATEMENT_INVALID
+    when: "statement.loaded and not statement.valid"
+    outcome: INFO_REQUESTED
+    client_text: "Выписка не сходится: {reason}. Загрузите выписку заново."
+
+# Флаги, которые не отказывают, а отправляют на ручную проверку
+manual_review_flags:
+  - code: MASS_ADDRESS
+    when: "registry.mass_address == true"
+  - code: AMOUNT_ABOVE_AUTO
+    when: "requested_amount > 5000000"
+  - code: SOURCE_UNAVAILABLE
+    when: "any external source failed after 3 retries"
+  - code: FNS_MISMATCH_HIGH
+    when: "statement.loaded and fns_mismatch > 0.30"
+
+# ---------------------------------------------------------------------------
+# 2. Выручка и нагрузка — как считаем входные величины
+# ---------------------------------------------------------------------------
+revenue:
+  # Среднемесячная чистая выручка (В): поступления минус свои переводы, кредиты, возвраты
+  window_months: 12           # берём последние полные месяцы, сколько есть, но не больше 12
+  min_months: 3
+  exclude_inflow_kinds: [OWN_TRANSFER, LOAN, REFUND]
+  # Выписка из другого банка добавляет её чистую выручку к выручке по Альфе
+  # Если есть только ФНС (нет движений) — годовая выручка / 12 × 0.8
+  fns_only_discount: 0.8
+  # Доля оборота через Альфу = выручка по Альфе за 12 мес. / годовая выручка по ФНС (не больше 1)
+  # Если декларации ещё нет, но видны поступления «своих средств» из другого банка — считаем долю
+  # как выручка Альфы / (выручка Альфы + свои переводы из другого банка)
+
+debt_load:
+  # Нагрузка = (платежи по кредитам Альфы + платежи по внешним кредитам из БКИ) / В
+  max_payment_share: 0.25     # на все платежи по кредитам — не больше 25% выручки
+
+# ---------------------------------------------------------------------------
+# 3. Скоринг: база + факторы
+# ---------------------------------------------------------------------------
+scoring:
+  base: 40
+  factors:
+    BUSINESS_AGE:
+      source: registry
+      improvable: true        # «как получить больше»: дождаться годовщины
+      bands:                  # месяцы
+        - { lt: 6, points: -10 }
+        - { lt: 12, points: 0 }
+        - { lt: 36, points: 5 }
+        - { gte: 36, points: 10 }
+    REVENUE_STABILITY:
+      source: alfa_or_statement
+      improvable: false
+      metric: coefficient_of_variation   # std / mean помесячной выручки
+      only_fns_points: 0
+      bands:
+        - { lt: 0.2, points: 10 }
+        - { lt: 0.4, points: 5 }
+        - { lt: 0.6, points: 0 }
+        - { gte: 0.6, points: -10 }
+    DEBT_LOAD:
+      source: alfa_and_bki
+      improvable: true        # погасить или рефинансировать чужой кредит
+      bands:                  # доля платежей в выручке
+        - { lt: 0.10, points: 10 }
+        - { lt: 0.20, points: 5 }
+        - { lt: 0.30, points: 0 }
+        - { lt: 0.40, points: -10 }
+        - { gte: 0.40, points: -20 }
+    CREDIT_HISTORY:
+      source: bki
+      improvable: true        # платить без просрочек — пересмотр через 6 мес.
+      values:
+        CLEAN_12M: 10         # есть история, без просрочек за 12 мес.
+        NO_HISTORY: 0
+        PAST_OVERDUE_LT_30: -10
+        PAST_OVERDUE_GTE_30: -15
+    ALFA_HISTORY:
+      source: alfa
+      improvable: false
+      values:
+        GOOD_BORROWER: 10     # кредит в Альфе (текущий или закрытый) без просрочек
+        NOT_BORROWER: 0
+        HAD_OVERDUE: -10
+    TAX_DEBT:
+      source: fns
+      improvable: true        # закрыть долг
+      bands:
+        - { eq: 0, points: 0 }
+        - { lte: 100000, points: -5 }
+        - { gt: 100000, points: -15 }
+    INDUSTRY_RISK:
+      source: registry.okved
+      improvable: false
+      okved_groups:           # по первым двум цифрам ОКВЭД
+        low: ["10", "45", "46", "47", "62", "86"]
+        high: ["41", "55", "68", "92"]       # стройка, гостиницы, недвижимость, азартные игры
+      values: { low: 5, medium: 0, high: -10 }
+    ALFA_SHARE:
+      source: alfa_and_fns
+      improvable: true        # перевести обороты / эквайринг в Альфу
+      bands:
+        - { gte: 0.9, points: 5 }
+        - { gte: 0.5, points: 3 }
+        - { lt: 0.5, points: 0 }
+    DATA_QUALITY:
+      source: all
+      improvable: true        # загрузить выписку из другого банка
+      values:
+        ALFA_12M: 5           # 12+ мес. движений по счёту в Альфе
+        ALFA_LT_12M: 0
+        STATEMENT_12M: 0
+        STATEMENT_6_11M: -5
+        FNS_ONLY: -10
+
+classes:
+  - { name: A, min: 80, limit_coef: 1.0, rate_premium: 0, route: AUTO }
+  - { name: B, min: 65, limit_coef: 0.8, rate_premium: 2, route: AUTO }
+  - { name: C, min: 55, limit_coef: 0.6, rate_premium: 4, route: AUTO }
+  - { name: D, min: 45, limit_coef: 0.5, rate_premium: 6, route: MANUAL_REVIEW }
+  - { name: E, min: 0,  limit_coef: 0.0, rate_premium: null, route: REJECTED }
+
+# ---------------------------------------------------------------------------
+# 4. Продукты
+# ---------------------------------------------------------------------------
+products:
+  OVERDRAFT:
+    title: "Овердрафт"
+    purpose_fit: [cash_gap]
+    min_amount: 100000
+    max_amount: 5000000
+    term_months: { min: 1, max: 12 }
+    tranche_days: 60
+    base_rate: 21.0
+    revenue_coef: 0.5          # лимит от среднемесячной выручки
+    capacity_check: false      # платёжеспособность для овердрафта не считаем
+    schedule: REVOLVING
+  WORKING_CAPITAL:
+    title: "Кредит на оборотные цели"
+    purpose_fit: [inventory, equipment, other]
+    min_amount: 300000
+    max_amount: 30000000
+    term_months: { min: 3, max: 36 }
+    base_rate: 20.0
+    revenue_coef: 3.0
+    capacity_check: true
+    schedule: ANNUITY          # или SEASONAL, если клиент выбрал и есть сезонность
+  CREDIT_LINE:
+    title: "Кредитная линия"
+    purpose_fit: [expansion]
+    frequency_fit: [several_per_year, always]
+    min_amount: 1000000
+    max_amount: 30000000
+    term_months: { min: 6, max: 36 }
+    base_rate: 20.5
+    revenue_coef: 3.0
+    capacity_check: true
+    schedule: ANNUITY
+  REFINANCE:
+    title: "Рефинансирование"
+    purpose_fit: [refinance]
+    min_amount: 500000
+    max_amount: 30000000
+    term_months: { min: 12, max: 60 }
+    base_rate: 19.0
+    revenue_coef: null         # лимит = остаток чужого долга, проверяем платёжеспособность
+    capacity_check: true
+    schedule: ANNUITY
+    offer_only_if: "new_payment < current_external_payment"
+
+# Подбор продукта по ответам анкеты
+product_choice:
+  by_purpose:
+    cash_gap: OVERDRAFT
+    inventory: WORKING_CAPITAL
+    equipment: WORKING_CAPITAL
+    expansion: CREDIT_LINE
+    refinance: REFINANCE
+    other: WORKING_CAPITAL
+  by_frequency_override:       # «деньги нужны регулярно» меняет продукт
+    always: OVERDRAFT
+    several_per_year: CREDIT_LINE
+  priority_order:              # «что важнее» — какой вариант показываем первым
+    small_payment: max_term
+    low_overpayment: min_term
+    max_amount: max_limit
+
+# Сезонный график: доступен, если выручка в самом слабом месяце < 50% средней
+seasonal_schedule:
+  enabled_if_min_month_share_below: 0.5
+  min_payment_share: 0.3       # в слабый месяц платёж не ниже 30% обычного
+
+# ---------------------------------------------------------------------------
+# 5. Лимит и ставка
+# ---------------------------------------------------------------------------
+limit:
+  # Лимит = min( В × revenue_coef × limit_coef, платёжеспособность, max_amount )
+  # платёжеспособность = сумма, которую можно вернуть платежом
+  #   (В × max_payment_share − текущие платежи) по ставке r за срок n (аннуитет)
+  # binding_constraint ∈ { REVENUE, CAPACITY, PRODUCT_MAX } — сохраняем в решении
+  round_down_to: 10000
+
+rate:
+  # Ставка = max( base_rate + rate_premium − alfa_share_discount − collateral_discount, key_rate + floor )
+  alfa_share_discount:
+    - { gte: 0.9, pp: 2.0 }
+    - { gte: 0.5, pp: 1.0 }
+  collateral_discount_pp: 2.0
+
+# Залог: повышает лимит и снижает ставку (только кредит, линия, рефинансирование)
+collateral:
+  ltv:                         # дисконт к оценке — уточнить у эксперта
+    real_estate: 0.6
+    vehicle: 0.5
+    equipment: 0.4
+  secured_max_amount: 70000000
+  secured_max_term_months: 60
+  # Лимит с залогом = min( платёжеспособность на сроке 60 мес., лимит без залога + оценка × ltv, secured_max_amount )
+  process_days: "7-10"         # оценка и регистрация обременения — показываем клиенту
+  costs_text: "Нужны оценка имущества и регистрация залога, около 7–10 дней. Если не платить, банк может обратить взыскание на имущество."
+
+# ---------------------------------------------------------------------------
+# 6. Исход
+# ---------------------------------------------------------------------------
+outcome:
+  # Порядок проверки:
+  # 1) стоп-фактор -> его outcome
+  # 2) класс E -> REJECTED с планом
+  # 3) класс D или флаг из manual_review_flags -> MANUAL_REVIEW
+  # 4) запрошено <= лимита -> APPROVED
+  # 5) лимит >= min_amount продукта -> COUNTER_OFFER (лимит, или длиннее срок, или другой продукт)
+  # 6) есть внешний кредит и рефинансирование снижает платёж -> COUNTER_OFFER(REFINANCE)
+  # 7) иначе REJECTED с планом «как получить больше»
+  offer_valid_days: 30
+  risk_manager_above: 5000000  # решения выше суммы и одобрения при классе D/E — вторая подпись
+
+# ---------------------------------------------------------------------------
+# 7. «Как получить больше» — советы. Показываем только те, что реально
+#    поднимают лимит или снижают ставку, с цифрой (what-if пересчёт), топ-3
+# ---------------------------------------------------------------------------
+advice:
+  - code: REPAY_EXTERNAL
+    when: "external credits exist"
+    what_if: "убрать платёж внешнего кредита из нагрузки"
+    text: "Погасите кредит в {bank} (остаток {balance}) — лимит вырастет до {new_limit}."
+  - code: REFINANCE_EXTERNAL
+    when: "external credit rate > REFINANCE rate"
+    what_if: "заменить внешний платёж на платёж по рефинансированию"
+    text: "Перенесите кредит {bank} к нам: платёж снизится на {delta_payment}/мес, а лимит на новые цели вырастет до {new_limit}."
+  - code: MOVE_TURNOVER
+    when: "alfa_share < 0.9"
+    what_if: "alfa_share = 0.9 и выручка = выручка по ФНС"
+    text: "Переведите обороты в Альфу: лимит до {new_limit}, ставка ниже на {delta_rate} п.п."
+  - code: UPLOAD_STATEMENT
+    when: "own transfers from another bank detected or alfa_share < 0.9"
+    what_if: "добавить выручку по выписке другого банка"
+    text: "Часть выручки идёт через другой банк. Загрузите выписку — посчитаем по всей выручке, лимит до {new_limit}."
+  - code: ACQUIRING
+    when: "card acquiring inflows from another bank detected"
+    what_if: "как MOVE_TURNOVER для доли эквайринга"
+    text: "Подключите эквайринг Альфы — лимит до {new_limit}."
+  - code: WAIT_ANNIVERSARY
+    when: "business_age_months < 12"
+    what_if: "business_age_months = 12"
+    text: "{date} бизнесу исполнится год — лимит вырастет до {new_limit} без действий с вашей стороны."
+  - code: PAY_TAX_DEBT
+    when: "fns.tax_debt > 0"
+    what_if: "tax_debt = 0"
+    text: "Закройте налоговую задолженность {amount} — лимит до {new_limit}."
+  - code: ADD_COLLATERAL
+    when: "client has assets (анкета) and product != OVERDRAFT"
+    what_if: "лимит с залогом"
+    text: "Оформите {asset} в залог (оценка ~{value}): лимит до {new_limit}, ставка ниже на {delta_rate} п.п. {costs_text}"
+  - code: PAY_ON_TIME
+    when: "has Alfa credit"
+    what_if: "CREDIT_HISTORY = CLEAN_12M через 6 мес."
+    text: "Платите по графику без просрочек — через 6 месяцев пересмотрим лимит, ориентир {new_limit}."
+  # Не советуем продукт Альфы, если он не меняет лимит или ставку.

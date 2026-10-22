@@ -1,0 +1,603 @@
+{
+ "p1a": {
+  "id": "p1a",
+  "score": 105,
+  "cls": "A",
+  "factors": {
+   "BUSINESS_AGE": 10,
+   "REVENUE_STABILITY": 10,
+   "DEBT_LOAD": 10,
+   "CREDIT_HISTORY": 10,
+   "ALFA_HISTORY": 10,
+   "TAX_DEBT": 0,
+   "INDUSTRY_RISK": 5,
+   "ALFA_SHARE": 5,
+   "DATA_QUALITY": 5
+  },
+  "product": "WORKING_CAPITAL",
+  "term": 12,
+  "avg_revenue": 1893858,
+  "debt_load": 0.063,
+  "alfa_share": 1.0,
+  "cv": 0.104,
+  "months": 12,
+  "stop_factors": [],
+  "requested": 2000000,
+  "rate": 18.0,
+  "limit": 3850000,
+  "binding_constraint": "CAPACITY",
+  "limit_candidates": {
+   "REVENUE": 5681575,
+   "CAPACITY": 3855417,
+   "PRODUCT_MAX": 30000000
+  },
+  "payment": 183360,
+  "overpayment": 200320,
+  "outcome": "APPROVED",
+  "seasonal_available": false,
+  "advice": [],
+  "forecast": {
+   "start_balance": 483100.0,
+   "recurring": [
+    {
+     "counterparty": "Зарплата сотрудникам",
+     "kind": "SALARY",
+     "day": 25,
+     "amount": 260300
+    },
+    {
+     "counterparty": "Зарплата сотрудникам",
+     "kind": "SALARY",
+     "day": 10,
+     "amount": 259200
+    },
+    {
+     "counterparty": "ИП Соколов В.А. (аренда)",
+     "kind": "RENT",
+     "day": 5,
+     "amount": 217125
+    },
+    {
+     "counterparty": "ООО «Поставщик-4»",
+     "kind": "SUPPLIER",
+     "day": 6,
+     "amount": 36700
+    },
+    {
+     "counterparty": "АО «Альфа-Банк»",
+     "kind": "LOAN_PAYMENT",
+     "day": 10,
+     "amount": 120000
+    },
+    {
+     "counterparty": "ООО «Мельница-Центр»",
+     "kind": "SUPPLIER",
+     "day": 12,
+     "amount": 385775
+    },
+    {
+     "counterparty": "ООО «Поставщик-7»",
+     "kind": "SUPPLIER",
+     "day": 5,
+     "amount": 22800
+    }
+   ],
+   "avg_daily_inflow": 61353,
+   "avg_daily_irregular_out": 18289,
+   "gap": {
+    "date": "2026-11-12",
+    "shortfall": 103238,
+    "overdraft_suggestion": 120000,
+    "reasons": [
+     "ООО «Мельница-Центр» — 385 775 ₽"
+    ]
+   }
+  },
+  "expected": "APPROVED",
+  "match": true
+ },
+ "p1b": {
+  "id": "p1b",
+  "score": 80,
+  "cls": "A",
+  "factors": {
+   "BUSINESS_AGE": 10,
+   "REVENUE_STABILITY": 5,
+   "DEBT_LOAD": -10,
+   "CREDIT_HISTORY": 10,
+   "ALFA_HISTORY": 10,
+   "TAX_DEBT": 0,
+   "INDUSTRY_RISK": 5,
+   "ALFA_SHARE": 5,
+   "DATA_QUALITY": 5
+  },
+  "product": "WORKING_CAPITAL",
+  "term": 24,
+  "avg_revenue": 6083883,
+  "debt_load": 0.335,
+  "alfa_share": 1.0,
+  "cv": 0.261,
+  "months": 12,
+  "stop_factors": [],
+  "requested": 4000000,
+  "rate": 18.0,
+  "limit": 0,
+  "binding_constraint": "CAPACITY",
+  "limit_candidates": {
+   "REVENUE": 18251650,
+   "CAPACITY": 0,
+   "PRODUCT_MAX": 30000000
+  },
+  "payment": 199696,
+  "overpayment": 792704,
+  "outcome": "COUNTER_OFFER",
+  "counter": {
+   "product": "REFINANCE",
+   "amount": 9000000,
+   "term": 60,
+   "rate": 17.0,
+   "new_payment": 223673,
+   "old_payment": 840000,
+   "saving_per_month": 616327
+  },
+  "seasonal_available": false,
+  "advice": [
+   {
+    "code": "REPAY_EXTERNAL",
+    "text": "Погасите кредит в Банк «Северный» (остаток 9 000 000 ₽)",
+    "new_limit": 6420000,
+    "new_rate": 18.0,
+    "delta_limit": 6420000
+   }
+  ],
+  "forecast": {
+   "start_balance": 368600.0,
+   "recurring": [
+    {
+     "counterparty": "Зарплата сотрудникам",
+     "kind": "SALARY",
+     "day": 25,
+     "amount": 706750
+    },
+    {
+     "counterparty": "Зарплата сотрудникам",
+     "kind": "SALARY",
+     "day": 10,
+     "amount": 702725
+    },
+    {
+     "counterparty": "ООО «Склад-Сервис» (аренда склада)",
+     "kind": "RENT",
+     "day": 3,
+     "amount": 451875
+    },
+    {
+     "counterparty": "АО «Альфа-Банк»",
+     "kind": "LOAN_PAYMENT",
+     "day": 15,
+     "amount": 1200000
+    },
+    {
+     "counterparty": "Банк «Северный»",
+     "kind": "LOAN_PAYMENT",
+     "day": 20,
+     "amount": 840000
+    },
+    {
+     "counterparty": "ООО «Поставщик-14»",
+     "kind": "SUPPLIER",
+     "day": 22,
+     "amount": 88233
+    }
+   ],
+   "avg_daily_inflow": 158844,
+   "avg_daily_irregular_out": 60958,
+   "gap": {
+    "date": "2026-11-20",
+    "shortfall": 524133,
+    "overdraft_suggestion": 580000,
+    "reasons": [
+     "Банк «Северный» — 840 000 ₽"
+    ]
+   }
+  },
+  "expected": "COUNTER_OFFER",
+  "match": true
+ },
+ "p2a": {
+  "id": "p2a",
+  "score": 100,
+  "cls": "A",
+  "factors": {
+   "BUSINESS_AGE": 10,
+   "REVENUE_STABILITY": 5,
+   "DEBT_LOAD": 10,
+   "CREDIT_HISTORY": 10,
+   "ALFA_HISTORY": 10,
+   "TAX_DEBT": 0,
+   "INDUSTRY_RISK": 5,
+   "ALFA_SHARE": 5,
+   "DATA_QUALITY": 5
+  },
+  "product": "REFINANCE",
+  "term": 36,
+  "avg_revenue": 1025117,
+  "debt_load": 0.07,
+  "alfa_share": 0.932,
+  "cv": 0.307,
+  "months": 12,
+  "stop_factors": [],
+  "requested": 1400000,
+  "rate": 17.0,
+  "limit": 1400000,
+  "binding_constraint": "REFINANCE_BALANCE",
+  "limit_candidates": {
+   "REFINANCE_BALANCE": 1400000,
+   "CAPACITY": 7188206,
+   "PRODUCT_MAX": 30000000
+  },
+  "payment": 49914,
+  "overpayment": 396904,
+  "outcome": "APPROVED",
+  "seasonal_available": true,
+  "advice": [],
+  "forecast": {
+   "start_balance": 400800.0,
+   "recurring": [
+    {
+     "counterparty": "Разные получатели",
+     "kind": "OTHER",
+     "day": 28,
+     "amount": 5240
+    },
+    {
+     "counterparty": "ООО «Промзона» (аренда бокса)",
+     "kind": "RENT",
+     "day": 7,
+     "amount": 148400
+    },
+    {
+     "counterparty": "Зарплата мастерам",
+     "kind": "SALARY",
+     "day": 15,
+     "amount": 282625
+    },
+    {
+     "counterparty": "Банк «Восток-Кредит»",
+     "kind": "LOAN_PAYMENT",
+     "day": 20,
+     "amount": 72000
+    }
+   ],
+   "avg_daily_inflow": 41668,
+   "avg_daily_irregular_out": 9746,
+   "gap": null
+  },
+  "expected": "APPROVED",
+  "match": true
+ },
+ "p2b": {
+  "id": "p2b",
+  "score": 45,
+  "cls": "D",
+  "factors": {
+   "BUSINESS_AGE": 10,
+   "REVENUE_STABILITY": 0,
+   "DEBT_LOAD": 10,
+   "CREDIT_HISTORY": -15,
+   "ALFA_HISTORY": -10,
+   "TAX_DEBT": 0,
+   "INDUSTRY_RISK": 0,
+   "ALFA_SHARE": 5,
+   "DATA_QUALITY": 5
+  },
+  "product": "WORKING_CAPITAL",
+  "term": 24,
+  "avg_revenue": 735167,
+  "debt_load": 0.0,
+  "alfa_share": 1.0,
+  "cv": 0.406,
+  "months": 12,
+  "stop_factors": [],
+  "requested": 1500000,
+  "rate": 24.0,
+  "limit": 1100000,
+  "binding_constraint": "REVENUE",
+  "limit_candidates": {
+   "REVENUE": 1102750,
+   "CAPACITY": 3476222,
+   "PRODUCT_MAX": 30000000
+  },
+  "payment": 58158,
+  "overpayment": 295792,
+  "outcome": "MANUAL_REVIEW",
+  "reason": "CLASS_D",
+  "flags": [],
+  "seasonal_available": true,
+  "advice": [
+   {
+    "code": "PAY_ON_TIME",
+    "text": "Платите без просрочек — пересмотр через 6 месяцев",
+    "new_limit": 1760000,
+    "new_rate": 20.0,
+    "delta_limit": 660000
+   }
+  ],
+  "forecast": {
+   "start_balance": 372200.0,
+   "recurring": [
+    {
+     "counterparty": "Разные получатели",
+     "kind": "OTHER",
+     "day": 22,
+     "amount": 3400
+    },
+    {
+     "counterparty": "ИП Карпов Д.Н. (аренда)",
+     "kind": "RENT",
+     "day": 1,
+     "amount": 119850
+    },
+    {
+     "counterparty": "Выплаты мастерам",
+     "kind": "SALARY",
+     "day": 20,
+     "amount": 207425
+    }
+   ],
+   "avg_daily_inflow": 25476,
+   "avg_daily_irregular_out": 3561,
+   "gap": null
+  },
+  "expected": "MANUAL_REVIEW",
+  "match": true
+ },
+ "p3a": {
+  "id": "p3a",
+  "score": 90,
+  "cls": "A",
+  "factors": {
+   "BUSINESS_AGE": 10,
+   "REVENUE_STABILITY": 5,
+   "DEBT_LOAD": 10,
+   "CREDIT_HISTORY": 10,
+   "ALFA_HISTORY": 0,
+   "TAX_DEBT": 0,
+   "INDUSTRY_RISK": 5,
+   "ALFA_SHARE": 5,
+   "DATA_QUALITY": 5
+  },
+  "product": "REFINANCE",
+  "term": 48,
+  "avg_revenue": 4143867,
+  "debt_load": 0.063,
+  "alfa_share": 1.0,
+  "cv": 0.355,
+  "months": 12,
+  "stop_factors": [],
+  "requested": 5500000,
+  "rate": 17.0,
+  "limit": 5500000,
+  "binding_constraint": "REFINANCE_BALANCE",
+  "limit_candidates": {
+   "REFINANCE_BALANCE": 5500000,
+   "CAPACITY": 35902448,
+   "PRODUCT_MAX": 30000000
+  },
+  "payment": 158703,
+  "overpayment": 2117744,
+  "outcome": "MANUAL_REVIEW",
+  "reason": "AMOUNT_ABOVE_AUTO",
+  "flags": [
+   "AMOUNT_ABOVE_AUTO"
+  ],
+  "seasonal_available": true,
+  "advice": [
+   {
+    "code": "ADD_COLLATERAL",
+    "text": "Оформите в залог: Склад 1 200 м²  Подольск (оценка ~24 000 000 ₽)",
+    "new_limit": 5500000,
+    "new_rate": 15.0,
+    "delta_limit": 0,
+    "costs": "Нужны оценка имущества и регистрация залога, около 7–10 дней. Если не платить, банк может обратить взыскание на имущество."
+   }
+  ],
+  "forecast": {
+   "start_balance": 1083800.0,
+   "recurring": [
+    {
+     "counterparty": "Разные получатели",
+     "kind": "OTHER",
+     "day": 29,
+     "amount": 16575
+    },
+    {
+     "counterparty": "Зарплата сотрудникам",
+     "kind": "SALARY",
+     "day": 25,
+     "amount": 523600
+    },
+    {
+     "counterparty": "Зарплата сотрудникам",
+     "kind": "SALARY",
+     "day": 10,
+     "amount": 512775
+    },
+    {
+     "counterparty": "ООО «Логистик-Парк» (аренда)",
+     "kind": "RENT",
+     "day": 4,
+     "amount": 300600
+    },
+    {
+     "counterparty": "Банк «Приволжский»",
+     "kind": "LOAN_PAYMENT",
+     "day": 20,
+     "amount": 260000
+    }
+   ],
+   "avg_daily_inflow": 162719,
+   "avg_daily_irregular_out": 59287,
+   "gap": null
+  },
+  "expected": "MANUAL_REVIEW",
+  "match": true
+ },
+ "p3b": {
+  "id": "p3b",
+  "score": 58,
+  "cls": "C",
+  "factors": {
+   "BUSINESS_AGE": 0,
+   "REVENUE_STABILITY": 5,
+   "DEBT_LOAD": 10,
+   "CREDIT_HISTORY": 0,
+   "ALFA_HISTORY": 0,
+   "TAX_DEBT": 0,
+   "INDUSTRY_RISK": 0,
+   "ALFA_SHARE": 3,
+   "DATA_QUALITY": 0
+  },
+  "product": "OVERDRAFT",
+  "term": 12,
+  "avg_revenue": 917271,
+  "debt_load": 0.0,
+  "alfa_share": 0.836,
+  "cv": 0.267,
+  "months": 7,
+  "stop_factors": [],
+  "requested": 240000,
+  "rate": 24.0,
+  "limit": 270000,
+  "binding_constraint": "REVENUE",
+  "limit_candidates": {
+   "REVENUE": 275181,
+   "PRODUCT_MAX": 5000000
+  },
+  "outcome": "APPROVED",
+  "seasonal_available": false,
+  "advice": [
+   {
+    "code": "UPLOAD_STATEMENT",
+    "text": "Часть выручки идёт через другой банк — загрузите выписку оттуда",
+    "new_limit": 360000,
+    "new_rate": 24.0,
+    "delta_limit": 90000
+   },
+   {
+    "code": "MOVE_TURNOVER",
+    "text": "Переведите обороты (эквайринг) в Альфу",
+    "new_limit": 320000,
+    "new_rate": 23.0,
+    "delta_limit": 50000
+   }
+  ],
+  "forecast": {
+   "start_balance": 494400.0,
+   "recurring": [
+    {
+     "counterparty": "Зарплата бариста",
+     "kind": "SALARY",
+     "day": 25,
+     "amount": 160175
+    },
+    {
+     "counterparty": "Зарплата бариста",
+     "kind": "SALARY",
+     "day": 10,
+     "amount": 159400
+    },
+    {
+     "counterparty": "Разные получатели",
+     "kind": "OTHER",
+     "day": 1,
+     "amount": 3750
+    },
+    {
+     "counterparty": "ООО «Арбат-Недвижимость» (аренда)",
+     "kind": "RENT",
+     "day": 12,
+     "amount": 301325
+    },
+    {
+     "counterparty": "ООО «Зерновой дом» (закупка зерна)",
+     "kind": "SUPPLIER",
+     "day": 12,
+     "amount": 516875
+    }
+   ],
+   "avg_daily_inflow": 36288,
+   "avg_daily_irregular_out": 9256,
+   "gap": {
+    "date": "2026-11-12",
+    "shortfall": 211060,
+    "overdraft_suggestion": 240000,
+    "reasons": [
+     "ООО «Арбат-Недвижимость» (аренда) — 301 325 ₽",
+     "ООО «Зерновой дом» (закупка зерна) — 516 875 ₽"
+    ]
+   }
+  },
+  "expected": "APPROVED",
+  "match": true
+ },
+ "p_stop": {
+  "id": "p_stop",
+  "score": 45,
+  "cls": "D",
+  "factors": {
+   "BUSINESS_AGE": 10,
+   "REVENUE_STABILITY": 0,
+   "DEBT_LOAD": 5,
+   "CREDIT_HISTORY": -15,
+   "ALFA_HISTORY": 0,
+   "TAX_DEBT": -5,
+   "INDUSTRY_RISK": 0,
+   "ALFA_SHARE": 5,
+   "DATA_QUALITY": 5
+  },
+  "product": "WORKING_CAPITAL",
+  "term": 12,
+  "avg_revenue": 813033,
+  "debt_load": 0.141,
+  "alfa_share": 0.903,
+  "cv": 0.404,
+  "months": 12,
+  "stop_factors": [
+   "CURRENT_OVERDUE"
+  ],
+  "requested": 800000,
+  "outcome": "REJECTED",
+  "reason": "CURRENT_OVERDUE",
+  "limit": 0,
+  "rate": null,
+  "forecast": {
+   "start_balance": 282700.0,
+   "recurring": [
+    {
+     "counterparty": "Разные получатели",
+     "kind": "OTHER",
+     "day": 30,
+     "amount": 3867
+    },
+    {
+     "counterparty": "ООО «ТопливоСнаб» (топливо)",
+     "kind": "OTHER",
+     "day": 5,
+     "amount": 208450
+    },
+    {
+     "counterparty": "Выплаты водителям",
+     "kind": "SALARY",
+     "day": 15,
+     "amount": 239050
+    }
+   ],
+   "avg_daily_inflow": 28131,
+   "avg_daily_irregular_out": 6472,
+   "gap": null
+  },
+  "expected": "REJECTED",
+  "match": true
+ }
+}

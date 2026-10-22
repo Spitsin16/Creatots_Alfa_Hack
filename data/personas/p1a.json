@@ -1,0 +1,6270 @@
+{
+ "persona": {
+  "id": "p1a",
+  "segment": "1А",
+  "login": "p1a",
+  "password": "demo",
+  "title": "ИП, пекарня, кредит только в Альфе",
+  "expected": "APPROVED",
+  "demo_note": "Одобрено сразу, прогноз разрыва показывает просадку 12 ноября (закупка муки + зарплата).",
+  "scenario": {
+   "purpose": "inventory",
+   "frequency": "once",
+   "urgency": "month",
+   "amount": 2000000,
+   "term_months": 12,
+   "priority": "small_payment",
+   "repayment": "equal",
+   "assets": [
+    "none"
+   ]
+  },
+  "alt_scenarios": [],
+  "employees": [],
+  "assets_owned": []
+ },
+ "alfa": {
+  "person": {
+   "full_name": "Морозова Анна Сергеевна",
+   "birth": "1987-04-12",
+   "phone": "+7900000001a",
+   "passport": "4500 000000 (синтетический)",
+   "reg_address": "Москва, синтетический адрес",
+   "reg_type": "PERMANENT"
+  },
+  "account": {
+   "number": "40802810260074704710",
+   "opened": "2022-03-20",
+   "balance_as_of": "2026-10-21",
+   "balance": 483100.0
+  },
+  "credits": [
+   {
+    "product": "WORKING_CAPITAL",
+    "status": "ACTIVE",
+    "amount": 2400000,
+    "opened": "2025-04-10",
+    "balance": 1210000,
+    "monthly_payment": 120000,
+    "rate": 21.5,
+    "payment_day": 10,
+    "max_overdue_days": 0
+   }
+  ],
+  "transactions": [
+   {
+    "date": "2025-10-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.09.2025"
+   },
+   {
+    "date": "2025-10-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.10.2025"
+   },
+   {
+    "date": "2025-10-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 76000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.10.2025"
+   },
+   {
+    "date": "2025-10-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.10.2025"
+   },
+   {
+    "date": "2025-10-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 79900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.10.2025"
+   },
+   {
+    "date": "2025-10-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 225600.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 10.2025"
+   },
+   {
+    "date": "2025-10-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 3900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.10.2025"
+   },
+   {
+    "date": "2025-10-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 38800.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.10.2025"
+   },
+   {
+    "date": "2025-10-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 47800.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.10.2025"
+   },
+   {
+    "date": "2025-10-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.10.2025"
+   },
+   {
+    "date": "2025-10-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 82200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.10.2025"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 259700.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 10.2025"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2025-10-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.10.2025"
+   },
+   {
+    "date": "2025-10-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.10.2025"
+   },
+   {
+    "date": "2025-10-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 378500.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 10.2025"
+   },
+   {
+    "date": "2025-10-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.10.2025"
+   },
+   {
+    "date": "2025-10-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 46900.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 72100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.10.2025"
+   },
+   {
+    "date": "2025-10-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 58100.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.10.2025"
+   },
+   {
+    "date": "2025-10-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29200.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.10.2025"
+   },
+   {
+    "date": "2025-10-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 60900.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 72200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.10.2025"
+   },
+   {
+    "date": "2025-10-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.10.2025"
+   },
+   {
+    "date": "2025-10-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.10.2025"
+   },
+   {
+    "date": "2025-10-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.10.2025"
+   },
+   {
+    "date": "2025-10-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.10.2025"
+   },
+   {
+    "date": "2025-10-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 55800.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.10.2025"
+   },
+   {
+    "date": "2025-10-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.10.2025"
+   },
+   {
+    "date": "2025-10-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.10.2025"
+   },
+   {
+    "date": "2025-10-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48800.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.10.2025"
+   },
+   {
+    "date": "2025-10-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 267100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 10.2025"
+   },
+   {
+    "date": "2025-10-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 80000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.10.2025"
+   },
+   {
+    "date": "2025-10-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 46400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.10.2025"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.10.2025"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 28700.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 226800.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.10.2025"
+   },
+   {
+    "date": "2025-10-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.10.2025"
+   },
+   {
+    "date": "2025-10-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.10.2025"
+   },
+   {
+    "date": "2025-10-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41500.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-31",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 469000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2025-11-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.10.2025"
+   },
+   {
+    "date": "2025-11-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.11.2025"
+   },
+   {
+    "date": "2025-11-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.11.2025"
+   },
+   {
+    "date": "2025-11-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.11.2025"
+   },
+   {
+    "date": "2025-11-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 24800.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.11.2025"
+   },
+   {
+    "date": "2025-11-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 220700.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 11.2025"
+   },
+   {
+    "date": "2025-11-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45100.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.11.2025"
+   },
+   {
+    "date": "2025-11-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.11.2025"
+   },
+   {
+    "date": "2025-11-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31000.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.11.2025"
+   },
+   {
+    "date": "2025-11-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 79500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.11.2025"
+   },
+   {
+    "date": "2025-11-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 41300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.11.2025"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 267600.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 11.2025"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 30800.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.11.2025"
+   },
+   {
+    "date": "2025-11-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.11.2025"
+   },
+   {
+    "date": "2025-11-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 374400.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 11.2025"
+   },
+   {
+    "date": "2025-11-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 27300.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.11.2025"
+   },
+   {
+    "date": "2025-11-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 52700.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 78400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.11.2025"
+   },
+   {
+    "date": "2025-11-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31900.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.11.2025"
+   },
+   {
+    "date": "2025-11-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 72100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.11.2025"
+   },
+   {
+    "date": "2025-11-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.11.2025"
+   },
+   {
+    "date": "2025-11-17",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40200.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.11.2025"
+   },
+   {
+    "date": "2025-11-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.11.2025"
+   },
+   {
+    "date": "2025-11-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.11.2025"
+   },
+   {
+    "date": "2025-11-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29000.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.11.2025"
+   },
+   {
+    "date": "2025-11-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.11.2025"
+   },
+   {
+    "date": "2025-11-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.11.2025"
+   },
+   {
+    "date": "2025-11-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.11.2025"
+   },
+   {
+    "date": "2025-11-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 25600.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.11.2025"
+   },
+   {
+    "date": "2025-11-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 254100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 11.2025"
+   },
+   {
+    "date": "2025-11-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 26000.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.11.2025"
+   },
+   {
+    "date": "2025-11-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.11.2025"
+   },
+   {
+    "date": "2025-11-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.11.2025"
+   },
+   {
+    "date": "2025-11-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 39300.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.11.2025"
+   },
+   {
+    "date": "2025-11-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.11.2025"
+   },
+   {
+    "date": "2025-11-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 128000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2025-12-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.11.2025"
+   },
+   {
+    "date": "2025-12-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 78100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.12.2025"
+   },
+   {
+    "date": "2025-12-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 65300.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.12.2025"
+   },
+   {
+    "date": "2025-12-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 74900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.12.2025"
+   },
+   {
+    "date": "2025-12-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 86100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.12.2025"
+   },
+   {
+    "date": "2025-12-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 222700.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 12.2025"
+   },
+   {
+    "date": "2025-12-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 35800.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 94600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.12.2025"
+   },
+   {
+    "date": "2025-12-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.12.2025"
+   },
+   {
+    "date": "2025-12-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.12.2025"
+   },
+   {
+    "date": "2025-12-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.12.2025"
+   },
+   {
+    "date": "2025-12-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.12.2025"
+   },
+   {
+    "date": "2025-12-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 256300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 12.2025"
+   },
+   {
+    "date": "2025-12-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2025-12-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 33100.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.12.2025"
+   },
+   {
+    "date": "2025-12-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 88100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.12.2025"
+   },
+   {
+    "date": "2025-12-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 370600.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 12.2025"
+   },
+   {
+    "date": "2025-12-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31800.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 76400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.12.2025"
+   },
+   {
+    "date": "2025-12-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.12.2025"
+   },
+   {
+    "date": "2025-12-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.12.2025"
+   },
+   {
+    "date": "2025-12-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48500.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.12.2025"
+   },
+   {
+    "date": "2025-12-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 74800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.12.2025"
+   },
+   {
+    "date": "2025-12-17",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 44600.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.12.2025"
+   },
+   {
+    "date": "2025-12-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 82900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.12.2025"
+   },
+   {
+    "date": "2025-12-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 90100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.12.2025"
+   },
+   {
+    "date": "2025-12-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.12.2025"
+   },
+   {
+    "date": "2025-12-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.12.2025"
+   },
+   {
+    "date": "2025-12-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34900.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.12.2025"
+   },
+   {
+    "date": "2025-12-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34200.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.12.2025"
+   },
+   {
+    "date": "2025-12-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48000.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.12.2025"
+   },
+   {
+    "date": "2025-12-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 258800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 12.2025"
+   },
+   {
+    "date": "2025-12-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 52000.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 88200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.12.2025"
+   },
+   {
+    "date": "2025-12-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 84000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.12.2025"
+   },
+   {
+    "date": "2025-12-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 76900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.12.2025"
+   },
+   {
+    "date": "2025-12-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.12.2025"
+   },
+   {
+    "date": "2025-12-29",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 42100.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.12.2025"
+   },
+   {
+    "date": "2025-12-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31400.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 80100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.12.2025"
+   },
+   {
+    "date": "2025-12-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 49700.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 468000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-01-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.12.2025"
+   },
+   {
+    "date": "2026-01-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41100.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.01.2026"
+   },
+   {
+    "date": "2026-01-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.01.2026"
+   },
+   {
+    "date": "2026-01-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.01.2026"
+   },
+   {
+    "date": "2026-01-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 41500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.01.2026"
+   },
+   {
+    "date": "2026-01-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 214300.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 01.2026"
+   },
+   {
+    "date": "2026-01-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.01.2026"
+   },
+   {
+    "date": "2026-01-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.01.2026"
+   },
+   {
+    "date": "2026-01-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.01.2026"
+   },
+   {
+    "date": "2026-01-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45700.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.01.2026"
+   },
+   {
+    "date": "2026-01-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29300.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.01.2026"
+   },
+   {
+    "date": "2026-01-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 252500.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 01.2026"
+   },
+   {
+    "date": "2026-01-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-01-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.01.2026"
+   },
+   {
+    "date": "2026-01-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.01.2026"
+   },
+   {
+    "date": "2026-01-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 369400.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 01.2026"
+   },
+   {
+    "date": "2026-01-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.01.2026"
+   },
+   {
+    "date": "2026-01-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.01.2026"
+   },
+   {
+    "date": "2026-01-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 24000.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.01.2026"
+   },
+   {
+    "date": "2026-01-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 38700.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.01.2026"
+   },
+   {
+    "date": "2026-01-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 27400.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.01.2026"
+   },
+   {
+    "date": "2026-01-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.01.2026"
+   },
+   {
+    "date": "2026-01-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 41900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.01.2026"
+   },
+   {
+    "date": "2026-01-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 22700.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.01.2026"
+   },
+   {
+    "date": "2026-01-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 35900.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-20",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.01.2026"
+   },
+   {
+    "date": "2026-01-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 38700.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.01.2026"
+   },
+   {
+    "date": "2026-01-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 39700.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.01.2026"
+   },
+   {
+    "date": "2026-01-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 39000.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.01.2026"
+   },
+   {
+    "date": "2026-01-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.01.2026"
+   },
+   {
+    "date": "2026-01-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 257700.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 01.2026"
+   },
+   {
+    "date": "2026-01-25",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.01.2026"
+   },
+   {
+    "date": "2026-01-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40500.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.01.2026"
+   },
+   {
+    "date": "2026-01-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 37900.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-27",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.01.2026"
+   },
+   {
+    "date": "2026-01-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 226800.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2026-01-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.01.2026"
+   },
+   {
+    "date": "2026-01-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.01.2026"
+   },
+   {
+    "date": "2026-01-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.01.2026"
+   },
+   {
+    "date": "2026-01-31",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.01.2026"
+   },
+   {
+    "date": "2026-02-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 42400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.02.2026"
+   },
+   {
+    "date": "2026-02-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.02.2026"
+   },
+   {
+    "date": "2026-02-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.02.2026"
+   },
+   {
+    "date": "2026-02-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40400.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.02.2026"
+   },
+   {
+    "date": "2026-02-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 221600.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 02.2026"
+   },
+   {
+    "date": "2026-02-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 21900.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.02.2026"
+   },
+   {
+    "date": "2026-02-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29000.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.02.2026"
+   },
+   {
+    "date": "2026-02-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.02.2026"
+   },
+   {
+    "date": "2026-02-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 3700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 41700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.02.2026"
+   },
+   {
+    "date": "2026-02-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43000.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.02.2026"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 262100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 02.2026"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43100.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.02.2026"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.02.2026"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 379500.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 02.2026"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 36700.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 336000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-02-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.02.2026"
+   },
+   {
+    "date": "2026-02-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.02.2026"
+   },
+   {
+    "date": "2026-02-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.02.2026"
+   },
+   {
+    "date": "2026-02-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 48100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.02.2026"
+   },
+   {
+    "date": "2026-02-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.02.2026"
+   },
+   {
+    "date": "2026-02-17",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48600.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.02.2026"
+   },
+   {
+    "date": "2026-02-18",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 22800.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.02.2026"
+   },
+   {
+    "date": "2026-02-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 42500.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 74200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.02.2026"
+   },
+   {
+    "date": "2026-02-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.02.2026"
+   },
+   {
+    "date": "2026-02-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.02.2026"
+   },
+   {
+    "date": "2026-02-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 43100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.02.2026"
+   },
+   {
+    "date": "2026-02-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.02.2026"
+   },
+   {
+    "date": "2026-02-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.02.2026"
+   },
+   {
+    "date": "2026-02-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 253900.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 02.2026"
+   },
+   {
+    "date": "2026-02-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.02.2026"
+   },
+   {
+    "date": "2026-02-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 37700.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.02.2026"
+   },
+   {
+    "date": "2026-02-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 42100.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.02.2026"
+   },
+   {
+    "date": "2026-02-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-28",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 119000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-03-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 82400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.02.2026"
+   },
+   {
+    "date": "2026-03-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.03.2026"
+   },
+   {
+    "date": "2026-03-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.03.2026"
+   },
+   {
+    "date": "2026-03-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.03.2026"
+   },
+   {
+    "date": "2026-03-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.03.2026"
+   },
+   {
+    "date": "2026-03-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 220800.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 03.2026"
+   },
+   {
+    "date": "2026-03-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 81600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.03.2026"
+   },
+   {
+    "date": "2026-03-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31900.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 78900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.03.2026"
+   },
+   {
+    "date": "2026-03-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 76100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.03.2026"
+   },
+   {
+    "date": "2026-03-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.03.2026"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.03.2026"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 259700.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 03.2026"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 55600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.03.2026"
+   },
+   {
+    "date": "2026-03-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34000.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.03.2026"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 386100.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 03.2026"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 51400.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 79000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.03.2026"
+   },
+   {
+    "date": "2026-03-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.03.2026"
+   },
+   {
+    "date": "2026-03-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.03.2026"
+   },
+   {
+    "date": "2026-03-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.03.2026"
+   },
+   {
+    "date": "2026-03-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.03.2026"
+   },
+   {
+    "date": "2026-03-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.03.2026"
+   },
+   {
+    "date": "2026-03-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.03.2026"
+   },
+   {
+    "date": "2026-03-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 36400.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.03.2026"
+   },
+   {
+    "date": "2026-03-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43200.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 76200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.03.2026"
+   },
+   {
+    "date": "2026-03-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.03.2026"
+   },
+   {
+    "date": "2026-03-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 44900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.03.2026"
+   },
+   {
+    "date": "2026-03-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 3900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.03.2026"
+   },
+   {
+    "date": "2026-03-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.03.2026"
+   },
+   {
+    "date": "2026-03-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 262100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 03.2026"
+   },
+   {
+    "date": "2026-03-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.03.2026"
+   },
+   {
+    "date": "2026-03-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34600.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 82700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.03.2026"
+   },
+   {
+    "date": "2026-03-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.03.2026"
+   },
+   {
+    "date": "2026-03-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.03.2026"
+   },
+   {
+    "date": "2026-03-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 45800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.03.2026"
+   },
+   {
+    "date": "2026-03-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 30100.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.03.2026"
+   },
+   {
+    "date": "2026-03-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29500.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 360000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-04-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.03.2026"
+   },
+   {
+    "date": "2026-04-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.04.2026"
+   },
+   {
+    "date": "2026-04-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.04.2026"
+   },
+   {
+    "date": "2026-04-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.04.2026"
+   },
+   {
+    "date": "2026-04-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.04.2026"
+   },
+   {
+    "date": "2026-04-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 217500.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 04.2026"
+   },
+   {
+    "date": "2026-04-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 48700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.04.2026"
+   },
+   {
+    "date": "2026-04-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43000.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.04.2026"
+   },
+   {
+    "date": "2026-04-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 35000.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.04.2026"
+   },
+   {
+    "date": "2026-04-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31200.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.04.2026"
+   },
+   {
+    "date": "2026-04-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 28100.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 78700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.04.2026"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 267000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 04.2026"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-04-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.04.2026"
+   },
+   {
+    "date": "2026-04-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 79500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.04.2026"
+   },
+   {
+    "date": "2026-04-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 387000.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 04.2026"
+   },
+   {
+    "date": "2026-04-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 45300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.04.2026"
+   },
+   {
+    "date": "2026-04-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 33700.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.04.2026"
+   },
+   {
+    "date": "2026-04-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.04.2026"
+   },
+   {
+    "date": "2026-04-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 53200.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.04.2026"
+   },
+   {
+    "date": "2026-04-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48400.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.04.2026"
+   },
+   {
+    "date": "2026-04-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.04.2026"
+   },
+   {
+    "date": "2026-04-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.04.2026"
+   },
+   {
+    "date": "2026-04-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.04.2026"
+   },
+   {
+    "date": "2026-04-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.04.2026"
+   },
+   {
+    "date": "2026-04-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 72300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.04.2026"
+   },
+   {
+    "date": "2026-04-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 25400.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.04.2026"
+   },
+   {
+    "date": "2026-04-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.04.2026"
+   },
+   {
+    "date": "2026-04-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 53600.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 72400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.04.2026"
+   },
+   {
+    "date": "2026-04-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 265200.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 04.2026"
+   },
+   {
+    "date": "2026-04-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 74100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.04.2026"
+   },
+   {
+    "date": "2026-04-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 46000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.04.2026"
+   },
+   {
+    "date": "2026-04-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45900.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-27",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.04.2026"
+   },
+   {
+    "date": "2026-04-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 226800.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2026-04-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.04.2026"
+   },
+   {
+    "date": "2026-04-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.04.2026"
+   },
+   {
+    "date": "2026-04-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.04.2026"
+   },
+   {
+    "date": "2026-05-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.05.2026"
+   },
+   {
+    "date": "2026-05-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.05.2026"
+   },
+   {
+    "date": "2026-05-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 40700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.05.2026"
+   },
+   {
+    "date": "2026-05-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29700.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.05.2026"
+   },
+   {
+    "date": "2026-05-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 223800.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 05.2026"
+   },
+   {
+    "date": "2026-05-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.05.2026"
+   },
+   {
+    "date": "2026-05-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45600.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.05.2026"
+   },
+   {
+    "date": "2026-05-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 54500.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.05.2026"
+   },
+   {
+    "date": "2026-05-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.05.2026"
+   },
+   {
+    "date": "2026-05-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.05.2026"
+   },
+   {
+    "date": "2026-05-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 257000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 05.2026"
+   },
+   {
+    "date": "2026-05-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-05-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 42100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.05.2026"
+   },
+   {
+    "date": "2026-05-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.05.2026"
+   },
+   {
+    "date": "2026-05-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 379000.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 05.2026"
+   },
+   {
+    "date": "2026-05-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 44600.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-12",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 110000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-05-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.05.2026"
+   },
+   {
+    "date": "2026-05-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.05.2026"
+   },
+   {
+    "date": "2026-05-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 26500.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 74700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.05.2026"
+   },
+   {
+    "date": "2026-05-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 37700.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.05.2026"
+   },
+   {
+    "date": "2026-05-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 72600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.05.2026"
+   },
+   {
+    "date": "2026-05-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 42100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.05.2026"
+   },
+   {
+    "date": "2026-05-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.05.2026"
+   },
+   {
+    "date": "2026-05-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 42900.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.05.2026"
+   },
+   {
+    "date": "2026-05-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 32200.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.05.2026"
+   },
+   {
+    "date": "2026-05-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 49800.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.05.2026"
+   },
+   {
+    "date": "2026-05-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.05.2026"
+   },
+   {
+    "date": "2026-05-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.05.2026"
+   },
+   {
+    "date": "2026-05-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 41600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.05.2026"
+   },
+   {
+    "date": "2026-05-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 266100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 05.2026"
+   },
+   {
+    "date": "2026-05-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.05.2026"
+   },
+   {
+    "date": "2026-05-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 46300.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.05.2026"
+   },
+   {
+    "date": "2026-05-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48000.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.05.2026"
+   },
+   {
+    "date": "2026-05-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 3800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.05.2026"
+   },
+   {
+    "date": "2026-05-29",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 52700.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.05.2026"
+   },
+   {
+    "date": "2026-05-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.05.2026"
+   },
+   {
+    "date": "2026-05-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 136000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-06-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 35500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.05.2026"
+   },
+   {
+    "date": "2026-06-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 25100.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.06.2026"
+   },
+   {
+    "date": "2026-06-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40800.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 46400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.06.2026"
+   },
+   {
+    "date": "2026-06-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43100.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.06.2026"
+   },
+   {
+    "date": "2026-06-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 28800.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.06.2026"
+   },
+   {
+    "date": "2026-06-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 220700.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 06.2026"
+   },
+   {
+    "date": "2026-06-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 44500.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.06.2026"
+   },
+   {
+    "date": "2026-06-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.06.2026"
+   },
+   {
+    "date": "2026-06-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 37800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.06.2026"
+   },
+   {
+    "date": "2026-06-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41400.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.06.2026"
+   },
+   {
+    "date": "2026-06-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 27600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.06.2026"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 258100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 06.2026"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41800.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 48800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.06.2026"
+   },
+   {
+    "date": "2026-06-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 27000.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.06.2026"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 388600.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 06.2026"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 47000.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 351000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-06-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.06.2026"
+   },
+   {
+    "date": "2026-06-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.06.2026"
+   },
+   {
+    "date": "2026-06-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 38800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.06.2026"
+   },
+   {
+    "date": "2026-06-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 36300.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.06.2026"
+   },
+   {
+    "date": "2026-06-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34900.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.06.2026"
+   },
+   {
+    "date": "2026-06-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.06.2026"
+   },
+   {
+    "date": "2026-06-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.06.2026"
+   },
+   {
+    "date": "2026-06-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 20200.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 3900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.06.2026"
+   },
+   {
+    "date": "2026-06-20",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.06.2026"
+   },
+   {
+    "date": "2026-06-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 39000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.06.2026"
+   },
+   {
+    "date": "2026-06-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31400.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.06.2026"
+   },
+   {
+    "date": "2026-06-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43000.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 45500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.06.2026"
+   },
+   {
+    "date": "2026-06-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.06.2026"
+   },
+   {
+    "date": "2026-06-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 263000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 06.2026"
+   },
+   {
+    "date": "2026-06-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.06.2026"
+   },
+   {
+    "date": "2026-06-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.06.2026"
+   },
+   {
+    "date": "2026-06-27",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.06.2026"
+   },
+   {
+    "date": "2026-06-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 47400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.06.2026"
+   },
+   {
+    "date": "2026-06-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.06.2026"
+   },
+   {
+    "date": "2026-06-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 76000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-07-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.06.2026"
+   },
+   {
+    "date": "2026-07-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.07.2026"
+   },
+   {
+    "date": "2026-07-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.07.2026"
+   },
+   {
+    "date": "2026-07-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 42700.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.07.2026"
+   },
+   {
+    "date": "2026-07-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.07.2026"
+   },
+   {
+    "date": "2026-07-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 214700.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 07.2026"
+   },
+   {
+    "date": "2026-07-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.07.2026"
+   },
+   {
+    "date": "2026-07-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34700.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.07.2026"
+   },
+   {
+    "date": "2026-07-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 51400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.07.2026"
+   },
+   {
+    "date": "2026-07-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.07.2026"
+   },
+   {
+    "date": "2026-07-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 39400.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.07.2026"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 266300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 07.2026"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48600.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.07.2026"
+   },
+   {
+    "date": "2026-07-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.07.2026"
+   },
+   {
+    "date": "2026-07-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 380300.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 07.2026"
+   },
+   {
+    "date": "2026-07-12",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 104000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-07-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 41500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.07.2026"
+   },
+   {
+    "date": "2026-07-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41800.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.07.2026"
+   },
+   {
+    "date": "2026-07-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40100.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.07.2026"
+   },
+   {
+    "date": "2026-07-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34400.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.07.2026"
+   },
+   {
+    "date": "2026-07-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 50100.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.07.2026"
+   },
+   {
+    "date": "2026-07-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.07.2026"
+   },
+   {
+    "date": "2026-07-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.07.2026"
+   },
+   {
+    "date": "2026-07-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 45000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.07.2026"
+   },
+   {
+    "date": "2026-07-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 38700.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-20",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.07.2026"
+   },
+   {
+    "date": "2026-07-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 28000.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 62100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.07.2026"
+   },
+   {
+    "date": "2026-07-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 53200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.07.2026"
+   },
+   {
+    "date": "2026-07-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 71200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.07.2026"
+   },
+   {
+    "date": "2026-07-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 44700.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.07.2026"
+   },
+   {
+    "date": "2026-07-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 265000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 07.2026"
+   },
+   {
+    "date": "2026-07-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.07.2026"
+   },
+   {
+    "date": "2026-07-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 38700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.07.2026"
+   },
+   {
+    "date": "2026-07-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.07.2026"
+   },
+   {
+    "date": "2026-07-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 226800.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2026-07-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.07.2026"
+   },
+   {
+    "date": "2026-07-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.07.2026"
+   },
+   {
+    "date": "2026-07-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 39300.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 69300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.07.2026"
+   },
+   {
+    "date": "2026-07-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 24700.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.07.2026"
+   },
+   {
+    "date": "2026-08-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.08.2026"
+   },
+   {
+    "date": "2026-08-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 43700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.08.2026"
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 48500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.08.2026"
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 34300.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.08.2026"
+   },
+   {
+    "date": "2026-08-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 214700.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 08.2026"
+   },
+   {
+    "date": "2026-08-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 21200.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 52100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.08.2026"
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 32100.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.08.2026"
+   },
+   {
+    "date": "2026-08-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 21000.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 52100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.08.2026"
+   },
+   {
+    "date": "2026-08-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.08.2026"
+   },
+   {
+    "date": "2026-08-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 40100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.08.2026"
+   },
+   {
+    "date": "2026-08-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 254400.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 08.2026"
+   },
+   {
+    "date": "2026-08-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-08-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 46700.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 47400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.08.2026"
+   },
+   {
+    "date": "2026-08-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41400.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.08.2026"
+   },
+   {
+    "date": "2026-08-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 390300.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 08.2026"
+   },
+   {
+    "date": "2026-08-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 20700.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-12",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 413000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-08-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.08.2026"
+   },
+   {
+    "date": "2026-08-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.08.2026"
+   },
+   {
+    "date": "2026-08-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 44100.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.08.2026"
+   },
+   {
+    "date": "2026-08-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.08.2026"
+   },
+   {
+    "date": "2026-08-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 38400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.08.2026"
+   },
+   {
+    "date": "2026-08-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 52100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.08.2026"
+   },
+   {
+    "date": "2026-08-18",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40200.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.08.2026"
+   },
+   {
+    "date": "2026-08-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 25000.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 42800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.08.2026"
+   },
+   {
+    "date": "2026-08-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 50500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.08.2026"
+   },
+   {
+    "date": "2026-08-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 37400.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.08.2026"
+   },
+   {
+    "date": "2026-08-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.08.2026"
+   },
+   {
+    "date": "2026-08-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 45000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.08.2026"
+   },
+   {
+    "date": "2026-08-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 23100.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.08.2026"
+   },
+   {
+    "date": "2026-08-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 261000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 08.2026"
+   },
+   {
+    "date": "2026-08-25",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 3800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.08.2026"
+   },
+   {
+    "date": "2026-08-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.08.2026"
+   },
+   {
+    "date": "2026-08-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 33100.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.08.2026"
+   },
+   {
+    "date": "2026-08-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43800.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.08.2026"
+   },
+   {
+    "date": "2026-08-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 60800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.08.2026"
+   },
+   {
+    "date": "2026-08-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 45100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.08.2026"
+   },
+   {
+    "date": "2026-08-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 64000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-09-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 31.08.2026"
+   },
+   {
+    "date": "2026-09-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 29900.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 64800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.09.2026"
+   },
+   {
+    "date": "2026-09-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.09.2026"
+   },
+   {
+    "date": "2026-09-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43300.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 81700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.09.2026"
+   },
+   {
+    "date": "2026-09-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40100.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.09.2026"
+   },
+   {
+    "date": "2026-09-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 215300.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 09.2026"
+   },
+   {
+    "date": "2026-09-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 84500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.09.2026"
+   },
+   {
+    "date": "2026-09-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 56200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.09.2026"
+   },
+   {
+    "date": "2026-09-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.09.2026"
+   },
+   {
+    "date": "2026-09-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 33500.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.09.2026"
+   },
+   {
+    "date": "2026-09-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 51900.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.09.2026"
+   },
+   {
+    "date": "2026-09-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 254300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 09.2026"
+   },
+   {
+    "date": "2026-09-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-09-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.09.2026"
+   },
+   {
+    "date": "2026-09-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 4900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 80600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.09.2026"
+   },
+   {
+    "date": "2026-09-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 390800.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 09.2026"
+   },
+   {
+    "date": "2026-09-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.09.2026"
+   },
+   {
+    "date": "2026-09-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.09.2026"
+   },
+   {
+    "date": "2026-09-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.09.2026"
+   },
+   {
+    "date": "2026-09-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 52600.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 65700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.09.2026"
+   },
+   {
+    "date": "2026-09-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.09.2026"
+   },
+   {
+    "date": "2026-09-17",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 46900.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.09.2026"
+   },
+   {
+    "date": "2026-09-18",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 35400.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.09.2026"
+   },
+   {
+    "date": "2026-09-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.09.2026"
+   },
+   {
+    "date": "2026-09-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 49000.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.09.2026"
+   },
+   {
+    "date": "2026-09-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 57700.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 21.09.2026"
+   },
+   {
+    "date": "2026-09-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45900.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 22.09.2026"
+   },
+   {
+    "date": "2026-09-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 54900.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 23.09.2026"
+   },
+   {
+    "date": "2026-09-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31700.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 24.09.2026"
+   },
+   {
+    "date": "2026-09-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 252200.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 09.2026"
+   },
+   {
+    "date": "2026-09-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 25000.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 77800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 25.09.2026"
+   },
+   {
+    "date": "2026-09-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 26.09.2026"
+   },
+   {
+    "date": "2026-09-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 44700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 27.09.2026"
+   },
+   {
+    "date": "2026-09-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40300.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 28.09.2026"
+   },
+   {
+    "date": "2026-09-29",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45100.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 70400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 29.09.2026"
+   },
+   {
+    "date": "2026-09-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 51200.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 72000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Перевод собственных средств на личный счёт"
+   },
+   {
+    "date": "2026-10-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 30.09.2026"
+   },
+   {
+    "date": "2026-10-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 60600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 81400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 01.10.2026"
+   },
+   {
+    "date": "2026-10-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 44900.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 02.10.2026"
+   },
+   {
+    "date": "2026-10-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 03.10.2026"
+   },
+   {
+    "date": "2026-10-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 46200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 04.10.2026"
+   },
+   {
+    "date": "2026-10-05",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 223800.0,
+    "counterparty": "ИП Соколов В.А. (аренда)",
+    "purpose": "Арендная плата за 10.2026"
+   },
+   {
+    "date": "2026-10-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 51100.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 63500.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 05.10.2026"
+   },
+   {
+    "date": "2026-10-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 59100.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 57700.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 06.10.2026"
+   },
+   {
+    "date": "2026-10-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 26200.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 59400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 07.10.2026"
+   },
+   {
+    "date": "2026-10-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 75400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 08.10.2026"
+   },
+   {
+    "date": "2026-10-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 30000.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83600.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 09.10.2026"
+   },
+   {
+    "date": "2026-10-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 261800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 10.2026"
+   },
+   {
+    "date": "2026-10-10",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 120000,
+    "counterparty": "АО «Альфа-Банк»",
+    "purpose": "Погашение по кредитному договору"
+   },
+   {
+    "date": "2026-10-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 81300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 10.10.2026"
+   },
+   {
+    "date": "2026-10-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 5300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 58200.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 11.10.2026"
+   },
+   {
+    "date": "2026-10-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 381700.0,
+    "counterparty": "ООО «Мельница-Центр»",
+    "purpose": "Оплата по договору поставки, 10.2026"
+   },
+   {
+    "date": "2026-10-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 39900.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-12",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 109000.0,
+    "counterparty": "Морозова Анна Сергеевна",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-10-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 12.10.2026"
+   },
+   {
+    "date": "2026-10-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 50100.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 61400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 13.10.2026"
+   },
+   {
+    "date": "2026-10-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 14.10.2026"
+   },
+   {
+    "date": "2026-10-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 36700.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 85400.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 15.10.2026"
+   },
+   {
+    "date": "2026-10-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 16.10.2026"
+   },
+   {
+    "date": "2026-10-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 73300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 17.10.2026"
+   },
+   {
+    "date": "2026-10-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 55800.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 18.10.2026"
+   },
+   {
+    "date": "2026-10-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45300.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 6300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 66100.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 19.10.2026"
+   },
+   {
+    "date": "2026-10-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 54300.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-20",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 7300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67300.0,
+    "counterparty": "Эквайринг Альфа-Банк",
+    "purpose": "Зачисление по эквайрингу за 20.10.2026"
+   },
+   {
+    "date": "2026-10-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 40300.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   }
+  ]
+ },
+ "registry": {
+  "inn": "260074704710",
+  "ogrn": "326007470478377",
+  "type": "IP",
+  "name": "ИП Морозова Анна Сергеевна",
+  "status": "ACTIVE",
+  "reg_date": "2022-03-15",
+  "okved": "10.71",
+  "region": "Москва",
+  "bankruptcy": false,
+  "director": {
+   "full_name": "Морозова Анна Сергеевна"
+  },
+  "owners": [
+   {
+    "full_name": "Морозова Анна Сергеевна",
+    "share": 1.0
+   }
+  ],
+  "legal_address": null,
+  "address_invalid": false,
+  "mass_address": false
+ },
+ "fns": {
+  "regime": "USN6",
+  "tax_debt": 0,
+  "account_block": false,
+  "annual_revenue": {
+   "2025": 21690000.0
+  }
+ },
+ "bki": {
+  "has_history": true,
+  "current_overdue_days": 0,
+  "past_max_overdue_days_12m": 0,
+  "external": []
+ }
+}

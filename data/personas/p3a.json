@@ -1,0 +1,4538 @@
+{
+ "persona": {
+  "id": "p3a",
+  "segment": "3А",
+  "login": "p3a",
+  "password": "demo",
+  "title": "ООО, стройматериалы, клиент Альфы с кредитом в другом банке; заявку готовит бухгалтер по МЧД",
+  "expected": "MANUAL_REVIEW",
+  "demo_note": "Бухгалтер готовит заявку → «ждёт подписи руководителя» → директор отправляет. Сумма > 5 млн → андеррайтер + риск-менеджер. Сезонная выручка → сезонный график. Есть склад → совет про залог.",
+  "scenario": {
+   "purpose": "refinance",
+   "frequency": "once",
+   "urgency": "month",
+   "amount": 5500000,
+   "term_months": 48,
+   "priority": "small_payment",
+   "repayment": "seasonal",
+   "assets": [
+    "real_estate"
+   ]
+  },
+  "alt_scenarios": [],
+  "employees": [
+   {
+    "login": "p3a_acc",
+    "password": "demo",
+    "full_name": "Зайцева Марина Ильинична",
+    "role": "Бухгалтер",
+    "mchd": {
+     "number": "МЧД-2026-000731",
+     "valid_to": "2027-06-30",
+     "permissions": [
+      "VIEW",
+      "FILL",
+      "CONSENT"
+     ]
+    }
+   }
+  ],
+  "assets_owned": [
+   {
+    "kind": "real_estate",
+    "title": "Склад 1 200 м², Подольск",
+    "value": 24000000
+   }
+  ]
+ },
+ "alfa": {
+  "person": {
+   "full_name": "Орлов Сергей Николаевич",
+   "birth": "1976-05-14",
+   "phone": "+7900000003a",
+   "passport": "4500 000000 (синтетический)",
+   "reg_address": "Московская область, синтетический адрес",
+   "reg_type": "PERMANENT"
+  },
+  "account": {
+   "number": "40702810763659330200",
+   "opened": "2017-04-10",
+   "balance_as_of": "2026-10-21",
+   "balance": 1083800.0
+  },
+  "credits": [],
+  "transactions": [
+   {
+    "date": "2025-10-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 216100.0,
+    "counterparty": "ООО «Покупатель-25»",
+    "purpose": "Оплата по счёту № 1001 от покупателя"
+   },
+   {
+    "date": "2025-10-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 124300.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 210900.0,
+    "counterparty": "ООО «Покупатель-38»",
+    "purpose": "Оплата по счёту № 1002 от покупателя"
+   },
+   {
+    "date": "2025-10-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 70400.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 146600.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 297200.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 10.2025"
+   },
+   {
+    "date": "2025-10-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 171800.0,
+    "counterparty": "ООО «Покупатель-36»",
+    "purpose": "Оплата по счёту № 1003 от покупателя"
+   },
+   {
+    "date": "2025-10-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 205400.0,
+    "counterparty": "ООО «Покупатель-34»",
+    "purpose": "Оплата по счёту № 1004 от покупателя"
+   },
+   {
+    "date": "2025-10-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 207400.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1005 от покупателя"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 271500.0,
+    "counterparty": "ООО «Покупатель-1»",
+    "purpose": "Оплата по счёту № 1006 от покупателя"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 527400.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 10.2025"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 86600.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 186800.0,
+    "counterparty": "ООО «Покупатель-35»",
+    "purpose": "Оплата по счёту № 1007 от покупателя"
+   },
+   {
+    "date": "2025-10-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 119700.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 125300.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 117900.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 246000.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1008 от покупателя"
+   },
+   {
+    "date": "2025-10-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 103200.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 230700.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1009 от покупателя"
+   },
+   {
+    "date": "2025-10-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2025-10-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 113000.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-20",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 197000.0,
+    "counterparty": "ООО «Покупатель-28»",
+    "purpose": "Оплата по счёту № 1010 от покупателя"
+   },
+   {
+    "date": "2025-10-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 103600.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 260900.0,
+    "counterparty": "ООО «Покупатель-18»",
+    "purpose": "Оплата по счёту № 1011 от покупателя"
+   },
+   {
+    "date": "2025-10-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 148200.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 258100.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1012 от покупателя"
+   },
+   {
+    "date": "2025-10-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 154300.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 304700.0,
+    "counterparty": "ООО «Покупатель-32»",
+    "purpose": "Оплата по счёту № 1013 от покупателя"
+   },
+   {
+    "date": "2025-10-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 513600.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 10.2025"
+   },
+   {
+    "date": "2025-10-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 178000.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1014 от покупателя"
+   },
+   {
+    "date": "2025-10-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 125900.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 200500.0,
+    "counterparty": "ООО «Покупатель-34»",
+    "purpose": "Оплата по счёту № 1015 от покупателя"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 134100.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 264600.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2025-10-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 262500.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1016 от покупателя"
+   },
+   {
+    "date": "2025-10-29",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 67400.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-10-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-10-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 204500.0,
+    "counterparty": "ООО «Покупатель-2»",
+    "purpose": "Оплата по счёту № 1017 от покупателя"
+   },
+   {
+    "date": "2025-10-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 561000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2025-11-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 172100.0,
+    "counterparty": "ООО «Покупатель-28»",
+    "purpose": "Оплата по счёту № 1018 от покупателя"
+   },
+   {
+    "date": "2025-11-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 113500.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 291300.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 11.2025"
+   },
+   {
+    "date": "2025-11-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 139100.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 213500.0,
+    "counterparty": "ООО «Покупатель-25»",
+    "purpose": "Оплата по счёту № 1019 от покупателя"
+   },
+   {
+    "date": "2025-11-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 25000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 246400.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1020 от покупателя"
+   },
+   {
+    "date": "2025-11-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 89300.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 237900.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1021 от покупателя"
+   },
+   {
+    "date": "2025-11-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 197600.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1022 от покупателя"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 513800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 11.2025"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 140100.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 243700.0,
+    "counterparty": "ООО «Покупатель-16»",
+    "purpose": "Оплата по счёту № 1023 от покупателя"
+   },
+   {
+    "date": "2025-11-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 121500.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 12300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 228400.0,
+    "counterparty": "ООО «Покупатель-35»",
+    "purpose": "Оплата по счёту № 1024 от покупателя"
+   },
+   {
+    "date": "2025-11-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 224500.0,
+    "counterparty": "ООО «Покупатель-34»",
+    "purpose": "Оплата по счёту № 1025 от покупателя"
+   },
+   {
+    "date": "2025-11-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 141100.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 13300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 156400.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1026 от покупателя"
+   },
+   {
+    "date": "2025-11-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 251700.0,
+    "counterparty": "ООО «Покупатель-18»",
+    "purpose": "Оплата по счёту № 1027 от покупателя"
+   },
+   {
+    "date": "2025-11-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 22100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 195200.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1028 от покупателя"
+   },
+   {
+    "date": "2025-11-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 65200.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 13800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2025-11-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 98500.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 282800.0,
+    "counterparty": "ООО «Покупатель-16»",
+    "purpose": "Оплата по счёту № 1029 от покупателя"
+   },
+   {
+    "date": "2025-11-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 166300.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1030 от покупателя"
+   },
+   {
+    "date": "2025-11-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 115000.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 509300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 11.2025"
+   },
+   {
+    "date": "2025-11-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 245900.0,
+    "counterparty": "ООО «Покупатель-25»",
+    "purpose": "Оплата по счёту № 1031 от покупателя"
+   },
+   {
+    "date": "2025-11-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 135600.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 244100.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1032 от покупателя"
+   },
+   {
+    "date": "2025-11-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 143300.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 266600.0,
+    "counterparty": "ООО «Покупатель-24»",
+    "purpose": "Оплата по счёту № 1033 от покупателя"
+   },
+   {
+    "date": "2025-11-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 92700.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-11-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-11-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 400000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2025-12-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 116800.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 222800.0,
+    "counterparty": "ООО «Покупатель-8»",
+    "purpose": "Оплата по счёту № 1034 от покупателя"
+   },
+   {
+    "date": "2025-12-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 82900.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 201900.0,
+    "counterparty": "ООО «Покупатель-14»",
+    "purpose": "Оплата по счёту № 1035 от покупателя"
+   },
+   {
+    "date": "2025-12-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 186800.0,
+    "counterparty": "ООО «Покупатель-34»",
+    "purpose": "Оплата по счёту № 1036 от покупателя"
+   },
+   {
+    "date": "2025-12-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 300500.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 12.2025"
+   },
+   {
+    "date": "2025-12-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 243700.0,
+    "counterparty": "ООО «Покупатель-28»",
+    "purpose": "Оплата по счёту № 1037 от покупателя"
+   },
+   {
+    "date": "2025-12-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 22000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 160500.0,
+    "counterparty": "ООО «Покупатель-14»",
+    "purpose": "Оплата по счёту № 1038 от покупателя"
+   },
+   {
+    "date": "2025-12-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 203900.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1039 от покупателя"
+   },
+   {
+    "date": "2025-12-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 134200.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 505300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 12.2025"
+   },
+   {
+    "date": "2025-12-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 195000.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1040 от покупателя"
+   },
+   {
+    "date": "2025-12-11",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 255700.0,
+    "counterparty": "ООО «Покупатель-27»",
+    "purpose": "Оплата по счёту № 1041 от покупателя"
+   },
+   {
+    "date": "2025-12-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 92900.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 107000.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 196700.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1042 от покупателя"
+   },
+   {
+    "date": "2025-12-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 12600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 225400.0,
+    "counterparty": "ООО «Покупатель-23»",
+    "purpose": "Оплата по счёту № 1043 от покупателя"
+   },
+   {
+    "date": "2025-12-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 233600.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1044 от покупателя"
+   },
+   {
+    "date": "2025-12-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 247600.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1045 от покупателя"
+   },
+   {
+    "date": "2025-12-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 87300.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2025-12-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 197100.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1046 от покупателя"
+   },
+   {
+    "date": "2025-12-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 188100.0,
+    "counterparty": "ООО «Покупатель-34»",
+    "purpose": "Оплата по счёту № 1047 от покупателя"
+   },
+   {
+    "date": "2025-12-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 11600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 192000.0,
+    "counterparty": "ООО «Покупатель-16»",
+    "purpose": "Оплата по счёту № 1048 от покупателя"
+   },
+   {
+    "date": "2025-12-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 215000.0,
+    "counterparty": "ООО «Покупатель-1»",
+    "purpose": "Оплата по счёту № 1049 от покупателя"
+   },
+   {
+    "date": "2025-12-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 535300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 12.2025"
+   },
+   {
+    "date": "2025-12-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 138600.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2025-12-27",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 168300.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1050 от покупателя"
+   },
+   {
+    "date": "2025-12-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2025-12-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 209800.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1051 от покупателя"
+   },
+   {
+    "date": "2025-12-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 211600.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1052 от покупателя"
+   },
+   {
+    "date": "2025-12-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 1416000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-01-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 102000.0,
+    "counterparty": "ООО «Покупатель-25»",
+    "purpose": "Оплата по счёту № 1053 от покупателя"
+   },
+   {
+    "date": "2026-01-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 43800.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 99000.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1054 от покупателя"
+   },
+   {
+    "date": "2026-01-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 303100.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 01.2026"
+   },
+   {
+    "date": "2026-01-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 23100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 68600.0,
+    "counterparty": "ООО «Покупатель-3»",
+    "purpose": "Оплата по счёту № 1055 от покупателя"
+   },
+   {
+    "date": "2026-01-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 27800.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83000.0,
+    "counterparty": "ООО «Покупатель-4»",
+    "purpose": "Оплата по счёту № 1056 от покупателя"
+   },
+   {
+    "date": "2026-01-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 106100.0,
+    "counterparty": "ООО «Покупатель-4»",
+    "purpose": "Оплата по счёту № 1057 от покупателя"
+   },
+   {
+    "date": "2026-01-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 87000.0,
+    "counterparty": "ООО «Покупатель-36»",
+    "purpose": "Оплата по счёту № 1058 от покупателя"
+   },
+   {
+    "date": "2026-01-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 98300.0,
+    "counterparty": "ООО «Покупатель-30»",
+    "purpose": "Оплата по счёту № 1059 от покупателя"
+   },
+   {
+    "date": "2026-01-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 515100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 01.2026"
+   },
+   {
+    "date": "2026-01-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 101100.0,
+    "counterparty": "ООО «Покупатель-17»",
+    "purpose": "Оплата по счёту № 1060 от покупателя"
+   },
+   {
+    "date": "2026-01-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48400.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 80400.0,
+    "counterparty": "ООО «Покупатель-14»",
+    "purpose": "Оплата по счёту № 1061 от покупателя"
+   },
+   {
+    "date": "2026-01-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 100500.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1062 от покупателя"
+   },
+   {
+    "date": "2026-01-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 63000.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 23800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 104500.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1063 от покупателя"
+   },
+   {
+    "date": "2026-01-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 74300.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1064 от покупателя"
+   },
+   {
+    "date": "2026-01-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 101900.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1065 от покупателя"
+   },
+   {
+    "date": "2026-01-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-01-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 42100.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 105200.0,
+    "counterparty": "ООО «Покупатель-16»",
+    "purpose": "Оплата по счёту № 1066 от покупателя"
+   },
+   {
+    "date": "2026-01-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 82700.0,
+    "counterparty": "ООО «Покупатель-21»",
+    "purpose": "Оплата по счёту № 1067 от покупателя"
+   },
+   {
+    "date": "2026-01-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 99300.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1068 от покупателя"
+   },
+   {
+    "date": "2026-01-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 45700.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 519900.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 01.2026"
+   },
+   {
+    "date": "2026-01-25",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 67300.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1069 от покупателя"
+   },
+   {
+    "date": "2026-01-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 47200.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 102100.0,
+    "counterparty": "ООО «Покупатель-8»",
+    "purpose": "Оплата по счёту № 1070 от покупателя"
+   },
+   {
+    "date": "2026-01-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 51700.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 92300.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1071 от покупателя"
+   },
+   {
+    "date": "2026-01-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 264600.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2026-01-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-01-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 95700.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1072 от покупателя"
+   },
+   {
+    "date": "2026-01-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 46100.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-01-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83100.0,
+    "counterparty": "ООО «Покупатель-5»",
+    "purpose": "Оплата по счёту № 1073 от покупателя"
+   },
+   {
+    "date": "2026-02-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 60600.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 48900.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 102100.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1074 от покупателя"
+   },
+   {
+    "date": "2026-02-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 302600.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 02.2026"
+   },
+   {
+    "date": "2026-02-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 63900.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 125100.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1075 от покупателя"
+   },
+   {
+    "date": "2026-02-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 35500.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 83200.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1076 от покупателя"
+   },
+   {
+    "date": "2026-02-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 65100.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 128200.0,
+    "counterparty": "ООО «Покупатель-27»",
+    "purpose": "Оплата по счёту № 1077 от покупателя"
+   },
+   {
+    "date": "2026-02-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 519200.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 02.2026"
+   },
+   {
+    "date": "2026-02-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 31000.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 114500.0,
+    "counterparty": "ООО «Покупатель-28»",
+    "purpose": "Оплата по счёту № 1078 от покупателя"
+   },
+   {
+    "date": "2026-02-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 17700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 53500.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 89900.0,
+    "counterparty": "ООО «Покупатель-3»",
+    "purpose": "Оплата по счёту № 1079 от покупателя"
+   },
+   {
+    "date": "2026-02-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 109600.0,
+    "counterparty": "ООО «Покупатель-18»",
+    "purpose": "Оплата по счёту № 1080 от покупателя"
+   },
+   {
+    "date": "2026-02-17",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 15000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-18",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 37600.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 128600.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1081 от покупателя"
+   },
+   {
+    "date": "2026-02-19",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 59600.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 129100.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1082 от покупателя"
+   },
+   {
+    "date": "2026-02-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-02-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 67400.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 22800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-02-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 97800.0,
+    "counterparty": "ООО «Покупатель-8»",
+    "purpose": "Оплата по счёту № 1083 от покупателя"
+   },
+   {
+    "date": "2026-02-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 41500.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 533100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 02.2026"
+   },
+   {
+    "date": "2026-02-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 38400.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-02-25",
+    "direction": "IN",
+    "kind": "OWN_TRANSFER",
+    "amount": 551000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Пополнение счёта собственными средствами"
+   },
+   {
+    "date": "2026-02-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 113900.0,
+    "counterparty": "ООО «Покупатель-18»",
+    "purpose": "Оплата по счёту № 1084 от покупателя"
+   },
+   {
+    "date": "2026-02-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 152300.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1085 от покупателя"
+   },
+   {
+    "date": "2026-02-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 36600.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 55600.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 214700.0,
+    "counterparty": "ООО «Покупатель-31»",
+    "purpose": "Оплата по счёту № 1086 от покупателя"
+   },
+   {
+    "date": "2026-03-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 184500.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1087 от покупателя"
+   },
+   {
+    "date": "2026-03-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 291800.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 03.2026"
+   },
+   {
+    "date": "2026-03-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 173600.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1088 от покупателя"
+   },
+   {
+    "date": "2026-03-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 224600.0,
+    "counterparty": "ООО «Покупатель-4»",
+    "purpose": "Оплата по счёту № 1089 от покупателя"
+   },
+   {
+    "date": "2026-03-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 87900.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 134700.0,
+    "counterparty": "ООО «Покупатель-1»",
+    "purpose": "Оплата по счёту № 1090 от покупателя"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 167900.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1091 от покупателя"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 514500.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 03.2026"
+   },
+   {
+    "date": "2026-03-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 118100.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 206500.0,
+    "counterparty": "ООО «Покупатель-19»",
+    "purpose": "Оплата по счёту № 1092 от покупателя"
+   },
+   {
+    "date": "2026-03-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 109700.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 185700.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1093 от покупателя"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 116100.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 63400.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 164600.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1094 от покупателя"
+   },
+   {
+    "date": "2026-03-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 212800.0,
+    "counterparty": "ООО «Покупатель-19»",
+    "purpose": "Оплата по счёту № 1095 от покупателя"
+   },
+   {
+    "date": "2026-03-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 170100.0,
+    "counterparty": "ООО «Покупатель-24»",
+    "purpose": "Оплата по счёту № 1096 от покупателя"
+   },
+   {
+    "date": "2026-03-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 231200.0,
+    "counterparty": "ООО «Покупатель-29»",
+    "purpose": "Оплата по счёту № 1097 от покупателя"
+   },
+   {
+    "date": "2026-03-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-03-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 65200.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 137300.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1098 от покупателя"
+   },
+   {
+    "date": "2026-03-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 84400.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 11500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 166800.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1099 от покупателя"
+   },
+   {
+    "date": "2026-03-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 120700.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 512800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 03.2026"
+   },
+   {
+    "date": "2026-03-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 84700.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 196100.0,
+    "counterparty": "ООО «Покупатель-17»",
+    "purpose": "Оплата по счёту № 1100 от покупателя"
+   },
+   {
+    "date": "2026-03-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 121700.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-27",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 11800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 22200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-03-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 171000.0,
+    "counterparty": "ООО «Покупатель-4»",
+    "purpose": "Оплата по счёту № 1101 от покупателя"
+   },
+   {
+    "date": "2026-03-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 91100.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-03-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 167200.0,
+    "counterparty": "ООО «Покупатель-24»",
+    "purpose": "Оплата по счёту № 1102 от покупателя"
+   },
+   {
+    "date": "2026-03-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 119300.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 319100.0,
+    "counterparty": "ООО «Покупатель-29»",
+    "purpose": "Оплата по счёту № 1103 от покупателя"
+   },
+   {
+    "date": "2026-04-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 344500.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1104 от покупателя"
+   },
+   {
+    "date": "2026-04-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 115800.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 300100.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 04.2026"
+   },
+   {
+    "date": "2026-04-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 15700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 211100.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1105 от покупателя"
+   },
+   {
+    "date": "2026-04-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 167400.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 22100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 122400.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-08",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 307500.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1106 от покупателя"
+   },
+   {
+    "date": "2026-04-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 86100.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 370700.0,
+    "counterparty": "ООО «Покупатель-32»",
+    "purpose": "Оплата по счёту № 1107 от покупателя"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 511000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 04.2026"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 186200.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 203800.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1108 от покупателя"
+   },
+   {
+    "date": "2026-04-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 275200.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1109 от покупателя"
+   },
+   {
+    "date": "2026-04-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 257700.0,
+    "counterparty": "ООО «Покупатель-30»",
+    "purpose": "Оплата по счёту № 1110 от покупателя"
+   },
+   {
+    "date": "2026-04-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 155100.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 14300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 335900.0,
+    "counterparty": "ООО «Покупатель-23»",
+    "purpose": "Оплата по счёту № 1111 от покупателя"
+   },
+   {
+    "date": "2026-04-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 114700.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 374500.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1112 от покупателя"
+   },
+   {
+    "date": "2026-04-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 211400.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1113 от покупателя"
+   },
+   {
+    "date": "2026-04-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-04-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 102200.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 259200.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1114 от покупателя"
+   },
+   {
+    "date": "2026-04-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 119700.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 162200.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 331400.0,
+    "counterparty": "ООО «Покупатель-38»",
+    "purpose": "Оплата по счёту № 1115 от покупателя"
+   },
+   {
+    "date": "2026-04-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 156100.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 316700.0,
+    "counterparty": "ООО «Покупатель-27»",
+    "purpose": "Оплата по счёту № 1116 от покупателя"
+   },
+   {
+    "date": "2026-04-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 157000.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 517800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 04.2026"
+   },
+   {
+    "date": "2026-04-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 266000.0,
+    "counterparty": "ООО «Покупатель-33»",
+    "purpose": "Оплата по счёту № 1117 от покупателя"
+   },
+   {
+    "date": "2026-04-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 120500.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 264600.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2026-04-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-04-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 259200.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1118 от покупателя"
+   },
+   {
+    "date": "2026-04-29",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 161800.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 308800.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1119 от покупателя"
+   },
+   {
+    "date": "2026-04-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 130200.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-04-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 61000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-05-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 436600.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1120 от покупателя"
+   },
+   {
+    "date": "2026-05-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 100200.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 288100.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1121 от покупателя"
+   },
+   {
+    "date": "2026-05-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 304500.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 05.2026"
+   },
+   {
+    "date": "2026-05-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 184500.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 325700.0,
+    "counterparty": "ООО «Покупатель-32»",
+    "purpose": "Оплата по счёту № 1122 от покупателя"
+   },
+   {
+    "date": "2026-05-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 316700.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1123 от покупателя"
+   },
+   {
+    "date": "2026-05-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 168800.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 312500.0,
+    "counterparty": "ООО «Покупатель-34»",
+    "purpose": "Оплата по счёту № 1124 от покупателя"
+   },
+   {
+    "date": "2026-05-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 222200.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 14700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 433700.0,
+    "counterparty": "ООО «Покупатель-29»",
+    "purpose": "Оплата по счёту № 1125 от покупателя"
+   },
+   {
+    "date": "2026-05-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 207900.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 13700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 507800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 05.2026"
+   },
+   {
+    "date": "2026-05-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 301000.0,
+    "counterparty": "ООО «Покупатель-36»",
+    "purpose": "Оплата по счёту № 1126 от покупателя"
+   },
+   {
+    "date": "2026-05-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 226400.0,
+    "counterparty": "ООО «Поставщик-7»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 374800.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1127 от покупателя"
+   },
+   {
+    "date": "2026-05-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 171900.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 299700.0,
+    "counterparty": "ООО «Покупатель-18»",
+    "purpose": "Оплата по счёту № 1128 от покупателя"
+   },
+   {
+    "date": "2026-05-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 151800.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 362200.0,
+    "counterparty": "ООО «Покупатель-40»",
+    "purpose": "Оплата по счёту № 1129 от покупателя"
+   },
+   {
+    "date": "2026-05-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 117600.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 263400.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1130 от покупателя"
+   },
+   {
+    "date": "2026-05-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 337000.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1131 от покупателя"
+   },
+   {
+    "date": "2026-05-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-05-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 351200.0,
+    "counterparty": "ООО «Покупатель-26»",
+    "purpose": "Оплата по счёту № 1132 от покупателя"
+   },
+   {
+    "date": "2026-05-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 218100.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 273100.0,
+    "counterparty": "ООО «Покупатель-2»",
+    "purpose": "Оплата по счёту № 1133 от покупателя"
+   },
+   {
+    "date": "2026-05-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 522800.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 05.2026"
+   },
+   {
+    "date": "2026-05-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 176200.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 356300.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1134 от покупателя"
+   },
+   {
+    "date": "2026-05-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 150200.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-05-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 341000.0,
+    "counterparty": "ООО «Покупатель-5»",
+    "purpose": "Оплата по счёту № 1135 от покупателя"
+   },
+   {
+    "date": "2026-05-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 299800.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1136 от покупателя"
+   },
+   {
+    "date": "2026-05-28",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 11200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-05-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 405300.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1137 от покупателя"
+   },
+   {
+    "date": "2026-05-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 2276000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-06-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 79400.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 244800.0,
+    "counterparty": "ООО «Покупатель-33»",
+    "purpose": "Оплата по счёту № 1138 от покупателя"
+   },
+   {
+    "date": "2026-06-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 107600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 243600.0,
+    "counterparty": "ООО «Покупатель-29»",
+    "purpose": "Оплата по счёту № 1139 от покупателя"
+   },
+   {
+    "date": "2026-06-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 281100.0,
+    "counterparty": "ООО «Покупатель-19»",
+    "purpose": "Оплата по счёту № 1140 от покупателя"
+   },
+   {
+    "date": "2026-06-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 298100.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 06.2026"
+   },
+   {
+    "date": "2026-06-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 97600.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 257200.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1141 от покупателя"
+   },
+   {
+    "date": "2026-06-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 78100.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 259800.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1142 от покупателя"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 219200.0,
+    "counterparty": "ООО «Покупатель-30»",
+    "purpose": "Оплата по счёту № 1143 от покупателя"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 505500.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 06.2026"
+   },
+   {
+    "date": "2026-06-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 15800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 261600.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1144 от покупателя"
+   },
+   {
+    "date": "2026-06-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 96900.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 248600.0,
+    "counterparty": "ООО «Покупатель-8»",
+    "purpose": "Оплата по счёту № 1145 от покупателя"
+   },
+   {
+    "date": "2026-06-12",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 96200.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 212400.0,
+    "counterparty": "ООО «Покупатель-18»",
+    "purpose": "Оплата по счёту № 1146 от покупателя"
+   },
+   {
+    "date": "2026-06-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 76400.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 20800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 264200.0,
+    "counterparty": "ООО «Покупатель-19»",
+    "purpose": "Оплата по счёту № 1147 от покупателя"
+   },
+   {
+    "date": "2026-06-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 23900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 279500.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1148 от покупателя"
+   },
+   {
+    "date": "2026-06-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 286400.0,
+    "counterparty": "ООО «Покупатель-23»",
+    "purpose": "Оплата по счёту № 1149 от покупателя"
+   },
+   {
+    "date": "2026-06-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 323700.0,
+    "counterparty": "ООО «Покупатель-2»",
+    "purpose": "Оплата по счёту № 1150 от покупателя"
+   },
+   {
+    "date": "2026-06-19",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 15000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-06-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 23800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 214100.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1151 от покупателя"
+   },
+   {
+    "date": "2026-06-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 78100.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-22",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 80800.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 221300.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1152 от покупателя"
+   },
+   {
+    "date": "2026-06-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 144900.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-24",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 223900.0,
+    "counterparty": "ООО «Покупатель-30»",
+    "purpose": "Оплата по счёту № 1153 от покупателя"
+   },
+   {
+    "date": "2026-06-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 529700.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 06.2026"
+   },
+   {
+    "date": "2026-06-25",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 151100.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-25",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 23900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 207900.0,
+    "counterparty": "ООО «Покупатель-14»",
+    "purpose": "Оплата по счёту № 1154 от покупателя"
+   },
+   {
+    "date": "2026-06-29",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 80500.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-29",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-06-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 258800.0,
+    "counterparty": "ООО «Покупатель-32»",
+    "purpose": "Оплата по счёту № 1155 от покупателя"
+   },
+   {
+    "date": "2026-06-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 166100.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-06-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 1366000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-07-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 344100.0,
+    "counterparty": "ООО «Покупатель-30»",
+    "purpose": "Оплата по счёту № 1156 от покупателя"
+   },
+   {
+    "date": "2026-07-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 151300.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 191000.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 416900.0,
+    "counterparty": "ООО «Покупатель-19»",
+    "purpose": "Оплата по счёту № 1157 от покупателя"
+   },
+   {
+    "date": "2026-07-03",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 137200.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 297800.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 07.2026"
+   },
+   {
+    "date": "2026-07-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 277500.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1158 от покупателя"
+   },
+   {
+    "date": "2026-07-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 115000.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 14100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-08",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 330400.0,
+    "counterparty": "ООО «Покупатель-15»",
+    "purpose": "Оплата по счёту № 1159 от покупателя"
+   },
+   {
+    "date": "2026-07-09",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 374200.0,
+    "counterparty": "ООО «Покупатель-15»",
+    "purpose": "Оплата по счёту № 1160 от покупателя"
+   },
+   {
+    "date": "2026-07-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 131900.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 412500.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1161 от покупателя"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 517400.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 07.2026"
+   },
+   {
+    "date": "2026-07-10",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 11200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 315800.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1162 от покупателя"
+   },
+   {
+    "date": "2026-07-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 302900.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1163 от покупателя"
+   },
+   {
+    "date": "2026-07-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 15500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 344900.0,
+    "counterparty": "ООО «Покупатель-27»",
+    "purpose": "Оплата по счёту № 1164 от покупателя"
+   },
+   {
+    "date": "2026-07-15",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 176000.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 102800.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 444500.0,
+    "counterparty": "ООО «Покупатель-25»",
+    "purpose": "Оплата по счёту № 1165 от покупателя"
+   },
+   {
+    "date": "2026-07-18",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24500.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 239000.0,
+    "counterparty": "ООО «Покупатель-30»",
+    "purpose": "Оплата по счёту № 1166 от покупателя"
+   },
+   {
+    "date": "2026-07-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-07-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 341200.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1167 от покупателя"
+   },
+   {
+    "date": "2026-07-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 336700.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1168 от покупателя"
+   },
+   {
+    "date": "2026-07-23",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 105000.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 427200.0,
+    "counterparty": "ООО «Покупатель-32»",
+    "purpose": "Оплата по счёту № 1169 от покупателя"
+   },
+   {
+    "date": "2026-07-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 535100.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 07.2026"
+   },
+   {
+    "date": "2026-07-27",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 287600.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1170 от покупателя"
+   },
+   {
+    "date": "2026-07-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 103700.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 338800.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1171 от покупателя"
+   },
+   {
+    "date": "2026-07-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 117000.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-28",
+    "direction": "OUT",
+    "kind": "TAX",
+    "amount": 264600.0,
+    "counterparty": "Казначейство России (ФНС)",
+    "purpose": "Единый налоговый платёж"
+   },
+   {
+    "date": "2026-07-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 361900.0,
+    "counterparty": "ООО «Покупатель-20»",
+    "purpose": "Оплата по счёту № 1172 от покупателя"
+   },
+   {
+    "date": "2026-07-30",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 394000.0,
+    "counterparty": "ООО «Покупатель-26»",
+    "purpose": "Оплата по счёту № 1173 от покупателя"
+   },
+   {
+    "date": "2026-07-30",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 151000.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 18700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 367100.0,
+    "counterparty": "ООО «Покупатель-6»",
+    "purpose": "Оплата по счёту № 1174 от покупателя"
+   },
+   {
+    "date": "2026-07-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 230000.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-07-31",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 14700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-07-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 2928000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-08-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 23700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-03",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 25000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 293100.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1175 от покупателя"
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 299400.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 08.2026"
+   },
+   {
+    "date": "2026-08-04",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 134700.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 335700.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1176 от покупателя"
+   },
+   {
+    "date": "2026-08-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 143300.0,
+    "counterparty": "ООО «Поставщик-9»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 385400.0,
+    "counterparty": "ООО «Покупатель-38»",
+    "purpose": "Оплата по счёту № 1177 от покупателя"
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 162800.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 17000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 345700.0,
+    "counterparty": "ООО «Покупатель-2»",
+    "purpose": "Оплата по счёту № 1178 от покупателя"
+   },
+   {
+    "date": "2026-08-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 17900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-10",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 234000.0,
+    "counterparty": "ООО «Покупатель-39»",
+    "purpose": "Оплата по счёту № 1179 от покупателя"
+   },
+   {
+    "date": "2026-08-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 508000.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 08.2026"
+   },
+   {
+    "date": "2026-08-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 180000.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 322400.0,
+    "counterparty": "ООО «Покупатель-1»",
+    "purpose": "Оплата по счёту № 1180 от покупателя"
+   },
+   {
+    "date": "2026-08-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 22100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 349200.0,
+    "counterparty": "ООО «Покупатель-5»",
+    "purpose": "Оплата по счёту № 1181 от покупателя"
+   },
+   {
+    "date": "2026-08-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 222000.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 347000.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1182 от покупателя"
+   },
+   {
+    "date": "2026-08-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 165500.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-16",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 14200.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 274400.0,
+    "counterparty": "ООО «Покупатель-8»",
+    "purpose": "Оплата по счёту № 1183 от покупателя"
+   },
+   {
+    "date": "2026-08-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 325500.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1184 от покупателя"
+   },
+   {
+    "date": "2026-08-18",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 212800.0,
+    "counterparty": "ООО «Поставщик-10»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 377400.0,
+    "counterparty": "ООО «Покупатель-38»",
+    "purpose": "Оплата по счёту № 1185 от покупателя"
+   },
+   {
+    "date": "2026-08-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-08-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-23",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-24",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 280600.0,
+    "counterparty": "ООО «Покупатель-1»",
+    "purpose": "Оплата по счёту № 1186 от покупателя"
+   },
+   {
+    "date": "2026-08-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 127700.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 345400.0,
+    "counterparty": "ООО «Покупатель-33»",
+    "purpose": "Оплата по счёту № 1187 от покупателя"
+   },
+   {
+    "date": "2026-08-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 524300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 08.2026"
+   },
+   {
+    "date": "2026-08-26",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 288400.0,
+    "counterparty": "ООО «Покупатель-2»",
+    "purpose": "Оплата по счёту № 1188 от покупателя"
+   },
+   {
+    "date": "2026-08-26",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 184400.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-26",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-08-27",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 143500.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-31",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 294400.0,
+    "counterparty": "ООО «Покупатель-9»",
+    "purpose": "Оплата по счёту № 1189 от покупателя"
+   },
+   {
+    "date": "2026-08-31",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 204600.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-08-31",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 1151000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-09-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 308200.0,
+    "counterparty": "ООО «Покупатель-23»",
+    "purpose": "Оплата по счёту № 1190 от покупателя"
+   },
+   {
+    "date": "2026-09-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-02",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 315600.0,
+    "counterparty": "ООО «Покупатель-1»",
+    "purpose": "Оплата по счёту № 1191 от покупателя"
+   },
+   {
+    "date": "2026-09-02",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 8700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-03",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 290300.0,
+    "counterparty": "ООО «Покупатель-27»",
+    "purpose": "Оплата по счёту № 1192 от покупателя"
+   },
+   {
+    "date": "2026-09-04",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 371400.0,
+    "counterparty": "ООО «Покупатель-36»",
+    "purpose": "Оплата по счёту № 1193 от покупателя"
+   },
+   {
+    "date": "2026-09-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 296800.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 09.2026"
+   },
+   {
+    "date": "2026-09-05",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 9600.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 260300.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1194 от покупателя"
+   },
+   {
+    "date": "2026-09-07",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 138200.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-07",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 161500.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 505300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 09.2026"
+   },
+   {
+    "date": "2026-09-10",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 120200.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-11",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 348400.0,
+    "counterparty": "ООО «Покупатель-37»",
+    "purpose": "Оплата по счёту № 1195 от покупателя"
+   },
+   {
+    "date": "2026-09-11",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 134300.0,
+    "counterparty": "ООО «Поставщик-13»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-12",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19800.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 166700.0,
+    "counterparty": "ООО «Поставщик-6»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 302400.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1196 от покупателя"
+   },
+   {
+    "date": "2026-09-16",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 283900.0,
+    "counterparty": "ООО «Покупатель-22»",
+    "purpose": "Оплата по счёту № 1197 от покупателя"
+   },
+   {
+    "date": "2026-09-17",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 335100.0,
+    "counterparty": "ООО «Покупатель-10»",
+    "purpose": "Оплата по счёту № 1198 от покупателя"
+   },
+   {
+    "date": "2026-09-18",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 351800.0,
+    "counterparty": "ООО «Покупатель-27»",
+    "purpose": "Оплата по счёту № 1199 от покупателя"
+   },
+   {
+    "date": "2026-09-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-09-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 276100.0,
+    "counterparty": "ООО «Покупатель-15»",
+    "purpose": "Оплата по счёту № 1200 от покупателя"
+   },
+   {
+    "date": "2026-09-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 177400.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-21",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-22",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 336900.0,
+    "counterparty": "ООО «Покупатель-35»",
+    "purpose": "Оплата по счёту № 1201 от покупателя"
+   },
+   {
+    "date": "2026-09-22",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 107600.0,
+    "counterparty": "ООО «Поставщик-5»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-23",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 332100.0,
+    "counterparty": "ООО «Покупатель-35»",
+    "purpose": "Оплата по счёту № 1202 от покупателя"
+   },
+   {
+    "date": "2026-09-24",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 86000.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-25",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 353200.0,
+    "counterparty": "ООО «Покупатель-31»",
+    "purpose": "Оплата по счёту № 1203 от покупателя"
+   },
+   {
+    "date": "2026-09-25",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 505300.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 09.2026"
+   },
+   {
+    "date": "2026-09-27",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 21000.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-28",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 220300.0,
+    "counterparty": "ООО «Покупатель-7»",
+    "purpose": "Оплата по счёту № 1204 от покупателя"
+   },
+   {
+    "date": "2026-09-28",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 149500.0,
+    "counterparty": "ООО «Поставщик-8»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-09-29",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 286300.0,
+    "counterparty": "ООО «Покупатель-17»",
+    "purpose": "Оплата по счёту № 1205 от покупателя"
+   },
+   {
+    "date": "2026-09-30",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-09-30",
+    "direction": "OUT",
+    "kind": "OWNER_WITHDRAWAL",
+    "amount": 2031000.0,
+    "counterparty": "Орлов Сергей Николаевич",
+    "purpose": "Выплата дивидендов"
+   },
+   {
+    "date": "2026-10-01",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 255600.0,
+    "counterparty": "ООО «Покупатель-12»",
+    "purpose": "Оплата по счёту № 1206 от покупателя"
+   },
+   {
+    "date": "2026-10-01",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 189400.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-01",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 10400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-02",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 155900.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-04",
+    "direction": "OUT",
+    "kind": "RENT",
+    "amount": 308400.0,
+    "counterparty": "ООО «Логистик-Парк» (аренда)",
+    "purpose": "Арендная плата за 10.2026"
+   },
+   {
+    "date": "2026-10-04",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 24700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-05",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 214700.0,
+    "counterparty": "ООО «Покупатель-17»",
+    "purpose": "Оплата по счёту № 1207 от покупателя"
+   },
+   {
+    "date": "2026-10-05",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 135600.0,
+    "counterparty": "ООО «Поставщик-12»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-06",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 123900.0,
+    "counterparty": "ООО «Поставщик-11»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-06",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 19400.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-07",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 251000.0,
+    "counterparty": "ООО «Покупатель-38»",
+    "purpose": "Оплата по счёту № 1208 от покупателя"
+   },
+   {
+    "date": "2026-10-08",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 87900.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-09",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 155300.0,
+    "counterparty": "ООО «Поставщик-4»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-09",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 16900.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-10",
+    "direction": "OUT",
+    "kind": "SALARY",
+    "amount": 520400.0,
+    "counterparty": "Зарплата сотрудникам",
+    "purpose": "Заработная плата за 10.2026"
+   },
+   {
+    "date": "2026-10-12",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 249900.0,
+    "counterparty": "ООО «Покупатель-28»",
+    "purpose": "Оплата по счёту № 1209 от покупателя"
+   },
+   {
+    "date": "2026-10-13",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 314400.0,
+    "counterparty": "ООО «Покупатель-13»",
+    "purpose": "Оплата по счёту № 1210 от покупателя"
+   },
+   {
+    "date": "2026-10-13",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 187600.0,
+    "counterparty": "ООО «Поставщик-2»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-13",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 17100.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-14",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 268400.0,
+    "counterparty": "ООО «Покупатель-17»",
+    "purpose": "Оплата по счёту № 1211 от покупателя"
+   },
+   {
+    "date": "2026-10-14",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 111900.0,
+    "counterparty": "ООО «Поставщик-1»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-14",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 11300.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-15",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 255400.0,
+    "counterparty": "ООО «Покупатель-26»",
+    "purpose": "Оплата по счёту № 1212 от покупателя"
+   },
+   {
+    "date": "2026-10-15",
+    "direction": "OUT",
+    "kind": "OTHER",
+    "amount": 15700.0,
+    "counterparty": "Разные получатели",
+    "purpose": "Хозяйственные расходы"
+   },
+   {
+    "date": "2026-10-16",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 121600.0,
+    "counterparty": "ООО «Поставщик-3»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-19",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 240700.0,
+    "counterparty": "ООО «Покупатель-8»",
+    "purpose": "Оплата по счёту № 1213 от покупателя"
+   },
+   {
+    "date": "2026-10-20",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 302500.0,
+    "counterparty": "ООО «Покупатель-24»",
+    "purpose": "Оплата по счёту № 1214 от покупателя"
+   },
+   {
+    "date": "2026-10-20",
+    "direction": "OUT",
+    "kind": "LOAN_PAYMENT",
+    "amount": 260000,
+    "counterparty": "Банк «Приволжский»",
+    "purpose": "Платёж по кредитному договору"
+   },
+   {
+    "date": "2026-10-20",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 164800.0,
+    "counterparty": "ООО «Поставщик-14»",
+    "purpose": "Оплата за товар по счёту"
+   },
+   {
+    "date": "2026-10-21",
+    "direction": "IN",
+    "kind": "REVENUE",
+    "amount": 287100.0,
+    "counterparty": "ООО «Покупатель-11»",
+    "purpose": "Оплата по счёту № 1215 от покупателя"
+   },
+   {
+    "date": "2026-10-21",
+    "direction": "OUT",
+    "kind": "SUPPLIER",
+    "amount": 177500.0,
+    "counterparty": "ООО «Поставщик-15»",
+    "purpose": "Оплата за товар по счёту"
+   }
+  ]
+ },
+ "registry": {
+  "inn": "7636593302",
+  "ogrn": "1763659330763",
+  "type": "LLC",
+  "name": "ООО «СтройБаза»",
+  "status": "ACTIVE",
+  "reg_date": "2017-04-03",
+  "okved": "47.52",
+  "region": "Московская область",
+  "bankruptcy": false,
+  "director": {
+   "full_name": "Орлов Сергей Николаевич"
+  },
+  "owners": [
+   {
+    "full_name": "Орлов Сергей Николаевич",
+    "share": 1.0
+   }
+  ],
+  "legal_address": "Московская область, ул. Синтетическая, д. 63",
+  "address_invalid": false,
+  "mass_address": false
+ },
+ "fns": {
+  "regime": "USN15",
+  "tax_debt": 0,
+  "account_block": false,
+  "annual_revenue": {
+   "2025": 49140000.0
+  }
+ },
+ "bki": {
+  "has_history": true,
+  "current_overdue_days": 0,
+  "past_max_overdue_days_12m": 0,
+  "external": [
+   {
+    "bank": "Банк «Приволжский»",
+    "product": "Кредит на развитие",
+    "balance": 5500000,
+    "monthly_payment": 260000,
+    "rate": 23.0,
+    "months_left": 28,
+    "overdue_days": 0
+   }
+  ]
+ }
+}

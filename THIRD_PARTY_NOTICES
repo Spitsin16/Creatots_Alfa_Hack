@@ -1,0 +1,10 @@
+Direct Python dependencies (pinned in backend/requirements.lock):
+- FastAPI, https://fastapi.tiangolo.com/ (MIT)
+- HTTPX, https://www.python-httpx.org/ (BSD-3-Clause)
+- PyYAML, https://pyyaml.org/ (MIT)
+- pytest, https://pytest.org/ (MIT)
+- Ruff, https://docs.astral.sh/ruff/ (MIT)
+- Uvicorn, https://www.uvicorn.org/ (BSD-3-Clause)
+
+GitHub Actions used in CI:
+- actions/checkout, actions/setup-python, actions/setup-node (MIT)

@@ -1,0 +1,59 @@
+name: ci
+
+# Every pushed commit on every branch and every pull request gets the same gates.
+on: [push, pull_request]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: backend/requirements.lock
+      - name: Install pinned dependencies
+        run: python -m pip install -r backend/requirements.lock
+      - name: Ruff
+        run: cd backend && ruff check .
+      - name: Tests, including frozen scoring cases
+        run: cd backend && python -m pytest -q
+
+  reference:
+    name: Frozen reference data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install PyYAML==6.0.3
+      - name: Check every generated field against expected.json
+        run: |
+          python data/reference/engine.py data/rules.yaml data/personas --json /tmp/credit-expected.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          expected = json.loads(Path('data/reference/expected.json').read_text(encoding='utf-8'))
+          actual = json.loads(Path('/tmp/credit-expected.json').read_text(encoding='utf-8'))
+          assert actual == expected, 'Reference output differs from expected.json'
+          assert all(item['match'] for item in actual.values()), 'At least one persona misses its expected outcome'
+          PY
+
+  frontend:
+    if: ${{ hashFiles('frontend/package-lock.json') != '' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run build

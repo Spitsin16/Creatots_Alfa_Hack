@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules/
+prototype/credit-cabinet/node_modules
+.codex-build/
+output/
+/PROJECT_MEMORY.md
+/prototype/
+/docs/sources/
+/docs/generate_segments_v2.py
+/docs/исследование_текущей_кредитной_воронки_Альфа-Банка.md
+/docs/сегментация_и_кредитная_воронка_v2.md

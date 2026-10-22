@@ -1,0 +1,26 @@
+[
+ {
+  "login": "uw1",
+  "password": "demo",
+  "role": "UNDERWRITER",
+  "full_name": "Андеррайтер Смирнова Е."
+ },
+ {
+  "login": "uw2",
+  "password": "demo",
+  "role": "UNDERWRITER",
+  "full_name": "Андеррайтер Петров К."
+ },
+ {
+  "login": "risk1",
+  "password": "demo",
+  "role": "RISK_MANAGER",
+  "full_name": "Риск-менеджер Волков А."
+ },
+ {
+  "login": "admin1",
+  "password": "demo",
+  "role": "RULES_ADMIN",
+  "full_name": "Админ правил Ким Д."
+ }
+]
