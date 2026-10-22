@@ -10,6 +10,7 @@ from app.api.chat import router as chat_router
 from app.api.errors import APIError, api_error_handler, validation_error_handler
 from app.api.insights import router as insights_router
 from app.api.routes import router
+from app.api.rules_admin import router as rules_router
 
 
 def create_app(database_url: str | None = None) -> FastAPI:
@@ -22,6 +23,7 @@ def create_app(database_url: str | None = None) -> FastAPI:
     application.include_router(bank_router)
     application.include_router(insights_router)
     application.include_router(chat_router)
+    application.include_router(rules_router)
 
     @application.middleware("http")
     async def request_id(request: Request, call_next):
