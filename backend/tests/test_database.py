@@ -32,7 +32,7 @@ def test_initial_migration_and_idempotent_seed(tmp_path: Path, monkeypatch: pyte
         assert session.scalar(select(func.count()).select_from(Business)) == 7
         assert session.scalar(select(func.count()).select_from(User)) == 12
         assert session.scalar(select(func.count()).select_from(Membership)) == 8
-        assert session.scalar(select(func.count()).select_from(DataSnapshot)) == 28
+        assert session.scalar(select(func.count()).select_from(DataSnapshot)) == 35
         assert session.scalar(select(func.count()).select_from(Rule)) == 1
         assert verify_password("demo", session.scalar(select(User).where(User.login == "p3b")).password_hash)
         assert not verify_password("wrong", session.scalar(select(User).where(User.login == "p3b")).password_hash)

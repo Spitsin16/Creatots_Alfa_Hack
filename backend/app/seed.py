@@ -65,6 +65,20 @@ def seed_personas(session: Session, data_dir: Path = DATA) -> None:
                     business_id=business.id, source=source.upper(),
                     payload=fixture[source], status="OK",
                 ))
+        if session.scalar(select(DataSnapshot).where(
+            DataSnapshot.business_id == business.id, DataSnapshot.source == "PROFILE",
+        )) is None:
+            session.add(DataSnapshot(
+                business_id=business.id,
+                source="PROFILE",
+                payload={
+                    "id": profile["id"],
+                    "segment": profile["segment"],
+                    "scenario": profile["scenario"],
+                    "assets_owned": profile.get("assets_owned", []),
+                },
+                status="OK",
+            ))
         for employee in profile.get("employees", []):
             member = session.scalar(select(User).where(User.login == employee["login"]))
             if member is None:
