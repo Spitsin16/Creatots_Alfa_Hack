@@ -67,8 +67,22 @@ class PreOfferResponse(BaseModel):
     expires_at: datetime
 
 
+class ConsentRequest(BaseModel):
+    kinds: set[Literal["BKI", "FNS"]] = Field(min_length=1)
+
+
+class ConsentResponse(BaseModel):
+    business_id: str
+    kinds: list[str]
+    expires_at: datetime
+
+
 class ApplicationCreateRequest(BaseModel):
     pre_offer_id: str
+
+
+class SignRequest(BaseModel):
+    code: str = Field(pattern=r"^\d{4}$")
 
 
 class ApplicationResponse(BaseModel):
@@ -83,3 +97,23 @@ class ApplicationResponse(BaseModel):
     status: str
     version: int
     created_at: datetime
+
+
+class TimelineItem(BaseModel):
+    from_status: str | None
+    to_status: str
+    comment: str | None
+    at: datetime
+
+
+class ClientDecisionResponse(BaseModel):
+    outcome: str
+    limit_kopecks: int
+    rate: float | None
+    explanation: str | None
+    advice: list[AdviceResponse]
+
+
+class ApplicationDetailResponse(ApplicationResponse):
+    timeline: list[TimelineItem]
+    decision: ClientDecisionResponse | None

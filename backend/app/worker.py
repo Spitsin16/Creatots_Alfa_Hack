@@ -1,0 +1,130 @@
+"""Outbox worker for the automatic credit-decision pipeline."""
+
+import time
+from datetime import UTC, datetime, timedelta
+from decimal import Decimal
+
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.db import make_session_factory
+from app.models import Application, AuditLog, Decision, Outbox, PreOffer
+from app.services.application_flow import transition_application
+
+
+def _decision_text(result: dict) -> str:
+    amount = round((result.get("limit") or 0))
+    if result["outcome"] == "APPROVED":
+        return f"Предложение подтверждено: доступно до {amount:,} ₽.".replace(",", " ")
+    if result["outcome"] == "COUNTER_OFFER":
+        return f"Доступна меньшая сумма — до {amount:,} ₽.".replace(",", " ")
+    if result["outcome"] == "MANUAL_REVIEW":
+        return "Заявка передана специалисту банка. Решение появится в течение рабочего дня."
+    return "Сейчас предложение недоступно. Рекомендации помогут подготовиться к повторной заявке."
+
+
+def process_one(session: Session) -> bool:
+    """Process one pending event and commit it with all resulting records."""
+    event = session.scalar(
+        select(Outbox)
+        .where(Outbox.status == "PENDING", Outbox.available_at <= datetime.now(UTC))
+        .order_by(Outbox.created_at, Outbox.id)
+        .with_for_update(skip_locked=True)
+    )
+    if event is None:
+        return False
+
+    event.status = "PROCESSING"
+    event.attempts += 1
+    if event.event == "CONTRACT_SIGNED":
+        application = session.get(Application, event.payload["application_id"])
+        if application is not None and application.status == "CONTRACT_SIGNED":
+            transition_application(session, application, "ISSUED", actor_id=None, comment="Средства выданы на счёт")
+            session.add(
+                AuditLog(
+                    actor_id=None,
+                    action="CREDIT_ISSUED",
+                    entity="application",
+                    entity_id=application.id,
+                    before={"status": "CONTRACT_SIGNED"},
+                    after={"status": "ISSUED"},
+                )
+            )
+        event.status = "DONE"
+        session.commit()
+        return True
+    if event.event != "APPLICATION_SUBMITTED":
+        event.status = "FAILED"
+        session.commit()
+        return True
+
+    application = session.get(Application, event.payload["application_id"])
+    if application is None:
+        event.status = "FAILED"
+        session.commit()
+        return True
+    if application.status != "SUBMITTED":
+        event.status = "DONE"
+        session.commit()
+        return True
+
+    pre_offer = session.get(PreOffer, application.pre_offer_id)
+    result = (pre_offer.explanation if pre_offer else {}).get("decision_snapshot")
+    if pre_offer is None or result is None:
+        event.status = "PENDING"
+        event.available_at = datetime.now(UTC) + timedelta(seconds=min(60, 2**event.attempts))
+        session.commit()
+        return True
+
+    transition_application(session, application, "VALIDATION", actor_id=None, comment="Заявка принята системой")
+    transition_application(session, application, "ENRICHMENT", actor_id=None, comment="Данные проверены")
+    transition_application(session, application, "SCORING", actor_id=None, comment="Выполнен расчёт")
+    decision = Decision(
+        application_id=application.id,
+        rules_version=pre_offer.rules_version,
+        score=result["score"],
+        cls=result["cls"],
+        stop_factors=result.get("stop_factors", []),
+        factors=result.get("factors", {}),
+        limit_kopecks=round((result.get("limit") or 0) * 100),
+        binding_constraint=result.get("binding_constraint"),
+        rate=Decimal(str(result["rate"])) if result.get("rate") is not None else None,
+        outcome=result["outcome"],
+        what_if=result.get("advice", []),
+        explanation_text=_decision_text(result),
+        explanation_source="TEMPLATE",
+    )
+    session.add(decision)
+    transition_application(
+        session,
+        application,
+        result["outcome"],
+        actor_id=None,
+        comment="Автоматическое решение готово",
+    )
+    session.add(
+        AuditLog(
+            actor_id=None,
+            action="AUTOMATIC_DECISION_CREATED",
+            entity="application",
+            entity_id=application.id,
+            before={"status": "SUBMITTED"},
+            after={"status": application.status, "rules_version": pre_offer.rules_version},
+        )
+    )
+    event.status = "DONE"
+    session.commit()
+    return True
+
+
+def main() -> None:
+    factory = make_session_factory()
+    while True:
+        with factory() as session:
+            processed = process_one(session)
+        if not processed:
+            time.sleep(1)
+
+
+if __name__ == "__main__":
+    main()

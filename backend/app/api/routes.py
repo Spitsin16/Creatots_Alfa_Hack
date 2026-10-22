@@ -1,10 +1,12 @@
 """Client endpoints for login, profile, pre-offers, and draft applications."""
 
+import hmac
+import os
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
 import yaml
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Header
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -13,20 +15,30 @@ from app.api.errors import APIError
 from app.api.schemas import (
     AdviceResponse,
     ApplicationCreateRequest,
+    ApplicationDetailResponse,
     ApplicationResponse,
     BusinessSummary,
+    ClientDecisionResponse,
+    ConsentRequest,
+    ConsentResponse,
     LoginRequest,
     MeResponse,
     PreOfferRequest,
     PreOfferResponse,
+    SignRequest,
+    TimelineItem,
     TokenResponse,
 )
 from app.models import (
     Application,
     AuditLog,
     Business,
+    Consent,
+    Contract,
     DataSnapshot,
+    Decision,
     Membership,
+    Outbox,
     PreOffer,
     Rule,
     Segment,
@@ -35,7 +47,9 @@ from app.models import (
 )
 from app.passwords import verify_password
 from app.security import issue_access_token
+from app.services.application_flow import transition_application
 from app.services.scoring.engine import decide
+from app.states import InvalidTransition
 
 router = APIRouter(prefix="/api/v1")
 
@@ -58,6 +72,14 @@ def _application_response(application: Application) -> ApplicationResponse:
         version=application.version,
         created_at=application.created_at,
     )
+
+
+def _application_for_user(session: Session, user: User, application_id: str) -> tuple[Application, Membership]:
+    application = session.get(Application, application_id)
+    if application is None:
+        raise APIError(404, "APPLICATION_NOT_FOUND", "Заявка не найдена")
+    membership = require_membership(session, user, application.business_id, "VIEW")
+    return application, membership
 
 
 @router.post("/auth/login", response_model=TokenResponse)
@@ -95,6 +117,46 @@ def me(user: User = Depends(get_current_user), session: Session = Depends(get_se
         role=user.role,
         businesses=businesses,
     )
+
+
+@router.post("/businesses/{business_id}/consents", response_model=ConsentResponse, status_code=201)
+def create_consents(
+    business_id: str,
+    payload: ConsentRequest,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> ConsentResponse:
+    require_membership(session, user, business_id, "CONSENT")
+    expires_at = datetime.now(UTC) + timedelta(days=365)
+    for kind in sorted(payload.kinds):
+        active = session.scalar(
+            select(Consent).where(
+                Consent.business_id == business_id,
+                Consent.kind == kind,
+                Consent.expires_at > datetime.now(UTC),
+            )
+        )
+        if active is None:
+            session.add(
+                Consent(
+                    business_id=business_id,
+                    user_id=user.id,
+                    kind=kind,
+                    expires_at=expires_at,
+                )
+            )
+    session.add(
+        AuditLog(
+            actor_id=user.id,
+            action="CONSENTS_GIVEN",
+            entity="business",
+            entity_id=business_id,
+            before=None,
+            after={"kinds": sorted(payload.kinds)},
+        )
+    )
+    session.commit()
+    return ConsentResponse(business_id=business_id, kinds=sorted(payload.kinds), expires_at=expires_at)
 
 
 @router.post("/businesses/{business_id}/pre-offers", response_model=PreOfferResponse, status_code=201)
@@ -148,6 +210,7 @@ def create_pre_offer(
     explanation = {
         "outcome": result["outcome"],
         "advice": [item.model_dump() for item in advice],
+        "decision_snapshot": result,
     }
     pre_offer = PreOffer(
         business_id=business_id,
@@ -232,6 +295,7 @@ def create_application(
                 to_status="DRAFT",
                 actor_id=user.id,
                 comment="Создан черновик заявки",
+                at=datetime.now(UTC),
             ),
             AuditLog(
                 actor_id=user.id,
@@ -240,6 +304,200 @@ def create_application(
                 entity_id=application.id,
                 before=None,
                 after={"status": "DRAFT", "version": 1},
+            ),
+        ]
+    )
+    session.commit()
+    return _application_response(application)
+
+
+@router.post("/applications/{application_id}/submit", response_model=ApplicationResponse)
+def submit_application(
+    application_id: str,
+    idempotency_key: str | None = Header(default=None, alias="Idempotency-Key"),
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> ApplicationResponse:
+    application = session.get(Application, application_id)
+    if application is None:
+        raise APIError(404, "APPLICATION_NOT_FOUND", "Заявка не найдена")
+    membership = require_membership(session, user, application.business_id, "FILL")
+    if application.status not in {"DRAFT", "AWAITING_SIGNATURE"}:
+        return _application_response(application)
+
+    if "SUBMIT" not in membership.permissions:
+        if application.status == "DRAFT":
+            transition_application(
+                session,
+                application,
+                "AWAITING_SIGNATURE",
+                actor_id=user.id,
+                comment="Ожидается подпись руководителя",
+            )
+            session.add(
+                AuditLog(
+                    actor_id=user.id,
+                    action="APPLICATION_AWAITS_SIGNATURE",
+                    entity="application",
+                    entity_id=application.id,
+                    before={"status": "DRAFT"},
+                    after={"status": "AWAITING_SIGNATURE", "idempotency_key": idempotency_key},
+                )
+            )
+            session.commit()
+        return _application_response(application)
+
+    required_consents = {"BKI", "FNS"}
+    active_consents = set(
+        session.scalars(
+            select(Consent.kind).where(
+                Consent.business_id == application.business_id,
+                Consent.expires_at > datetime.now(UTC),
+            )
+        ).all()
+    )
+    missing = sorted(required_consents - active_consents)
+    if missing:
+        raise APIError(409, "CONSENTS_REQUIRED", "Перед отправкой нужны согласия", {"missing": missing})
+
+    previous = application.status
+    try:
+        transition_application(
+            session,
+            application,
+            "SUBMITTED",
+            actor_id=user.id,
+            comment="Заявка отправлена",
+        )
+    except InvalidTransition as exc:
+        raise APIError(409, "INVALID_STATUS_TRANSITION", "Заявку нельзя отправить из текущего статуса") from exc
+    session.add_all(
+        [
+            Outbox(
+                event="APPLICATION_SUBMITTED",
+                payload={"application_id": application.id, "idempotency_key": idempotency_key},
+                status="PENDING",
+                attempts=0,
+            ),
+            AuditLog(
+                actor_id=user.id,
+                action="APPLICATION_SUBMITTED",
+                entity="application",
+                entity_id=application.id,
+                before={"status": previous},
+                after={"status": "SUBMITTED", "idempotency_key": idempotency_key},
+            ),
+        ]
+    )
+    session.commit()
+    return _application_response(application)
+
+
+@router.get("/applications/{application_id}", response_model=ApplicationDetailResponse)
+def get_application(
+    application_id: str,
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> ApplicationDetailResponse:
+    application, _ = _application_for_user(session, user, application_id)
+    history = session.scalars(
+        select(StatusHistory)
+        .where(StatusHistory.application_id == application.id)
+        .order_by(StatusHistory.at, StatusHistory.id)
+    ).all()
+    decision = session.scalar(
+        select(Decision).where(Decision.application_id == application.id).order_by(Decision.created_at.desc())
+    )
+    client_decision = None
+    if decision is not None:
+        client_decision = ClientDecisionResponse(
+            outcome=decision.outcome,
+            limit_kopecks=decision.limit_kopecks,
+            rate=float(decision.rate) if decision.rate is not None else None,
+            explanation=decision.explanation_text,
+            advice=[
+                AdviceResponse(
+                    code=item["code"],
+                    text=item["text"],
+                    new_limit_kopecks=round(item["new_limit"] * 100),
+                    new_rate=item.get("new_rate"),
+                )
+                for item in decision.what_if
+            ],
+        )
+    base = _application_response(application).model_dump()
+    return ApplicationDetailResponse(
+        **base,
+        timeline=[
+            TimelineItem(
+                from_status=item.from_status,
+                to_status=item.to_status,
+                comment=item.comment,
+                at=item.at,
+            )
+            for item in history
+        ],
+        decision=client_decision,
+    )
+
+
+@router.post("/applications/{application_id}/sign", response_model=ApplicationResponse)
+def sign_application(
+    application_id: str,
+    payload: SignRequest,
+    idempotency_key: str | None = Header(default=None, alias="Idempotency-Key"),
+    user: User = Depends(get_current_user),
+    session: Session = Depends(get_session),
+) -> ApplicationResponse:
+    application = session.get(Application, application_id)
+    if application is None:
+        raise APIError(404, "APPLICATION_NOT_FOUND", "Заявка не найдена")
+    require_membership(session, user, application.business_id, "SIGN")
+    if application.status in {"CONTRACT_SIGNED", "ISSUED"}:
+        return _application_response(application)
+    if application.status != "APPROVED":
+        raise APIError(409, "INVALID_STATUS_TRANSITION", "Договор пока нельзя подписать")
+    if not hmac.compare_digest(payload.code, os.getenv("DEMO_SIGN_CODE", "0000")):
+        raise APIError(422, "INVALID_SIGN_CODE", "Неверный код подтверждения")
+
+    decision = session.scalar(
+        select(Decision).where(Decision.application_id == application.id).order_by(Decision.created_at.desc())
+    )
+    schedule = {
+        "type": "REVOLVING" if application.product == "OVERDRAFT" else "ANNUITY",
+        "amount_kopecks": application.amount_kopecks,
+        "term_months": application.term_months,
+        "rate": float(decision.rate) if decision and decision.rate is not None else None,
+    }
+    contract = Contract(
+        application_id=application.id,
+        signed_by=user.id,
+        signed_at=datetime.now(UTC),
+        schedule=schedule,
+    )
+    session.add(contract)
+    transition_application(
+        session,
+        application,
+        "CONTRACT_SIGNED",
+        actor_id=user.id,
+        comment="Договор подписан кодом",
+    )
+    session.add_all(
+        [
+            Outbox(
+                event="CONTRACT_SIGNED",
+                payload={"application_id": application.id, "idempotency_key": idempotency_key},
+                status="PENDING",
+                attempts=0,
+            ),
+            AuditLog(
+                actor_id=user.id,
+                action="CONTRACT_SIGNED",
+                entity="application",
+                entity_id=application.id,
+                before={"status": "APPROVED"},
+                after={"status": "CONTRACT_SIGNED", "idempotency_key": idempotency_key},
             ),
         ]
     )
