@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Spinner } from '../common/Spinner'
 
 // Коды ответов — как в ТЗ 5.2 и rules.yaml. Обязательны только цель и сумма/срок.
 export type Answers = {
@@ -49,6 +50,6 @@ export function Questionnaire({ onSubmit, busy }: { onSubmit: (a: Answers) => vo
         <button type="button" key={code} className={`chip ${a.assets.includes(code) ? 'active' : ''}`} onClick={() => set({ assets: [code] })}>{label}</button>)}</div></div>
     </div>}
     <label className="consent"><input type="checkbox" checked={consent} onChange={e => setConsent(e.target.checked)} /> Согласен на запрос данных в БКИ и ФНС для расчёта (действует год)</label>
-    <button className="primary" disabled={busy || !consent} onClick={() => onSubmit(a)}>{busy ? 'Считаем…' : 'Рассчитать предложение'}</button>
+    <button className="primary" disabled={busy || !consent} onClick={() => onSubmit(a)}>{busy ? <Spinner label="Считаем…" light /> : 'Рассчитать предложение'}</button>
   </section>
 }

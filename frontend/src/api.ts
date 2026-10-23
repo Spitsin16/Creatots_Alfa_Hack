@@ -12,11 +12,12 @@ export type Application = {
   purpose: string; segment_code: string; status: string; version: number;
   timeline?: { from_status: string | null; to_status: string; comment: string | null; at: string }[];
   decision?: { outcome: string; limit_kopecks: number; rate: number | null; explanation: string; advice: Offer['advice'] } | null
+  assignee_name?: string | null
 }
 export type BankItem = {
   id: string; business_name: string; inn: string; amount_kopecks: number; product: string; segment_code: string;
   status: string; decision_class: string | null; score: number | null; assignee_id: string | null
-  open_question_due_at?: string | null; question_overdue?: boolean
+  open_question_due_at?: string | null; question_overdue?: boolean; assignee_name?: string | null
 }
 
 const base = import.meta.env.VITE_API_URL ?? ''
@@ -78,3 +79,14 @@ export async function downloadFile(path: string, filename: string, token: string
   const a = document.createElement('a'); a.href = url; a.download = filename; a.click()
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
+
+// Цвет балла для сотрудника: зелёный — авто-одобрение, жёлтый — пограничный,
+// красный — ручная проверка, чёрный — отказ/стоп-фактор.
+export const scoreTone = (cls: string | null | undefined, status?: string): string =>
+  status === 'REJECTED' || cls === 'E' ? 'black' : cls === 'A' || cls === 'B' ? 'green' : cls === 'C' ? 'yellow' : cls === 'D' ? 'red' : 'none'
+
+export const toneTitle: Record<string, string> = {
+  green: 'низкий риск', yellow: 'пограничный', red: 'ручная проверка', black: 'отказ', none: 'нет расчёта',
+}
+
+export type MyApplications = { items: { id: string; status: string; active: boolean }[]; active_id: string | null }
