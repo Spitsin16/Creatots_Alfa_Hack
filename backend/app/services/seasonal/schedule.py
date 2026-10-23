@@ -97,3 +97,27 @@ def build(
         "peak_months": sorted(m for m, v in w.items() if v >= 1.2),
         "low_months": sorted(m for m, v in w.items() if v < 0.6),
     }
+
+
+def annuity_schedule(principal: float, rate_pct: float, term: int, first_payment: date) -> dict:
+    """Обычный аннуитетный график в том же формате, что и сезонный."""
+    i = rate_pct / 100 / 12
+    pay = annuity_payment(principal, rate_pct, term)
+    rows, balance = [], float(principal)
+    for t in range(term):
+        interest = balance * i
+        p = round(balance + interest) if t == term - 1 else round(pay)
+        body = p - interest
+        balance -= body
+        rows.append({"date": _add_months(first_payment, t).isoformat(), "payment": p, "interest": round(interest),
+                     "principal": round(body), "balance": max(0, round(balance))})
+    return {
+        "schedule": rows,
+        "annuity_payment": round(pay),
+        "max_payment": max(r["payment"] for r in rows),
+        "min_payment": min(r["payment"] for r in rows),
+        "overpayment": round(sum(r["payment"] for r in rows) - principal),
+        "annuity_overpayment": round(pay * term - principal),
+        "peak_months": [],
+        "low_months": [],
+    }
