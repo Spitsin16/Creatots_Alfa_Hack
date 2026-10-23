@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { request, rubles, scoreTone, toneTitle } from '../api'
 import { Spinner } from '../common/Spinner'
+import { rememberSandboxClient } from '../common/demoSession'
 
 type Params = {
   type: string; industry: string; age_months: number; revenue: number; seasonality: string; alfa_share: number
@@ -45,7 +46,11 @@ export function Sandbox({ onLogin, onBack }: { onLogin: (token: string) => void;
   const hasExternal = p.external_balance > 0
   const createClient = async () => {
     setBusy(true); setError('')
-    try { setCreated(await request<Created>('/api/v1/sandbox/clients', { method: 'POST', body: JSON.stringify(p) })) }
+    try {
+      const c = await request<Created>('/api/v1/sandbox/clients', { method: 'POST', body: JSON.stringify(p) })
+      rememberSandboxClient({ login: c.login, name: c.business.name, score: c.preview.score, outcome: c.preview.outcome, cls: c.preview.cls })
+      setCreated(c)
+    }
     catch (e) { setError((e as Error).message) } finally { setBusy(false) }
   }
 

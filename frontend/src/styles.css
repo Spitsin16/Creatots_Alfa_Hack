@@ -108,3 +108,29 @@
 .sandbox-result dt{color:#888}.sandbox-result dd{margin:0;font-weight:650}
 .sandbox-result .score{border-radius:16px;padding:20px;display:grid;grid-template-columns:1fr auto;align-items:end;color:#fff}
 .sandbox-result .score span{grid-column:1/-1;font-size:12px;opacity:.75}.sandbox-result .score b{font-size:44px}
+.next-steps{padding-left:20px;display:grid;gap:10px;color:#444;margin:12px 0 22px}
+.switcher{display:grid;gap:6px;margin:auto 0 14px;padding-top:16px;border-top:1px solid #eee}
+.switcher-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#999;font-weight:700;margin-bottom:2px}
+.switch{display:grid;grid-template-columns:10px 1fr auto;gap:10px;align-items:center;border:1px solid transparent;background:none;border-radius:12px;padding:8px 10px;text-align:left}
+.switch b,.switch small{display:block}.switch b{font-size:13px}.switch small{font-size:11px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.switch .dot{width:8px;height:8px;border-radius:50%;background:#ddd}.switch.active{background:#f5f5f3;border-color:#e8e7e4}.switch.active .dot{background:#2f8f46}
+.switch.lit{border-color:#ef3124;background:#fff4f3;animation:glow 1.4s ease-in-out infinite}.switch.lit .dot{background:#ef3124}
+.switch em{font-style:normal;background:#ef3124;color:#fff;border-radius:999px;font-size:11px;padding:1px 7px}
+@keyframes glow{50%{box-shadow:0 0 0 4px #ef312422}}
+.sidebar .profile{margin-top:0}
+.celebration{position:fixed;inset:0;z-index:100;background:#0008;display:grid;place-items:center;overflow:hidden}
+.celebration i{position:absolute;top:-20px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.celebration-card{background:#fff;border-radius:24px;padding:36px 40px;text-align:center;max-width:420px;animation:pop .5s cubic-bezier(.2,1.4,.4,1);position:relative}
+.celebration-card h2{margin:12px 0 6px;font-size:30px}.celebration-card strong{font-size:40px;letter-spacing:-1px;display:block;margin-bottom:8px}.celebration-card p{color:#666}
+.big-check{display:inline-grid;place-items:center;width:64px;height:64px;border-radius:50%;background:#2f8f46;color:#fff;font-size:34px;font-weight:900}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.loan-cabinet{margin-top:24px;background:#fff;border-radius:22px;padding:32px;border:1px solid #e8e7e4}
+.loan-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}.loan-cards>div{background:#f6f6f4;border-radius:14px;padding:14px}
+.loan-cards small,.loan-cards b{display:block}.loan-cards small{color:#888;font-size:12px}.loan-cards b{font-size:22px;margin:4px 0}
+.loan-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}.loan-block h3{margin:0 0 8px;font-size:16px}
+.balance-chart.light i{background:#cfcdc8}.balance-chart.light i.neg{background:#ef3124}
+.warn-text{color:#b81f16;font-weight:650}.ok-text{color:#2f8f46;font-weight:650}
+.loan-tips{margin-top:18px;background:#f6f6f4;border-radius:14px;padding:14px 18px}.loan-tips h3{margin:0 0 6px;font-size:15px}.loan-tips ul{margin:0;padding-left:18px;display:grid;gap:6px;color:#444}
+.sandbox-mine .account em{background:#fff0ef;color:#a72018}
+@media(max-width:900px){.loan-cards{grid-template-columns:1fr 1fr}.loan-grid{grid-template-columns:1fr}.switcher{display:none}}
