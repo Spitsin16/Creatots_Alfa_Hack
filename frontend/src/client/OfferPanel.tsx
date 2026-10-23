@@ -3,8 +3,8 @@ import { Explanation, Offer, SeasonalSchedule, productName, request, rub, rubles
 
 // Предложение: сумма, «почему такая сумма», факторы словами, «как получить больше»,
 // загрузка выписки 1С из другого банка (пересчёт) и сезонный график.
-export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, repayment }: {
-  token: string; offer: Offer; onOffer: (o: Offer) => void; onContinue: () => void; canContinue: boolean; repayment: string
+export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, repayment, onRefinance }: {
+  token: string; offer: Offer; onOffer: (o: Offer) => void; onContinue: () => void; canContinue: boolean; repayment: string; onRefinance?: (amount: number, term: number) => void
 }) {
   const [ex, setEx] = useState<Explanation | null>(null)
   const [schedule, setSchedule] = useState<SeasonalSchedule | null>(null)
@@ -36,16 +36,18 @@ export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, rep
   }
 
   const rejected = offer.outcome === 'REJECTED'
+  const noLimit = offer.limit_kopecks <= 0
   return <section className="offer-card">
     <div>
-      <span className="eyebrow">{rejected ? 'Решение' : offer.outcome === 'MANUAL_REVIEW' ? 'Предварительно, решит специалист' : 'Предварительно одобрено'}</span>
-      <h2>{rejected || offer.outcome === 'COUNTER_OFFER' ? (ex?.headline ?? productName(offer.product)) : productName(offer.product)}</h2>
-      {!rejected && <><strong className="money">{rubles(offer.limit_kopecks)}</strong>
+      <span className="eyebrow">{rejected ? 'Решение' : noLimit ? 'Предложение банка' : offer.outcome === 'MANUAL_REVIEW' ? 'Предварительно, решит специалист' : 'Предварительно одобрено'}</span>
+      <h2>{rejected || noLimit ? (ex?.headline ?? productName(offer.product)) : productName(offer.product)}</h2>
+      {!rejected && !noLimit && <><strong className="money">{rubles(offer.limit_kopecks)}</strong>
         <p>{productName(offer.product)} · до {offer.term_months} мес. · ставка {offer.rate}% годовых
           {offer.payment_kopecks ? ` · платёж ${rubles(offer.payment_kopecks)}/мес.` : ''}</p>
         <p className="muted">Вы запросили {rubles(offer.requested_amount_kopecks)}{offer.requested_amount_kopecks <= offer.limit_kopecks ? ' — укладываемся' : ''}</p></>}
       {ex?.reason && <div className="callout">{ex.reason}</div>}
-      {ex?.counter && <div className="callout">{ex.counter}</div>}
+      {ex?.counter && <div className="callout">{ex.counter}
+        {onRefinance && ex.counter_terms?.product === 'REFINANCE' && <div><button className="primary" onClick={() => onRefinance(ex.counter_terms!.amount, ex.counter_terms!.term)}>Рассчитать рефинансирование</button></div>}</div>}
       {ex?.summary && <div className="summary"><p>{ex.summary}</p><small>Сформулировано ИИ по данным расчёта, цифры сверены</small></div>}
       {ex?.why_amount && <><h3>Почему такая сумма</h3><p>{ex.why_amount}</p></>}
       {ex && (ex.strengths.length > 0 || ex.weaknesses.length > 0) && <ul className="factors">
@@ -63,7 +65,7 @@ export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, rep
           <input type="file" accept=".txt" onChange={upload} disabled={busy} hidden /></label>}
       </div></div>)}
       {note && <div className="notice">{note}</div>}
-      {canContinue && !rejected && <button className="primary wide" onClick={onContinue}>Оформить заявку</button>}
+      {canContinue && !rejected && offer.limit_kopecks > 0 && <button className="primary wide" onClick={onContinue}>Оформить заявку</button>}
     </div>
   </section>
 }

@@ -22,6 +22,10 @@ export function RulesAdmin({ token }: { token: string }) {
     setMessage(`Версия ${r.version} сохранена и включена. Новые расчёты идут по ней, старые решения хранят свою версию.`); void load()
   })
   const activate = (v: number) => run(async () => { await request(`/api/v1/bank/rules/${v}/activate`, { method: 'POST' }, token); setMessage(`Включена версия ${v}`); void load() })
+  const travel = () => run(async () => {
+    const r = await request<{ expired: string[] }>('/api/v1/bank/admin/time-travel', { method: 'POST', body: JSON.stringify({ days: 31 }) }, token)
+    setMessage(r.expired.length ? `Через 31 день истекут одобрения: ${r.expired.length} — статус EXPIRED` : 'Через 31 день просроченных одобрений нет')
+  })
   const cell = (s: Short) => `${s.outcome}${s.limit ? ` · ${rubles(s.limit * 100)}` : ''}${s.rate ? ` · ${s.rate}%` : ''}${s.cls ? ` · ${s.cls}` : ''}`
   return <div className="page bank-page"><header><div><span className="eyebrow">Кабинет банка</span><h1>Правила решения</h1><p>Изменение = новая версия. До включения проверьте, как поменяются решения по тестовым клиентам.</p></div>
     <div className="metric"><b>v{list?.active_version ?? '…'}</b><span>действует</span></div></header>
@@ -36,6 +40,8 @@ export function RulesAdmin({ token }: { token: string }) {
     </section>
     <aside className="review-card"><h3>Версии</h3>{list?.versions.map(v => <div key={v.version} className="version-row">
       <span><b>v{v.version}</b><small>{new Date(v.created_at).toLocaleString('ru-RU')}</small></span>
-      {v.active ? <em>действует</em> : <button className="secondary" onClick={() => activate(v.version)}>Включить</button>}</div>)}</aside></div>
+      {v.active ? <em>действует</em> : <button className="secondary" onClick={() => activate(v.version)}>Включить</button>}</div>)}
+      <h3>Демо</h3><p className="muted">Одобрение действует 30 дней. Покажите, что будет с неподписанными заявками.</p>
+      <button className="secondary wide" onClick={travel}>Перемотать время на 31 день</button></aside></div>
   </div>
 }

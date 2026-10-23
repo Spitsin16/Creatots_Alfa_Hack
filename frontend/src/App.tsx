@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Application, BankItem, Me, Offer, request, rubles } from './api'
+import { Application, BankItem, Me, Offer, productName, request, rubles } from './api'
 import { ReviewPanel, RiskQueue } from './bank/ReviewPanel'
 import { RulesAdmin } from './bank/RulesAdmin'
 import { ForecastCard } from './client/ForecastCard'
@@ -24,7 +24,7 @@ const accounts = [
 const statusName: Record<string, string> = {
   DRAFT: 'Черновик', AWAITING_SIGNATURE: 'Ждёт подписи', SUBMITTED: 'Отправлена', VALIDATION: 'Проверяем',
   ENRICHMENT: 'Собираем данные', SCORING: 'Рассчитываем', MANUAL_REVIEW: 'Проверяет специалист',
-  APPROVED: 'Одобрено', REJECTED: 'Отказ', COUNTER_OFFER: 'Контрпредложение', INFO_REQUESTED: 'Нужны документы', CONTRACT_SIGNED: 'Договор подписан', ISSUED: 'Деньги выданы',
+  APPROVED: 'Одобрено', REJECTED: 'Отказ', COUNTER_OFFER: 'Предложение банка', INFO_REQUESTED: 'Нужны документы', CANCELLED: 'Отменена', EXPIRED: 'Срок предложения истёк', CONTRACT_SIGNED: 'Договор подписан', ISSUED: 'Деньги выданы',
 }
 
 export default function App() {
@@ -83,7 +83,7 @@ function ClientDashboard({ token, me }: { token: string; me: Me }) {
   const sign = (code: string) => call(async () => setApplication(await request(`/api/v1/applications/${application!.id}/sign`, { method: 'POST', body: JSON.stringify({ code }) }, token)))
   const refresh = () => request<Application>(`/api/v1/applications/${application!.id}`, {}, token).then(setApplication).catch(() => undefined)
   useEffect(() => {
-    if (!application || ['DRAFT', 'ISSUED', 'REJECTED', 'CANCELLED', 'INFO_REQUESTED'].includes(application.status)) return
+    if (!application || ['DRAFT', 'ISSUED', 'REJECTED', 'CANCELLED', 'EXPIRED', 'INFO_REQUESTED', 'COUNTER_OFFER'].includes(application.status)) return
     const t = setInterval(refresh, 5000); return () => clearInterval(t)
   }, [application?.id, application?.status])
   const overdraft = offer?.product === 'OVERDRAFT' ? offer.limit_kopecks : undefined
@@ -91,6 +91,7 @@ function ClientDashboard({ token, me }: { token: string; me: Me }) {
     <section className="hero-card"><Questionnaire onSubmit={calculate} busy={busy} /><ForecastCard token={token} businessId={business.id} overdraftKopecks={overdraft} /></section>
     {message && <div className="error">{message}</div>}
     {offer && <OfferPanel token={token} offer={offer} onOffer={o => { setOffer(o); setApplication(null) }} onContinue={create}
+      onRefinance={answers ? (amount: number, term: number) => calculate({ ...answers, purpose: 'refinance', frequency: 'once', term_months: term, amount }) : undefined}
       canContinue={!application && business.permissions.includes('FILL')} repayment={answers?.repayment ?? 'equal'} />}
     {application && <ApplicationTracker token={token} businessId={business.id} application={application} canSubmit={business.permissions.includes('SUBMIT')}
       onSubmit={submit} onSign={sign} onRefresh={refresh} busy={busy} />}
@@ -110,12 +111,26 @@ function ApplicationTracker({ token, businessId, application, canSubmit, onSubmi
     {application.status === 'DRAFT' && (canSubmit
       ? <button className="primary" disabled={busy} onClick={onSubmit}>Отправить заявку</button>
       : <p className="hint">Заявка подготовлена. Отправить её может руководитель.</p>)}
+    {application.status === 'COUNTER_OFFER' && <CounterOffer token={token} applicationId={application.id} canDecide={canSubmit} onDone={onRefresh} />}
+    {canSubmit && ['DRAFT', 'AWAITING_SIGNATURE', 'SUBMITTED', 'INFO_REQUESTED'].includes(application.status) && <button className="link dark" onClick={() => request(`/api/v1/applications/${application.id}/cancel`, { method: 'POST', body: '{}' }, token).then(onRefresh)}>Отменить заявку</button>}
     {application.status === 'INFO_REQUESTED' && <RequestedDocuments token={token} applicationId={application.id} businessId={businessId} onDone={onRefresh} />}
     {application.status === 'APPROVED' && <div className="sign"><input value={code} maxLength={6} onChange={e => setCode(e.target.value)} placeholder="Код из SMS (демо: 0000)" />
       <button className="primary" disabled={busy || code.length < 4} onClick={() => onSign(code)}>Подписать договор</button></div>}
     {['SUBMITTED', 'VALIDATION', 'ENRICHMENT', 'SCORING', 'CONTRACT_SIGNED'].includes(application.status) && <p className="hint">Обрабатываем — статус обновится сам.</p>}
   </div>
   {application.status !== 'DRAFT' && <Chat token={token} applicationId={application.id} side="CLIENT" />}</div></section>
+}
+
+function CounterOffer({ token, applicationId, canDecide, onDone }: { token: string; applicationId: string; canDecide: boolean; onDone: () => void }) {
+  const [terms, setTerms] = useState<{ product: string; amount_kopecks: number; term_months: number; rate: number | null } | null>(null)
+  const [error, setError] = useState('')
+  useEffect(() => { request<typeof terms>(`/api/v1/applications/${applicationId}/counter-offer`, {}, token).then(setTerms).catch(e => setError(e.message)) }, [applicationId])
+  const act = (what: string) => request(`/api/v1/applications/${applicationId}/counter-offer/${what}`, { method: 'POST', body: '{}' }, token).then(onDone).catch(e => setError(e.message))
+  return <div className="callout requested"><b>Банк предлагает другие условия</b>
+    {terms && <p>{productName(terms.product)} на {rubles(terms.amount_kopecks)} · {terms.term_months} мес.{terms.rate ? ` · ${terms.rate}%` : ''}</p>}
+    {canDecide ? <div className="chips"><button className="primary" onClick={() => act('accept')}>Принять</button><button className="secondary" onClick={() => act('decline')}>Отказаться</button></div>
+      : <p className="muted">Решение принимает руководитель.</p>}
+    {error && <div className="error">{error}</div>}</div>
 }
 
 function BankDashboard({ token, me }: { token: string; me: Me }) {

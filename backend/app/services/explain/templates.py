@@ -204,6 +204,7 @@ def explain_for_client(decision: dict, rules: dict, context: dict | None = None)
         "why_amount": None,
         "reason": None,
         "counter": counter_text(decision),
+        "counter_terms": decision.get("counter"),
         **factors_for_client(decision),
         "advice": advice_for_client(decision),
     }
