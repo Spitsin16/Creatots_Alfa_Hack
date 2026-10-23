@@ -1,5 +1,8 @@
 Direct Python dependencies (pinned in backend/requirements.lock):
 - FastAPI, https://fastapi.tiangolo.com/ (MIT)
+- SQLAlchemy, https://www.sqlalchemy.org/ (MIT)
+- Alembic, https://alembic.sqlalchemy.org/ (MIT)
+- Psycopg, https://www.psycopg.org/psycopg3/ (LGPL-3.0)
 - HTTPX, https://www.python-httpx.org/ (BSD-3-Clause)
 - PyYAML, https://pyyaml.org/ (MIT)
 - pytest, https://pytest.org/ (MIT)
@@ -8,3 +11,12 @@ Direct Python dependencies (pinned in backend/requirements.lock):
 
 GitHub Actions used in CI:
 - actions/checkout, actions/setup-python, actions/setup-node (MIT)
+
+Container images used by docker-compose.yml (not redistributed, pulled at run time):
+- postgres:16-alpine, https://hub.docker.com/_/postgres (PostgreSQL License)
+- python:3.12-slim, https://hub.docker.com/_/python (PSF License)
+- node:20-alpine (build stage only), https://hub.docker.com/_/node (MIT)
+- nginx:1.27-alpine, https://hub.docker.com/_/nginx (BSD-2-Clause)
+- ollama/ollama:0.6.8, optional "llm" profile, https://github.com/ollama/ollama (MIT)
+- Qwen2.5-7B-Instruct weights, optional, downloaded by Ollama on first run,
+  https://huggingface.co/Qwen/Qwen2.5-7B-Instruct (Apache-2.0)

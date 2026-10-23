@@ -76,3 +76,33 @@ jobs:
       - run: npm run build
         if: steps.frontend_files.outputs.present == 'true'
         working-directory: frontend
+
+  compose:
+    name: docker compose up from scratch
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start the whole stack
+        run: docker compose up -d --build --wait --wait-timeout 300
+      - name: Smoke test through nginx (client login, bank login, worker alive)
+        run: |
+          set -e
+          curl -fsS http://localhost:8080/ | grep -qi "<div id=\"root\""
+          curl -fsS http://localhost:8080/health
+          for who in p3b uw1; do
+            curl -fsS -X POST http://localhost:8080/api/v1/auth/login \
+              -H 'Content-Type: application/json' \
+              -d "{\"login\":\"$who\",\"password\":\"demo\"}" | grep -q access_token
+          done
+          curl -fsS http://localhost:8100/health | grep -q '"personas":7'
+          test "$(docker compose ps worker --format '{{.State}}')" = running
+      - name: Restart keeps data (seed is idempotent)
+        run: |
+          docker compose restart api
+          docker compose up -d --wait --wait-timeout 120
+          curl -fsS http://localhost:8000/health
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --no-color --tail 200
+      - run: docker compose down -v
+        if: always()
