@@ -66,3 +66,9 @@
 .upload-bar label{display:flex;gap:8px;align-items:center;color:#777}.upload-bar .primary{color:#fff}
 .callout.requested{display:grid;gap:10px}.callout.requested .primary{justify-self:start;color:#fff}
 .review-card .doc{grid-template-columns:1fr auto}.review-card .doc-kind{display:none}
+.assistant-fab{position:fixed;right:28px;bottom:28px;z-index:20;box-shadow:0 10px 30px #ef312444}
+.assistant{position:fixed;right:28px;bottom:28px;width:380px;max-height:70vh;z-index:20;background:#fff;border:1px solid #e6e4df;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px;box-shadow:0 20px 50px #0002}
+.assistant form{display:flex;gap:8px}.assistant form input{flex:1;min-width:0;border:1px solid #ddd;border-radius:10px;padding:10px;font:inherit}
+.assistant .chips{max-height:110px;overflow:auto}.assistant .bubble .link{display:block;padding:6px 0 0}.bubble.mine .link{color:#ff8a80}
+.link.dark{color:#777}
+@media(max-width:900px){.assistant{left:12px;right:12px;width:auto}}

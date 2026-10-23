@@ -46,6 +46,10 @@ STATUS_TEXT = {
 }
 
 
+def _lower_first(text: str) -> str:
+    return text[:1].lower() + text[1:]
+
+
 def detect(text: str) -> str:
     low = (text or "").lower()
     for intent, pattern in INTENTS:
@@ -99,7 +103,7 @@ def answer(text: str, *, explanation: dict | None, offer: dict | None, forecast:
     if intent == "WHY_LIMIT":
         parts = [explanation.get("why_amount") or explanation.get("reason") or ""]
         if explanation.get("advice"):
-            parts.append("Чтобы получить больше: " + explanation["advice"][0]["text"] + ".")
+            parts.append("Чтобы получить больше: " + _lower_first(explanation["advice"][0]["text"]) + ".")
         return {"intent": intent, "action": {"label": "Как получить больше", "target": "offer"},
                 "answer": " ".join(p for p in parts if p)}
     if intent == "CAN_TAKE":
@@ -112,7 +116,7 @@ def answer(text: str, *, explanation: dict | None, offer: dict | None, forecast:
         tip = ""
         if explanation.get("advice"):
             best = explanation["advice"][0]
-            tip = f" Больше можно получить так: {best['text']}."
+            tip = f" Больше можно получить так: {_lower_first(best['text'])}."
         return {"intent": intent, "action": {"label": "Как получить больше", "target": "offer"},
                 "answer": f"Сейчас доступно до {rub(limit)}, {rub(want)} — больше лимита.{tip}"}
     # OVERPAYMENT

@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react'
 import { Application, BankItem, Me, Offer, productName, request, rubles } from './api'
 import { ReviewPanel, RiskQueue } from './bank/ReviewPanel'
 import { RulesAdmin } from './bank/RulesAdmin'
+import { Assistant } from './client/Assistant'
 import { ForecastCard } from './client/ForecastCard'
 import { OfferPanel } from './client/OfferPanel'
 import { Answers, Questionnaire } from './client/Questionnaire'
@@ -46,6 +47,7 @@ export default function App() {
       </nav>
       <div className="profile"><div className="avatar">{me.full_name[0]}</div><div><b>{me.full_name}</b><small>{me.role}</small></div><button onClick={logout}>↗</button></div>
     </aside>
+    {!bank && <Assistant token={token} onNavigate={() => { setSection('main'); window.scrollTo({ top: 0, behavior: 'smooth' }) }} />}
     <main>{section === 'audit' && bank ? <AuditPage token={token} /> : section === 'documents' && !bank ? <DocumentsPage token={token} businessId={me.businesses[0].id} canUpload={me.businesses[0].permissions.includes('FILL')} /> : me.role === 'RULES_ADMIN' ? <RulesAdmin token={token} /> : bank ? <BankDashboard token={token} me={me} /> : <ClientDashboard token={token} me={me} />}</main>
   </div>
 }
