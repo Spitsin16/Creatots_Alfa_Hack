@@ -16,13 +16,14 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_session
 from app.api.errors import APIError
-from app.models import AuditLog, Business, DataSnapshot, Rule, User
+from app.models import AuditLog, Business, DataSnapshot, Notification, Rule, User
 from app.security import issue_access_token
 from app.seed import seed_fixture
 from app.services.sandbox.generator import SandboxParams, build
 from app.services.scoring.engine import decide
 
 router = APIRouter(prefix="/api/v1/sandbox", tags=["sandbox"])
+demo_router = APIRouter(prefix="/api/v1/demo", tags=["demo"])
 MAX_SANDBOX_CLIENTS = 500
 OWNERS = ["Орлова Мария Андреевна", "Ковалёв Денис Игоревич", "Смирнова Ольга Петровна", "Никитин Павел Сергеевич",
           "Фёдорова Анна Викторовна", "Григорьев Илья Олегович", "Зуева Екатерина Романовна", "Лебедев Максим Юрьевич"]
@@ -94,3 +95,17 @@ def sandbox_source(inn: str, source: str, session: Session = Depends(get_session
     return {"inn": inn, **snaps[source]}
 
 
+
+
+@demo_router.get("/unread")
+def demo_unread(logins: str = "", session: Session = Depends(get_session)) -> dict:
+    """Демо-переключатель кабинетов: сколько непрочитанных уведомлений у каждого профиля.
+
+    Только счётчики, без текстов; только для демонстрационных логинов (данные синтетические)."""
+    wanted = [x for x in logins.split(",") if x][:20]
+    users = session.scalars(select(User).where(User.login.in_(wanted))).all() if wanted else []
+    out = {u.login: 0 for u in users}
+    for u in users:
+        out[u.login] = session.scalar(select(func.count()).select_from(Notification).where(
+            Notification.user_id == u.id, Notification.channel == "IN_APP", Notification.read_at.is_(None))) or 0
+    return {"unread": out}

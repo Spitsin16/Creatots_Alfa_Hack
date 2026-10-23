@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { Application, BankItem, Me, MyApplications, Offer, productName, request, rubles, scoreTone, toneTitle } from './api'
 import { ReviewPanel, RiskQueue } from './bank/ReviewPanel'
 import { RulesAdmin } from './bank/RulesAdmin'
@@ -11,6 +11,10 @@ import { AuditPage } from './bank/AuditPage'
 import { Bell } from './common/Bell'
 import { DocumentsPage, RequestedDocuments } from './common/Documents'
 import { Chat } from './common/Chat'
+import { CabinetSwitcher } from './common/CabinetSwitcher'
+import { rememberLastClient, sandboxClients } from './common/demoSession'
+import { Celebration } from './client/Celebration'
+import { LoanCabinet } from './client/LoanCabinet'
 import { Processing, Spinner } from './common/Spinner'
 
 const accountGroups = [
@@ -44,7 +48,9 @@ export default function App() {
   const [error, setError] = useState('')
   const [section, setSection] = useState('main')
   useEffect(() => { if (token) request<Me>('/api/v1/me', {}, token).then(setMe).catch(() => logout()) }, [token])
-  const logout = () => { sessionStorage.clear(); setToken(''); setMe(null); setSection('main') }
+  const logout = () => { sessionStorage.removeItem('token'); setToken(''); setMe(null); setSection('main') }
+  const switchTo = (value: string) => { sessionStorage.setItem('token', value); setMe(null); setSection('main'); setToken(value) }
+  useEffect(() => { if (me?.role === 'CLIENT') rememberLastClient(me.login, me.full_name) }, [me?.login])
   if (!token || !me) return <Login onLogin={(value) => { sessionStorage.setItem('token', value); setToken(value) }} error={error} setError={setError} />
   const bank = me.role !== 'CLIENT'
   return <div className="app-shell">
@@ -55,6 +61,7 @@ export default function App() {
           : [['main', '⌂', 'Кредиты'], ['documents', '◫', 'Документы']]).map(([key, icon, label]) =>
           <button key={key} className={`nav-item ${section === key ? 'active' : ''}`} onClick={() => setSection(key)}><span>{icon}</span>{label}</button>)}
       </nav>
+      <CabinetSwitcher me={me} onSwitch={switchTo} />
       <div className="profile"><div className="avatar">{me.full_name[0]}</div><div><b>{me.full_name}</b><small>{me.role}</small></div><button onClick={logout}>↗</button></div>
     </aside>
     {!bank && <Assistant token={token} onNavigate={() => { setSection('main'); window.scrollTo({ top: 0, behavior: 'smooth' }) }} />}
@@ -68,7 +75,9 @@ function Login({ onLogin, error, setError }: { onLogin: (token: string) => void;
   const [busy, setBusy] = useState(false)
   const [guest, setGuest] = useState(false)
   const [sandbox, setSandbox] = useState(false)
-  const current = accountGroups.find(g => g.key === group)!
+  const base = accountGroups.find(g => g.key === group)!
+  const mine = group === 'client' ? sandboxClients().map(c => ({ login: c.login, title: c.name, note: `Песочница · балл ${c.score}`, badge: 'Ваш клиент' })) : []
+  const current = { ...base, accounts: [...mine, ...base.accounts] }
   const pickGroup = (key: string) => { setGroup(key); setSelected(accountGroups.find(g => g.key === key)!.accounts[0].login); setError('') }
   const submit = async (event: FormEvent) => {
     event.preventDefault()
@@ -111,6 +120,12 @@ function ClientDashboard({ token, me }: { token: string; me: Me }) {
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
   const [stage, setStage] = useState('')
+  const [celebrate, setCelebrate] = useState(false)
+  const prevStatus = useRef<string | null>(null)
+  useEffect(() => {
+    if (application?.status === 'ISSUED' && prevStatus.current && prevStatus.current !== 'ISSUED') setCelebrate(true)
+    prevStatus.current = application?.status ?? null
+  }, [application?.status])
   const call = async (fn: () => Promise<void>) => { setBusy(true); setMessage(''); try { await fn() } catch (e) { setMessage((e as Error).message) } finally { setBusy(false); setStage('') } }
   const run = (label: string, fn: () => Promise<void>) => { setStage(label); return call(fn) }
   const calculate = (a: Answers) => run('Считаем предложение по вашим оборотам…', async () => {
@@ -143,6 +158,8 @@ function ClientDashboard({ token, me }: { token: string; me: Me }) {
     {offer && <OfferPanel token={token} offer={offer} onOffer={o => { setOffer(o); setApplication(null) }} onContinue={create}
       onRefinance={answers ? (amount: number, term: number) => calculate({ ...answers, purpose: 'refinance', frequency: 'once', term_months: term, amount }) : undefined}
       canContinue={!application && business.permissions.includes('FILL')} repayment={answers?.repayment ?? 'equal'} />}
+    {celebrate && application && <Celebration amountKopecks={application.amount_kopecks} onClose={() => setCelebrate(false)} />}
+    {application?.status === 'ISSUED' && <LoanCabinet token={token} applicationId={application.id} />}
     {application && <ApplicationTracker token={token} businessId={business.id} application={application} canSubmit={business.permissions.includes('SUBMIT')}
       onSubmit={submit} onSign={sign} onRefresh={refresh} busy={busy} />}
   </div>
@@ -162,7 +179,7 @@ function ApplicationTracker({ token, businessId, application, canSubmit, onSubmi
     </div>}
     <div className="timeline">{(timeline.length ? timeline : [{ to_status: application.status, comment: 'Заявка создана', at: '' }]).map((item, index) => <div className="timeline-row" key={`${item.to_status}-${index}`}><span className="timeline-dot">✓</span><div><b>{statusName[item.to_status] ?? item.to_status}</b><small>{item.comment}</small></div></div>)}</div>
     {application.decision && <div className="decision"><span>{application.status === 'INFO_REQUESTED' ? 'Комментарий специалиста' : 'Решение банка'}</span><b>{application.decision.explanation}</b>
-      {application.decision.limit_kopecks > 0 && application.status !== 'INFO_REQUESTED' && <small>{rubles(application.decision.limit_kopecks)}{application.decision.rate ? ` · ${application.decision.rate}%` : ''}</small>}</div>}
+      {application.decision.limit_kopecks > 0 && application.status !== 'INFO_REQUESTED' && <small>{rubles(['APPROVED', 'CONTRACT_SIGNED', 'ISSUED'].includes(application.status) ? Math.min(application.amount_kopecks, application.decision.limit_kopecks) : application.decision.limit_kopecks)}{application.decision.rate ? ` · ${application.decision.rate}%` : ''}</small>}</div>}
     {application.status === 'DRAFT' && (canSubmit
       ? <button className="primary" disabled={busy} onClick={onSubmit}>{busy ? <Spinner label="Отправляем…" light /> : 'Отправить заявку'}</button>
       : <p className="hint">Заявка подготовлена. Отправить её может руководитель.</p>)}
