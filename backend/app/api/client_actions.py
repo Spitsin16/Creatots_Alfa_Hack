@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
-from app.models import Application, AuditLog, Decision, PreOffer, User
+from app.models import Application, AuditLog, Decision, Membership, PreOffer, User
 from app.services.application_flow import transition_application
 from app.services.expiry import expire_offers
 
@@ -47,6 +47,31 @@ def counter_terms(session: Session, application: Application) -> dict | None:
                     "term_months": counter["term"], "rate": counter.get("rate") or (float(decision.rate) if decision.rate else None)}
     return {"product": application.product, "amount_kopecks": decision.limit_kopecks,
             "term_months": application.term_months, "rate": float(decision.rate) if decision.rate is not None else None}
+
+
+ACTIVE = {"DRAFT", "AWAITING_SIGNATURE", "SUBMITTED", "VALIDATION", "ENRICHMENT", "SCORING", "MANUAL_REVIEW",
+          "INFO_REQUESTED", "APPROVED", "COUNTER_OFFER", "CONTRACT_SIGNED"}
+
+
+@router.get("/applications")
+def list_my_applications(business_id: str | None = None, user: User = Depends(get_current_user),
+                         session: Session = Depends(get_session)) -> dict:
+    """Заявки бизнеса клиента — чтобы после повторного входа он видел свою заявку и решение."""
+    memberships = session.scalars(select(Membership).where(Membership.user_id == user.id)).all()
+    allowed = {m.business_id for m in memberships if "VIEW" in (m.permissions or [])}
+    if business_id:
+        if business_id not in allowed:
+            raise APIError(403, "BUSINESS_ACCESS_DENIED", "Нет доступа к организации")
+        allowed = {business_id}
+    if not allowed:
+        return {"items": [], "active_id": None}
+    apps = session.scalars(select(Application).where(Application.business_id.in_(allowed))
+                           .order_by(Application.created_at.desc(), Application.id.desc())).all()
+    items = [{"id": a.id, "business_id": a.business_id, "product": a.product, "amount_kopecks": a.amount_kopecks,
+              "term_months": a.term_months, "status": a.status, "active": a.status in ACTIVE,
+              "created_at": a.created_at} for a in apps]
+    active = next((i["id"] for i in items if i["active"]), None)
+    return {"items": items, "active_id": active}
 
 
 @router.get("/applications/{application_id}/counter-offer")

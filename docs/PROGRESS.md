@@ -4,11 +4,26 @@
 
 ## Сейчас
 
-- **Дата:** 23.10.2026
+- **Дата:** 24.10.2026
 - **Контрольная точка:** вечер 23.10 — сквозной прогон `p3b` от предложения до выдачи
 - **Блокеры:** защита `main` требует зелёный CI и одобрение коллеги; цепочка PR #1 → #2 → #3 ещё открыта, а весь проверенный код собран в `codex/frontend-foundation`.
 
 ## Последняя запись
+
+**24.10, ночь, Claude Code (аналитик)** — ветка `feat/review-fixes` от `main` (7dec74f). Правки по итогам демо команды 24.10 и песочница проверяющего. Фронт тронут только в перечисленных местах — дальнейший дизайн за фронтендером.
+
+Что поменялось в API (для бэкендера):
+- `GET /api/v1/applications[?business_id=]` → `{items[], active_id}` — заявки бизнеса клиента; фронт по нему восстанавливает заявку после повторного входа (раньше одобрение «пропадало»). Файл `app/api/client_actions.py`.
+- `GET /api/v1/applications/{id}` — новое поле `assignee_name` (кто ведёт заявку). `app/api/routes.py`, `schemas.py`.
+- `GET /api/v1/bank/applications` — поле `assignee_name` в строке очереди, параметр `?mine=true`. В `BankApplicationDetail` поле `assignee_name` теперь приходит из базовой модели (дубль убран). `app/api/bank.py`, `bank_schemas.py`.
+- Админ правил: `GET /bank/rules` отдаёт `active_rules` (JSON); `POST /bank/rules/simulate` и `POST /bank/rules` принимают `rules` (JSON) вместо `yaml`; YAML по-прежнему принимается. Добавлены проверки диапазонов в `services/scoring/simulate.py`.
+- **Песочница:** `POST /api/v1/sandbox/clients` (без авторизации, лимит 500 клиентов) — параметры бизнеса → синтетическая персона (`services/sandbox/generator.py`, логика транзакций из `data/reference/generate_personas.py`) → `seed_fixture` → логин `sbxXXXXX`/`demo`, токен и предварительный расчёт. `GET /api/v1/sandbox/sources/{inn}/{source}` — для моков, только для клиентов песочницы (флаг `sandbox` в снимке PROFILE).
+- `app/seed.py`: тело цикла вынесено в `seed_fixture(session, fixture)` — поведение сида прежнее.
+- `mocks/app.py`: при неизвестном ИНН спрашивает `SANDBOX_URL` (в compose — `http://api:8000`), иначе 404 как раньше.
+
+Фронт: группы на входе (клиенты / не клиент / сотрудники) и экран пути для не клиента; восстановление заявки; индикаторы загрузки (`common/Spinner.tsx`); «Заявку ведёт … → Написать специалисту»; в банке балл с цветом вместо класса (`scoreTone` в `api.ts`), без сегмента, «Сумма заявки» / «Макс. лимит» / «Чем ограничен» раздельно, фильтр «Мои заявки»; правила формой (`bank/RulesAdmin.tsx`); мастер песочницы (`client/Sandbox.tsx`).
+
+Проверка: pytest 148 прошли, 1 пропущен; Ruff и tsc чистые; в браузере прошли все прежние сценарии (p3b с выпиской до выдачи, p2b с запросом документов, p3a, p1b → рефинансирование, ассистент, админка) и новые (8 правок, песочница → заявка → одобрено). `data/rules.yaml` и эталон не менялись. **Не проверено локально:** Docker и `npm run build` — их проверит CI. **Следующий шаг:** залить ветку, PR в `main`, CI, ручной прогон на Docker.
 
 **23.10, Codex** — воспроизведён локальный запуск на macOS ARM с Docker Desktop 29.4.3 / Compose 5.1.4. Из исходной папки с кириллицей BuildKit падает до чтения Dockerfile с `x-docker-expose-session-sharedkey contains value with non-printable ASCII characters`; из временного латинского пути тот же снимок проекта успешно собрал и запустил PostgreSQL, API, worker, mocks и frontend. Все контейнеры активны, PostgreSQL/API/mocks healthy, `GET /health`, фронт на `:8080` и вход `p3b/demo` проверены. README дополнен требованием к пути; стандартная папка GitHub-клона `Creatots_Alfa_Hack` безопасна. **В работе:** PR #5 в `main`. **Следующий шаг:** дождаться повторного зелёного CI после документационного коммита и approval коллеги.
 

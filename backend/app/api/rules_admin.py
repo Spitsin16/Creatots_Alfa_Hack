@@ -6,6 +6,7 @@
 
 from datetime import UTC, datetime
 
+import yaml as yamllib
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
@@ -21,9 +22,19 @@ BANK_ROLES = {"UNDERWRITER", "RISK_MANAGER", "RULES_ADMIN"}
 
 
 class RulesIn(BaseModel):
-    yaml: str = Field(min_length=10, max_length=200_000)
+    """Правила — либо YAML-текстом, либо структурой (форма в кабинете админа)."""
+
+    yaml: str | None = Field(default=None, min_length=10, max_length=200_000)
+    rules: dict | None = None
     comment: str = Field(default="", max_length=500)
     activate: bool = False
+
+    def text(self) -> str:
+        if self.rules is not None:
+            return yamllib.safe_dump(self.rules, allow_unicode=True, sort_keys=False)
+        if self.yaml is None:
+            raise APIError(422, "RULES_INVALID", "Передайте правила")
+        return self.yaml
 
 
 def _role(user: User, *roles: str) -> None:
@@ -66,6 +77,7 @@ def list_rules(user: User = Depends(get_current_user), session: Session = Depend
     return {
         "active_version": active.version if active else None,
         "active_yaml": active.yaml if active else None,
+        "active_rules": yamllib.safe_load(active.yaml) if active else None,
         "versions": [{"version": r.version, "active": r.active, "author_id": r.author_id, "created_at": r.created_at}
                      for r in rules],
     }
@@ -75,7 +87,7 @@ def list_rules(user: User = Depends(get_current_user), session: Session = Depend
 def simulate_rules(payload: RulesIn, user: User = Depends(get_current_user),
                    session: Session = Depends(get_session)) -> dict:
     _role(user, "RULES_ADMIN")
-    _, rows = _check(session, payload.yaml)
+    _, rows = _check(session, payload.text())
     return {"base_version": _active(session).version, "personas": rows,
             "changed": sum(r["changed"] for r in rows)}
 
@@ -84,9 +96,10 @@ def simulate_rules(payload: RulesIn, user: User = Depends(get_current_user),
 def create_rules(payload: RulesIn, user: User = Depends(get_current_user),
                  session: Session = Depends(get_session)) -> dict:
     _role(user, "RULES_ADMIN")
-    _, rows = _check(session, payload.yaml)
+    text = payload.text()
+    _, rows = _check(session, text)
     version = (session.scalar(select(func.max(Rule.version))) or 0) + 1
-    rule = Rule(version=version, yaml=payload.yaml, author_id=user.id, active=False, created_at=datetime.now(UTC))
+    rule = Rule(version=version, yaml=text, author_id=user.id, active=False, created_at=datetime.now(UTC))
     session.add(rule)
     session.flush()
     session.add(AuditLog(actor_id=user.id, action="RULES_VERSION_CREATED", entity="rules", entity_id=str(version),

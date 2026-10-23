@@ -23,7 +23,7 @@ export function Chat({ token, applicationId, side }: { token: string; applicatio
         <small>{m.author_name} · {new Date(m.created_at).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })}</small>{m.text}</div>)}
     </div>
     {error && <div className="error">{error}</div>}
-    <form onSubmit={send}><input value={text} maxLength={2000} onChange={e => setText(e.target.value)} placeholder={side === 'CLIENT' ? 'Ваш вопрос' : 'Ответ клиенту'} />
+    <form onSubmit={send}><input id={`chat-${applicationId}`} value={text} maxLength={2000} onChange={e => setText(e.target.value)} placeholder={side === 'CLIENT' ? 'Ваш вопрос' : 'Ответ клиенту'} />
       <button className="primary">Отправить</button></form>
   </div>
 }

@@ -61,3 +61,23 @@ def test_only_rules_admin_can_change(api: TestClient) -> None:
     assert api.get("/api/v1/bank/rules", headers=uw).status_code == 200
     assert api.post("/api/v1/bank/rules", headers=uw, json={"yaml": RULES}).status_code == 403
     assert api.get("/api/v1/bank/rules", headers=login(api, "p3b")).status_code == 403
+
+
+def test_structured_rules_from_form(api: TestClient) -> None:
+    admin = login(api, "admin1")
+    listing = api.get("/api/v1/bank/rules", headers=admin).json()
+    rules = listing["active_rules"]
+    assert rules["market"]["key_rate"] == 14.0
+    rules["products"]["OVERDRAFT"]["base_rate"] = 25.0
+    sim = api.post("/api/v1/bank/rules/simulate", headers=admin, json={"rules": rules}).json()
+    p3b = next(r for r in sim["personas"] if r["persona"] == "p3b")
+    assert p3b["changed"] and p3b["after"]["rate"] == 28.0
+    created = api.post("/api/v1/bank/rules", headers=admin, json={"rules": rules, "comment": "форма", "activate": True})
+    assert created.status_code == 201
+    assert (
+        api.get("/api/v1/bank/rules", headers=admin).json()["active_rules"]["products"]["OVERDRAFT"]["base_rate"]
+        == 25.0
+    )
+    rules["market"]["key_rate"] = 0
+    bad = api.post("/api/v1/bank/rules/simulate", headers=admin, json={"rules": rules})
+    assert bad.status_code == 422 and "Ключевая ставка" in bad.json()["message"]

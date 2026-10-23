@@ -442,7 +442,16 @@ def get_application(
             for item in history
         ],
         decision=client_decision,
+        assignee_name=_assignee_name(session, application),
     )
+
+
+def _assignee_name(session: Session, application: Application) -> str | None:
+    """Кто из сотрудников ведёт заявку — клиент видит имя и может написать ему в чат."""
+    if application.assignee_id is None:
+        return None
+    assignee = session.get(User, application.assignee_id)
+    return assignee.full_name if assignee else None
 
 
 @router.post("/applications/{application_id}/sign", response_model=ApplicationResponse)

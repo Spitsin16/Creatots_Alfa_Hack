@@ -22,6 +22,8 @@ from pydantic import BaseModel, Field
 
 DATA = Path(os.environ.get("MOCKS_DATA_DIR", Path(__file__).resolve().parents[1] / "data"))
 TIMEOUT_SECONDS = float(os.environ.get("MOCKS_TIMEOUT_SECONDS", "15"))
+# Клиенты из песочницы проверяющего живут в БД API, а не в файлах — спрашиваем у API.
+SANDBOX_URL = os.environ.get("SANDBOX_URL", "")
 SOURCES = ("alfa", "registry", "fns", "bki", "mchd")
 
 
@@ -60,7 +62,19 @@ class Fault(BaseModel):
     times: int = Field(default=1, ge=1, le=100)
 
 
-def create_app(data_dir: Path = DATA, timeout_seconds: float = TIMEOUT_SECONDS) -> FastAPI:
+async def fetch_sandbox(base_url: str, inn: str, source: str) -> dict | None:
+    import httpx
+
+    try:
+        async with httpx.AsyncClient(base_url=base_url, timeout=5) as client:
+            r = await client.get(f"/api/v1/sandbox/sources/{inn}/{source}")
+    except httpx.HTTPError:
+        return None
+    return r.json() if r.status_code == 200 else None
+
+
+def create_app(data_dir: Path = DATA, timeout_seconds: float = TIMEOUT_SECONDS, sandbox_url: str = SANDBOX_URL,
+               sandbox_fetch=fetch_sandbox) -> FastAPI:
     app = FastAPI(title="Моки внешних систем (синтетика)", version="1.0.0")
     personas = load_personas(data_dir)
     faults: dict[str, dict] = {}
@@ -84,6 +98,9 @@ def create_app(data_dir: Path = DATA, timeout_seconds: float = TIMEOUT_SECONDS) 
             return await fail(planned["mode"])
         persona = personas.get(inn)
         if persona is None:
+            data = await sandbox_fetch(sandbox_url, inn, source) if sandbox_url else None
+            if data is not None:
+                return data
             raise HTTPException(404, detail={"error": "NOT_FOUND", "message": f"ИНН {inn} не найден"})
         return source_payload(persona, source)
 

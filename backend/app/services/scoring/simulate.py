@@ -30,8 +30,15 @@ def parse_rules(text: str) -> dict:
     mins = [c.get("min") for c in rules["classes"]]
     if mins != sorted(mins, reverse=True):
         raise RulesError("Классы должны идти по убыванию минимального балла")
-    if rules["market"]["key_rate"] <= 0:
-        raise RulesError("Ключевая ставка должна быть положительной")
+    if not 0 < rules["market"]["key_rate"] <= 50:
+        raise RulesError("Ключевая ставка — от 0 до 50%")
+    for name, product in rules["products"].items():
+        if not 0 < product["base_rate"] <= 100:
+            raise RulesError(f"Базовая ставка {name} — от 0 до 100%")
+        if product["min_amount"] > product["max_amount"]:
+            raise RulesError(f"У {name} минимальная сумма больше максимальной")
+    if not 0 < rules["debt_load"]["max_payment_share"] <= 1:
+        raise RulesError("Доля платежей от выручки — от 0 до 1")
     return rules
 
 

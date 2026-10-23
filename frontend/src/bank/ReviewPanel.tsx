@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { BankItem, DocItem, Me, productName, request, rubles } from '../api'
+import { BankItem, DocItem, Me, productName, request, rubles, scoreTone, toneTitle } from '../api'
 import { DocList } from '../common/Documents'
 import { Chat } from '../common/Chat'
 
@@ -15,6 +15,7 @@ const factorName: Record<string, string> = {
   CREDIT_HISTORY: 'Кредитная история', ALFA_HISTORY: 'История в Альфе', TAX_DEBT: 'Налоговый долг',
   INDUSTRY_RISK: 'Отраслевой риск', ALFA_SHARE: 'Доля оборотов в Альфе', DATA_QUALITY: 'Полнота данных',
 }
+const outcomeName: Record<string, string> = { APPROVED: 'одобрено', COUNTER_OFFER: 'контрпредложение', MANUAL_REVIEW: 'ручная проверка', INFO_REQUESTED: 'запрошены документы', REJECTED: 'отказ' }
 const bindingName: Record<string, string> = { REVENUE: 'от выручки', CAPACITY: 'по платёжеспособности', REFINANCE_BALANCE: 'остаток долга', PRODUCT_MAX: 'максимум продукта' }
 const reasons = [['LOW_CAPACITY', 'Недостаточная платёжеспособность'], ['CREDIT_HISTORY', 'Кредитная история'], ['DATA_MISMATCH', 'Данные не сходятся'], ['OTHER', 'Другое']]
 
@@ -41,12 +42,13 @@ export function ReviewPanel({ token, me, item, onChanged }: { token: string; me:
   const mine = d?.assignee_id === me.id
   return <aside className="review-card">
     <span className="eyebrow">Заявка {item.id.slice(0, 8)}</span><h2>{item.business_name}</h2>
-    {decision && <div className="score"><span>Класс риска · {decision.outcome}</span><b>{decision.cls}</b><small>{decision.score} баллов</small></div>}
+    {decision && <div className={`score tone-${scoreTone(decision.cls, item.status)}`}><span>Скоринговый балл · {toneTitle[scoreTone(decision.cls, item.status)]}</span><b>{decision.score}</b><small>{decision.stop_factors.length ? 'есть стоп-фактор' : outcomeName[decision.outcome] ?? decision.outcome}</small></div>}
     <dl>
       <div><dt>Продукт</dt><dd>{productName(item.product)}</dd></div>
-      <div><dt>Сумма</dt><dd>{rubles(item.amount_kopecks)}</dd></div>
-      {decision && <div><dt>Лимит расчёта</dt><dd>{rubles(decision.limit_kopecks)} · {bindingName[decision.binding_constraint ?? ''] ?? '—'}</dd></div>}
-      <div><dt>Сегмент</dt><dd>{item.segment_code}</dd></div>
+      <div><dt>Сумма заявки</dt><dd>{rubles(item.amount_kopecks)}</dd></div>
+      {decision && <div><dt>Макс. лимит по расчёту</dt><dd>{rubles(decision.limit_kopecks)}</dd></div>}
+      {decision && <div><dt>Чем ограничен лимит</dt><dd>{bindingName[decision.binding_constraint ?? ''] ?? '—'}</dd></div>}
+      {decision?.rate != null && <div><dt>Ставка</dt><dd>{decision.rate}%</dd></div>}
       <div><dt>Исполнитель</dt><dd>{d?.assignee_name ?? 'не назначен'}</dd></div>
     </dl>
     {decision && <div className="factor-list">{Object.entries(decision.factors).sort((a, b) => a[1] - b[1]).map(([k, v]) =>
