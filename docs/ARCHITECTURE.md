@@ -19,9 +19,9 @@ flowchart LR
 | Компонент | Где | Что делает |
 | --- | --- | --- |
 | Фронт | `frontend/` (React + TS + Vite, nginx) | Анкета, предложение, выписка, прогноз, сезонный график, трекер, чат, уведомления; банк — очередь, карточка, действия, риск, правила |
-| API | `backend/app/api/` | Вход, профиль, согласия, предрасчёт, заявки, подпись; `insights` — объяснение, выписка, график, прогноз; `chat` — чат и уведомления; `documents` — хранилище и документы по заявке; `client_actions` — контрпредложение, отмена, «перемотать время»; `assistant` — ассистент; `bank` — очередь и решения; `rules_admin` — версии правил |
+| API | `backend/app/api/` | Вход, профиль, согласия, предрасчёт, заявки, подпись; `insights` — объяснение, выписка, график, прогноз; `chat` — чат и уведомления; `documents` — хранилище и документы по заявке; `client_actions` — контрпредложение, отмена, «перемотать время»; `assistant` — ассистент; `sandbox` — песочница проверяющего; `bank` — очередь и решения; `rules_admin` — версии правил |
 | Воркер | `backend/app/worker.py` | Забирает события из `outbox` (`APPLICATION_SUBMITTED`, `CONTRACT_SIGNED`, `EXPLAIN_PRE_OFFER`), опрашивает источники, ставит статусы; раз в минуту возвращает просроченные назначения в очередь |
-| Сервисы движка | `backend/app/services/` | `scoring` (решение, симуляция правил), `statement_1c`, `explain` (шаблоны, LLM, проверка чисел), `seasonal`, `forecast`, `integrations` (клиент моков), `notifications` (уведомления, SLA), `documents`, `assistant`, `sla_sweep`, `expiry` |
+| Сервисы движка | `backend/app/services/` | `scoring` (решение, симуляция правил), `statement_1c`, `explain` (шаблоны, LLM, проверка чисел), `seasonal`, `forecast`, `integrations` (клиент моков), `notifications` (уведомления, SLA), `documents`, `assistant`, `sandbox` (генератор синтетического клиента), `sla_sweep`, `expiry` |
 | Моки | `mocks/` | Данные внешних систем по ИНН из `data/personas`, сбои `?fail=timeout|500` и `POST /_faults` |
 | Данные | `data/` | `rules.yaml`, 7 персон, выписка 1С, эталонный движок и `expected.json` |
 
