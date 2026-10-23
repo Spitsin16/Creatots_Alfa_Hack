@@ -9,6 +9,13 @@ Direct Python dependencies (pinned in backend/requirements.lock):
 - Ruff, https://docs.astral.sh/ruff/ (MIT)
 - Uvicorn, https://www.uvicorn.org/ (BSD-3-Clause)
 
+Direct frontend dependencies (pinned in frontend/package-lock.json):
+- React, React DOM, https://react.dev/ (MIT)
+- React Router, https://reactrouter.com/ (MIT)
+- TanStack Query, https://tanstack.com/query (MIT)
+- Vite, @vitejs/plugin-react, https://vite.dev/ (MIT)
+- TypeScript, https://www.typescriptlang.org/ (Apache-2.0)
+
 GitHub Actions used in CI:
 - actions/checkout, actions/setup-python, actions/setup-node (MIT)
 
