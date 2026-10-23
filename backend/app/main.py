@@ -14,6 +14,7 @@ from app.api.errors import APIError, api_error_handler, validation_error_handler
 from app.api.insights import router as insights_router
 from app.api.routes import router
 from app.api.rules_admin import router as rules_router
+from app.api.sandbox import router as sandbox_router
 
 
 def create_app(database_url: str | None = None) -> FastAPI:
@@ -30,6 +31,7 @@ def create_app(database_url: str | None = None) -> FastAPI:
     application.include_router(documents_router)
     application.include_router(client_actions_router)
     application.include_router(assistant_router)
+    application.include_router(sandbox_router)
 
     @application.middleware("http")
     async def request_id(request: Request, call_next):
