@@ -59,3 +59,10 @@
 .version-row em{font-style:normal;font-size:12px;color:#3f7035}
 @media(max-width:900px){.rules-layout{grid-template-columns:1fr}}
 .summary{background:#f6f6f4;border-radius:12px;padding:14px;margin:14px 0}.summary p{margin:0}.summary small{color:#888;display:block;margin-top:6px}
+.doc-list{display:grid;gap:8px}.doc{display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid #eee}
+.doc b,.doc small{display:block}.doc small{color:#888;margin-top:3px}.doc.expired b{color:#a72018}
+.doc-kind{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#ef3124;font-weight:800}
+.upload-bar{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.upload-bar select,.upload-bar input{border:1px solid #ddd;border-radius:10px;padding:10px;font:inherit}
+.upload-bar label{display:flex;gap:8px;align-items:center;color:#777}.upload-bar .primary{color:#fff}
+.callout.requested{display:grid;gap:10px}.callout.requested .primary{justify-self:start;color:#fff}
+.review-card .doc{grid-template-columns:1fr auto}.review-card .doc-kind{display:none}

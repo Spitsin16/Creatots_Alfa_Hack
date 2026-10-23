@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { BankItem, Me, productName, request, rubles } from '../api'
+import { BankItem, DocItem, Me, productName, request, rubles } from '../api'
+import { DocList } from '../common/Documents'
 import { Chat } from '../common/Chat'
 
 type Detail = BankItem & {
@@ -25,7 +26,11 @@ export function ReviewPanel({ token, me, item, onChanged }: { token: string; me:
   const [reason, setReason] = useState('LOW_CAPACITY')
   const [amount, setAmount] = useState(0)
   const [error, setError] = useState('')
-  const load = () => request<Detail>(`/api/v1/bank/applications/${item.id}`, {}, token).then(x => { setD(x); setAmount(x.amount_kopecks / 100) }).catch(e => setError(e.message))
+  const [docs, setDocs] = useState<DocItem[]>([])
+  const load = () => {
+    request<Detail>(`/api/v1/bank/applications/${item.id}`, {}, token).then(x => { setD(x); setAmount(x.amount_kopecks / 100) }).catch(e => setError(e.message))
+    request<{ items: DocItem[] }>(`/api/v1/applications/${item.id}/documents`, {}, token).then(x => setDocs(x.items)).catch(() => setDocs([]))
+  }
   useEffect(() => { setD(null); setError(''); void load() }, [item.id])
   const run = async (fn: () => Promise<unknown>, ok: string) => { setError(''); try { await fn(); onChanged(ok); void load() } catch (e) { setError((e as Error).message) } }
   const assign = () => run(() => request(`/api/v1/bank/applications/${item.id}/assign`, { method: 'POST' }, token), 'Заявка назначена вам')
@@ -49,6 +54,7 @@ export function ReviewPanel({ token, me, item, onChanged }: { token: string; me:
       {decision.stop_factors.length > 0 && <div className="callout">Стоп-факторы: {decision.stop_factors.join(', ')}</div>}
       {decision.explanation && <p className="muted">{decision.explanation}</p>}
     </div>}
+    {docs.length > 0 && <><h3>Документы клиента</h3><DocList items={docs} token={token} /></>}
     {error && <div className="error">{error}</div>}
     {item.status === 'MANUAL_REVIEW' && me.role === 'UNDERWRITER' && !mine && <button className="primary wide" onClick={assign}>Взять в работу</button>}
     {item.status === 'MANUAL_REVIEW' && mine && <div className="action-form">
