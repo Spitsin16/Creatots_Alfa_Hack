@@ -24,8 +24,8 @@ export const defaultAnswers: Answers = {
   priority: 'small_payment', repayment: 'equal', assets: ['none'],
 }
 
-export function Questionnaire({ onSubmit, busy }: { onSubmit: (a: Answers) => void; busy: boolean }) {
-  const [a, setA] = useState<Answers>(defaultAnswers)
+export function Questionnaire({ onSubmit, busy, initial }: { onSubmit: (a: Answers) => void; busy: boolean; initial?: Answers }) {
+  const [a, setA] = useState<Answers>(initial ?? defaultAnswers)
   const [more, setMore] = useState(false)
   const [consent, setConsent] = useState(false)
   const set = (patch: Partial<Answers>) => setA(prev => ({ ...prev, ...patch }))
