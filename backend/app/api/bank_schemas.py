@@ -20,6 +20,7 @@ class BankApplicationItem(BaseModel):
     created_at: datetime
     open_question_due_at: datetime | None = None
     question_overdue: bool = False
+    assignee_name: str | None = None
 
 
 class BankApplicationPage(BaseModel):
@@ -46,7 +47,6 @@ class InternalDecision(BaseModel):
 class BankApplicationDetail(BankApplicationItem):
     purpose: str
     term_months: int
-    assignee_name: str | None
     snapshots: dict[str, dict]
     decisions: list[InternalDecision]
 

@@ -117,3 +117,4 @@ class ClientDecisionResponse(BaseModel):
 class ApplicationDetailResponse(ApplicationResponse):
     timeline: list[TimelineItem]
     decision: ClientDecisionResponse | None
+    assignee_name: str | None = None

@@ -71,6 +71,8 @@ def _queue_item(session: Session, application: Application) -> BankApplicationIt
         created_at=application.created_at,
         open_question_due_at=due,
         question_overdue=bool(due and due < datetime.now(UTC)),
+        assignee_name=assignee.full_name if (assignee := session.get(User, application.assignee_id)
+                                             if application.assignee_id else None) else None,
     )
 
 
@@ -107,6 +109,7 @@ def list_applications(
     status: str | None = None,
     segment: str | None = None,
     product: str | None = None,
+    mine: bool = False,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=20, ge=1, le=100),
     user: User = Depends(get_current_user),
@@ -120,6 +123,8 @@ def list_applications(
         filters.append(Application.segment_code == segment)
     if product:
         filters.append(Application.product == product)
+    if mine:
+        filters.append(Application.assignee_id == user.id)
     total = session.scalar(select(func.count()).select_from(Application).where(*filters)) or 0
     overdue_question = exists().where(
         Message.application_id == Application.id,
@@ -154,7 +159,6 @@ def get_bank_application(
     if application is None:
         raise APIError(404, "APPLICATION_NOT_FOUND", "Заявка не найдена")
     base = _queue_item(session, application).model_dump()
-    assignee = session.get(User, application.assignee_id) if application.assignee_id else None
     snapshots = session.scalars(select(DataSnapshot).where(DataSnapshot.business_id == application.business_id)).all()
     decisions = session.scalars(
         select(Decision)
@@ -165,7 +169,6 @@ def get_bank_application(
         **base,
         purpose=application.purpose,
         term_months=application.term_months,
-        assignee_name=assignee.full_name if assignee else None,
         snapshots={item.source: item.payload for item in snapshots},
         decisions=[
             InternalDecision(
