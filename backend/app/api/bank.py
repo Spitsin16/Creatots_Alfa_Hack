@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 from decimal import Decimal
 
 from fastapi import APIRouter, Depends, Query
-from sqlalchemy import func, select
+from sqlalchemy import case, exists, func, select
 from sqlalchemy.orm import Session
 
 from app.api.bank_schemas import (
@@ -23,7 +23,7 @@ from app.api.bank_schemas import (
 )
 from app.api.dependencies import get_current_user, get_session
 from app.api.errors import APIError
-from app.models import Application, Approval, AuditLog, Business, DataSnapshot, Decision, User
+from app.models import Application, Approval, AuditLog, Business, DataSnapshot, Decision, Message, User
 from app.services.application_flow import transition_application
 from app.states import InvalidTransition
 
@@ -48,6 +48,15 @@ def _latest_decision(session: Session, application_id: str) -> Decision | None:
 def _queue_item(session: Session, application: Application) -> BankApplicationItem:
     business = session.get(Business, application.business_id)
     decision = _latest_decision(session, application.id)
+    due = session.scalar(
+        select(func.min(Message.answer_due_at)).where(
+            Message.application_id == application.id,
+            Message.author_side == "CLIENT",
+            Message.answered_at.is_(None),
+        )
+    )
+    if due is not None and due.tzinfo is None:
+        due = due.replace(tzinfo=UTC)
     return BankApplicationItem(
         id=application.id,
         business_name=business.name,
@@ -60,6 +69,8 @@ def _queue_item(session: Session, application: Application) -> BankApplicationIt
         score=decision.score if decision else None,
         assignee_id=application.assignee_id,
         created_at=application.created_at,
+        open_question_due_at=due,
+        question_overdue=bool(due and due < datetime.now(UTC)),
     )
 
 
@@ -110,10 +121,17 @@ def list_applications(
     if product:
         filters.append(Application.product == product)
     total = session.scalar(select(func.count()).select_from(Application).where(*filters)) or 0
+    overdue_question = exists().where(
+        Message.application_id == Application.id,
+        Message.author_side == "CLIENT",
+        Message.answered_at.is_(None),
+        Message.answer_due_at < datetime.now(UTC),
+    )
     applications = session.scalars(
         select(Application)
         .where(*filters)
-        .order_by(Application.created_at.desc(), Application.id)
+        # просроченный вопрос в чате поднимает заявку наверх очереди (ТЗ 5.3)
+        .order_by(case((overdue_question, 0), else_=1), Application.created_at.desc(), Application.id)
         .offset((page - 1) * page_size)
         .limit(page_size)
     ).all()

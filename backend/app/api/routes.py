@@ -48,6 +48,7 @@ from app.models import (
 from app.passwords import verify_password
 from app.security import issue_access_token
 from app.services.application_flow import transition_application
+from app.services.explain.llm import configured as llm_configured
 from app.services.scoring.engine import decide
 from app.states import InvalidTransition
 
@@ -211,6 +212,7 @@ def create_pre_offer(
         "outcome": result["outcome"],
         "advice": [item.model_dump() for item in advice],
         "decision_snapshot": result,
+        "scenario": scenario,
     }
     pre_offer = PreOffer(
         business_id=business_id,
@@ -227,6 +229,8 @@ def create_pre_offer(
     )
     session.add(pre_offer)
     session.flush()
+    if llm_configured():
+        session.add(Outbox(event="EXPLAIN_PRE_OFFER", payload={"pre_offer_id": pre_offer.id}))
     session.add(
         AuditLog(
             actor_id=user.id,

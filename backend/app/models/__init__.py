@@ -4,7 +4,20 @@ from datetime import date, datetime
 from decimal import Decimal
 from uuid import uuid4
 
-from sqlalchemy import JSON, BigInteger, Boolean, Date, DateTime, ForeignKey, Integer, Numeric, String, Text, func
+from sqlalchemy import (
+    JSON,
+    BigInteger,
+    Boolean,
+    Date,
+    DateTime,
+    ForeignKey,
+    Integer,
+    LargeBinary,
+    Numeric,
+    String,
+    Text,
+    func,
+)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -187,14 +200,35 @@ class Approval(Base):
 
 
 class Document(Base):
+    """Документ бизнеса (хранилище, application_id = null) или запрошенный по заявке."""
+
     __tablename__ = "documents"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    application_id: Mapped[str] = mapped_column(ForeignKey("applications.id"))
+    application_id: Mapped[str | None] = mapped_column(ForeignKey("applications.id"))
+    business_id: Mapped[str | None] = mapped_column(ForeignKey("businesses.id"), index=True)
     kind: Mapped[str] = mapped_column(String(30))
+    title: Mapped[str | None] = mapped_column(String(200))
     file_id: Mapped[str | None] = mapped_column(String(36))
     requested_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"))
+    uploaded_by: Mapped[str | None] = mapped_column(ForeignKey("users.id"))
     status: Mapped[str] = mapped_column(String(20))
+    valid_to: Mapped[date | None] = mapped_column(Date)
+    created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class StoredFile(Base):
+    """Содержимое загруженного файла. В демо — в БД; в проде — объектное хранилище."""
+
+    __tablename__ = "files"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    filename: Mapped[str] = mapped_column(String(255))
+    content_type: Mapped[str] = mapped_column(String(100))
+    size: Mapped[int] = mapped_column(Integer)
+    sha256: Mapped[str] = mapped_column(String(64))
+    data: Mapped[bytes] = mapped_column(LargeBinary)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
 
 
 class Contract(Base):
@@ -230,4 +264,35 @@ class Outbox(Base):
     status: Mapped[str] = mapped_column(String(20), default="PENDING")
     attempts: Mapped[int] = mapped_column(Integer, default=0)
     available_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Message(Base):
+    """Чат по заявке: вопрос клиента со сроком ответа и ответ сотрудника банка."""
+
+    __tablename__ = "messages"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    application_id: Mapped[str] = mapped_column(ForeignKey("applications.id"), index=True)
+    author_id: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    author_side: Mapped[str] = mapped_column(String(10))  # CLIENT | BANK
+    text: Mapped[str] = mapped_column(Text)
+    answer_due_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    answered_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+
+class Notification(Base):
+    """Уведомление пользователю. Канал SMS в демо только пишется в журнал."""
+
+    __tablename__ = "notifications"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    application_id: Mapped[str | None] = mapped_column(ForeignKey("applications.id"))
+    kind: Mapped[str] = mapped_column(String(30))  # STATUS | MESSAGE | DOCUMENT
+    channel: Mapped[str] = mapped_column(String(10))  # IN_APP | SMS
+    title: Mapped[str] = mapped_column(String(200))
+    text: Mapped[str] = mapped_column(Text)
+    read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())

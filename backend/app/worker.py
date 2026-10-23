@@ -1,15 +1,23 @@
 """Outbox worker for the automatic credit-decision pipeline."""
 
+import os
 import time
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
+import yaml
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db import make_session_factory
-from app.models import Application, AuditLog, Decision, Outbox, PreOffer
+from app.models import Application, AuditLog, Business, Contract, Decision, Outbox, PreOffer, Rule
 from app.services.application_flow import transition_application
+from app.services.documents.storage import store_signed_contract
+from app.services.expiry import expire_offers
+from app.services.explain.llm import rephrase
+from app.services.explain.templates import facts_for_llm
+from app.services.integrations.external import FetchResult, fetch_all
+from app.services.sla_sweep import release_overdue
 
 
 def _decision_text(result: dict) -> str:
@@ -21,6 +29,40 @@ def _decision_text(result: dict) -> str:
     if result["outcome"] == "MANUAL_REVIEW":
         return "Заявка передана специалисту банка. Решение появится в течение рабочего дня."
     return "Сейчас предложение недоступно. Рекомендации помогут подготовиться к повторной заявке."
+
+
+def _enrich(session: Session, application: Application) -> FetchResult | None:
+    """Запрос внешних источников через сервис mocks (если задан MOCKS_URL).
+
+    Ретраи внутри клиента; недоступный источник не роняет конвейер, а уводит
+    заявку в ручную проверку с пометкой «источник недоступен» (ТЗ раздел 12).
+    """
+    base_url = os.environ.get("MOCKS_URL")
+    if not base_url:
+        return None
+    business = session.get(Business, application.business_id)
+    return fetch_all(business.inn, base_url=base_url)
+
+
+def _explain_pre_offer(session: Session, pre_offer_id: str) -> None:
+    """Текст от LLM подменяет шаблон, когда готов; при любой проблеме остаётся шаблон."""
+    pre_offer = session.get(PreOffer, pre_offer_id)
+    if pre_offer is None or not (pre_offer.explanation or {}).get("decision_snapshot"):
+        return
+    rule = session.get(Rule, pre_offer.rules_version)
+    facts = facts_for_llm(pre_offer.explanation["decision_snapshot"], yaml.safe_load(rule.yaml))
+    result = rephrase(facts)
+    pre_offer.explanation = {**pre_offer.explanation, "llm": result}
+    session.add(
+        AuditLog(
+            actor_id=None,
+            action="EXPLANATION_GENERATED",
+            entity="pre_offer",
+            entity_id=pre_offer.id,
+            before=None,
+            after={"source": result["source"], "reason": result["reason"]},
+        )
+    )
 
 
 def process_one(session: Session) -> bool:
@@ -40,6 +82,9 @@ def process_one(session: Session) -> bool:
         application = session.get(Application, event.payload["application_id"])
         if application is not None and application.status == "CONTRACT_SIGNED":
             transition_application(session, application, "ISSUED", actor_id=None, comment="Средства выданы на счёт")
+            contract = session.scalar(select(Contract).where(Contract.application_id == application.id))
+            if contract is not None:
+                store_signed_contract(session, application, contract)
             session.add(
                 AuditLog(
                     actor_id=None,
@@ -50,6 +95,11 @@ def process_one(session: Session) -> bool:
                     after={"status": "ISSUED"},
                 )
             )
+        event.status = "DONE"
+        session.commit()
+        return True
+    if event.event == "EXPLAIN_PRE_OFFER":
+        _explain_pre_offer(session, event.payload["pre_offer_id"])
         event.status = "DONE"
         session.commit()
         return True
@@ -78,6 +128,24 @@ def process_one(session: Session) -> bool:
 
     transition_application(session, application, "VALIDATION", actor_id=None, comment="Заявка принята системой")
     transition_application(session, application, "ENRICHMENT", actor_id=None, comment="Данные проверены")
+    fetched = _enrich(session, application)
+    explanation_text = _decision_text(result)
+    if fetched is not None:
+        session.add(
+            AuditLog(
+                actor_id=None,
+                action="SOURCES_REQUESTED",
+                entity="application",
+                entity_id=application.id,
+                before=None,
+                after={"attempts": fetched.attempts, "unavailable": fetched.unavailable,
+                       "not_found": fetched.not_found},
+            )
+        )
+        if not fetched.complete:
+            result = {**result, "outcome": "MANUAL_REVIEW", "reason": "SOURCE_UNAVAILABLE",
+                      "unavailable_sources": fetched.unavailable + fetched.not_found}
+            explanation_text = fetched.unavailable_text() or "Часть данных не получена — заявку посмотрит специалист."
     transition_application(session, application, "SCORING", actor_id=None, comment="Выполнен расчёт")
     decision = Decision(
         application_id=application.id,
@@ -91,7 +159,7 @@ def process_one(session: Session) -> bool:
         rate=Decimal(str(result["rate"])) if result.get("rate") is not None else None,
         outcome=result["outcome"],
         what_if=result.get("advice", []),
-        explanation_text=_decision_text(result),
+        explanation_text=explanation_text,
         explanation_source="TEMPLATE",
     )
     session.add(decision)
@@ -119,9 +187,15 @@ def process_one(session: Session) -> bool:
 
 def main() -> None:
     factory = make_session_factory()
+    last_sweep = 0.0
     while True:
         with factory() as session:
             processed = process_one(session)
+            if time.monotonic() - last_sweep > 60:
+                release_overdue(session)
+                expire_offers(session)
+                session.commit()
+                last_sweep = time.monotonic()
         if not processed:
             time.sleep(1)
 

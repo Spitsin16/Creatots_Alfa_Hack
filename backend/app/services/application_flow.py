@@ -5,6 +5,7 @@ from datetime import UTC, datetime
 from sqlalchemy.orm import Session
 
 from app.models import Application, StatusHistory
+from app.services.notifications.service import notify_status
 from app.states import InvalidTransition, validate_transition
 
 
@@ -15,6 +16,7 @@ def transition_application(
     *,
     actor_id: str | None,
     comment: str,
+    notify: bool = True,
 ) -> None:
     try:
         validate_transition(application.status, target)
@@ -33,3 +35,5 @@ def transition_application(
             at=datetime.now(UTC),
         )
     )
+    if notify:
+        notify_status(session, application, target)
