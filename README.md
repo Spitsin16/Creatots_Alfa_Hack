@@ -21,7 +21,9 @@
 
 ## Запуск одной командой (Docker)
 
-Нужны Docker и Docker Compose v2. Из корня проекта:
+Нужны Docker и Docker Compose v2. Клонируйте или распакуйте проект в путь из латинских символов, например `~/smart-credit-cabinet`: Docker Desktop с BuildKit может завершить сборку ошибкой `x-docker-expose-session-sharedkey` при кириллице в полном пути. Стандартное имя папки после `git clone` — `Creatots_Alfa_Hack` — подходит.
+
+Из корня проекта:
 
 ```bash
 docker compose up --build

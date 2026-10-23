@@ -10,6 +10,8 @@
 
 ## Последняя запись
 
+**23.10, Codex** — воспроизведён локальный запуск на macOS ARM с Docker Desktop 29.4.3 / Compose 5.1.4. Из исходной папки с кириллицей BuildKit падает до чтения Dockerfile с `x-docker-expose-session-sharedkey contains value with non-printable ASCII characters`; из временного латинского пути тот же снимок проекта успешно собрал и запустил PostgreSQL, API, worker, mocks и frontend. Все контейнеры активны, PostgreSQL/API/mocks healthy, `GET /health`, фронт на `:8080` и вход `p3b/demo` проверены. README дополнен требованием к пути; стандартная папка GitHub-клона `Creatots_Alfa_Hack` безопасна. **В работе:** PR #5 в `main`. **Следующий шаг:** дождаться повторного зелёного CI после документационного коммита и approval коллеги.
+
 **23.10, Codex** — PR #4 коллеги успешно влит в `codex/frontend-foundation`: 35 авторских коммитов `TkachTheCreator`, 81 изменённый файл. Общая ветка синхронизирована локально; Ruff чистый, pytest: 136 прошли, одна PostgreSQL-проверка пропущена локально, `npm ci && npm run build` проходит. GitHub Actions PR #4 зелёные, включая backend, frontend, frozen reference data и запуск Docker Compose с нуля. `data/rules.yaml` и `data/reference/expected.json` не менялись. **В работе:** финальный PR общей ветки в `main`. **Блокер:** для merge требуется одно одобрение другого участника. **Следующий шаг:** открыть PR `codex/frontend-foundation → main`, назначить `TkachTheCreator`, дождаться зелёного CI и его approval; затем слить и закрыть устаревшие PR #1–#3.
 
 **22.10, вечер, Claude Code (аналитик)** — ветка `feat/claude-batch-1` поверх `codex/frontend-foundation`. Из облачной сессии Claude пуш на GitHub запрещён: ветку заливает владелец через `git am claude-batch-1.mbox`.
