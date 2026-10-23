@@ -4,11 +4,13 @@
 
 ## Сейчас
 
-- **Дата:** 22.10.2026
+- **Дата:** 23.10.2026
 - **Контрольная точка:** вечер 23.10 — сквозной прогон `p3b` от предложения до выдачи
-- **Блокеры:** пуш из облачной сессии Claude запрещён, пока на репо не установлено Claude GitHub App; защита `main` включена; цепочка черновых PR #1 → #2 → #3 ждёт ревью коллеги. Фронт готов локально в `codex/frontend-foundation` и должен пройти CI/ревью.
+- **Блокеры:** защита `main` требует зелёный CI и одобрение коллеги; цепочка PR #1 → #2 → #3 ещё открыта, а весь проверенный код собран в `codex/frontend-foundation`.
 
 ## Последняя запись
+
+**23.10, Codex** — PR #4 коллеги успешно влит в `codex/frontend-foundation`: 35 авторских коммитов `TkachTheCreator`, 81 изменённый файл. Общая ветка синхронизирована локально; Ruff чистый, pytest: 136 прошли, одна PostgreSQL-проверка пропущена локально, `npm ci && npm run build` проходит. GitHub Actions PR #4 зелёные, включая backend, frontend, frozen reference data и запуск Docker Compose с нуля. `data/rules.yaml` и `data/reference/expected.json` не менялись. **В работе:** финальный PR общей ветки в `main`. **Блокер:** для merge требуется одно одобрение другого участника. **Следующий шаг:** открыть PR `codex/frontend-foundation → main`, назначить `TkachTheCreator`, дождаться зелёного CI и его approval; затем слить и закрыть устаревшие PR #1–#3.
 
 **22.10, вечер, Claude Code (аналитик)** — ветка `feat/claude-batch-1` поверх `codex/frontend-foundation`. Из облачной сессии Claude пуш на GitHub запрещён: ветку заливает владелец через `git am claude-batch-1.mbox`.
 
