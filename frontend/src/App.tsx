@@ -6,6 +6,7 @@ import { Assistant } from './client/Assistant'
 import { ForecastCard } from './client/ForecastCard'
 import { OfferPanel } from './client/OfferPanel'
 import { Answers, Questionnaire } from './client/Questionnaire'
+import { Sandbox } from './client/Sandbox'
 import { AuditPage } from './bank/AuditPage'
 import { Bell } from './common/Bell'
 import { DocumentsPage, RequestedDocuments } from './common/Documents'
@@ -66,6 +67,7 @@ function Login({ onLogin, error, setError }: { onLogin: (token: string) => void;
   const [selected, setSelected] = useState('p3b')
   const [busy, setBusy] = useState(false)
   const [guest, setGuest] = useState(false)
+  const [sandbox, setSandbox] = useState(false)
   const current = accountGroups.find(g => g.key === group)!
   const pickGroup = (key: string) => { setGroup(key); setSelected(accountGroups.find(g => g.key === key)!.accounts[0].login); setError('') }
   const submit = async (event: FormEvent) => {
@@ -76,11 +78,13 @@ function Login({ onLogin, error, setError }: { onLogin: (token: string) => void;
     catch (e) { setError((e as Error).message) } finally { setBusy(false) }
   }
   if (guest) return <NonClient onBack={() => setGuest(false)} />
+  if (sandbox) return <Sandbox onLogin={onLogin} onBack={() => setSandbox(false)} />
   return <div className="login-page"><section className="login-copy"><div className="brand large"><span className="brand-mark">A</span><span>Альфа-Бизнес</span></div><div><span className="eyebrow">Умный кредитный кабинет</span><h1>Финансирование,<br/>которое объясняет себя</h1><p>Персональное предложение за несколько минут. Без повторного ввода данных и визита в офис.</p></div><div className="trust"><span>✓ Решение на ваших данных</span><span>✓ Условия зафиксированы на 30 дней</span></div></section>
     <section className="login-panel"><form onSubmit={submit}><span className="eyebrow">Демонстрационный вход</span><h2>Кто вы?</h2>
       <div className="segmented">{accountGroups.map(g => <button type="button" key={g.key} className={group === g.key ? 'active' : ''} onClick={() => pickGroup(g.key)}>{g.title}</button>)}</div>
       <p className="muted">{current.note}</p>
       <div className="account-grid">{current.accounts.map(a => <button type="button" key={a.login} className={`account ${selected === a.login ? 'selected' : ''}`} onClick={() => setSelected(a.login)}><span className="avatar">{a.title[0]}</span><span><b>{a.title}</b><small>{a.note}</small></span><em>{a.badge}</em></button>)}</div>
+      {group === 'client' && <button type="button" className="sandbox-link" onClick={() => setSandbox(true)}><b>+ Создать своего клиента</b><small>Песочница проверяющего: задайте обороты, кредиты и историю — решение посчитает наша модель</small></button>}
       {error && <div className="error">{error}</div>}<button className="primary wide" disabled={busy}>{busy ? <Spinner label="Входим…" light /> : 'Продолжить'}</button><small className="security">Защищённое соединение · Только синтетические данные</small></form></section></div>
 }
 

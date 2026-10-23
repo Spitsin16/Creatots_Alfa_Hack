@@ -98,3 +98,13 @@
 .band{display:inline-flex;align-items:center;gap:8px;background:#f6f6f4;border-radius:10px;padding:6px 8px;font-size:13px;color:#555}.band .num input{width:64px}
 .sim td small{display:block;color:#888}
 @media(max-width:900px){.form-grid{grid-template-columns:1fr}}
+.sandbox-link{width:100%;border:1.5px dashed #ef3124;background:#fff7f6;border-radius:15px;padding:14px 16px;text-align:left;margin:-14px 0 22px;color:#171717}
+.sandbox-link b,.sandbox-link small{display:block}.sandbox-link small{color:#777;margin-top:4px}
+.sandbox{width:min(600px,100%);display:grid;gap:6px}.sandbox h3{font-size:14px;margin:18px 0 8px;color:#333}
+.slider.light{color:#555}.slider.light b{color:#171717}.slider.light input{width:100%;accent-color:#ef3124;margin:8px 0 4px}
+.sandbox .chip.active{background:#181817;color:#fff}
+.sandbox-actions{display:flex;justify-content:space-between;gap:10px;margin-top:22px}
+.sandbox-result{display:grid;gap:12px}.sandbox-result h2{margin:0}.sandbox-result dl>div{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding:10px 0}
+.sandbox-result dt{color:#888}.sandbox-result dd{margin:0;font-weight:650}
+.sandbox-result .score{border-radius:16px;padding:20px;display:grid;grid-template-columns:1fr auto;align-items:end;color:#fff}
+.sandbox-result .score span{grid-column:1/-1;font-size:12px;opacity:.75}.sandbox-result .score b{font-size:44px}
