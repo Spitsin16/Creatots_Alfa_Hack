@@ -76,10 +76,11 @@ def notify_client_message(session: Session, application: Application, preview: s
          title="Ответ банка в чате", text=preview[:200], application_id=application.id)
 
 
-def notify_bank_message(session: Session, application: Application, preview: str) -> None:
+def notify_bank_message(session: Session, application: Application, preview: str,
+                        title: str = "Вопрос клиента в чате", kind: str = "MESSAGE") -> None:
     if application.assignee_id:
         recipients = [application.assignee_id]
     else:
         recipients = list(session.scalars(select(User.id).where(User.role == "UNDERWRITER")))
-    send(session, recipients, kind="MESSAGE", title="Вопрос клиента в чате", text=preview[:200],
+    send(session, recipients, kind=kind, title=title, text=preview[:200],
          application_id=application.id)

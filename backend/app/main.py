@@ -7,6 +7,7 @@ from fastapi.exceptions import RequestValidationError
 
 from app.api.bank import router as bank_router
 from app.api.chat import router as chat_router
+from app.api.documents import router as documents_router
 from app.api.errors import APIError, api_error_handler, validation_error_handler
 from app.api.insights import router as insights_router
 from app.api.routes import router
@@ -24,6 +25,7 @@ def create_app(database_url: str | None = None) -> FastAPI:
     application.include_router(insights_router)
     application.include_router(chat_router)
     application.include_router(rules_router)
+    application.include_router(documents_router)
 
     @application.middleware("http")
     async def request_id(request: Request, call_next):

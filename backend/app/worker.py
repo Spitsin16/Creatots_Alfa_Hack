@@ -10,8 +10,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db import make_session_factory
-from app.models import Application, AuditLog, Business, Decision, Outbox, PreOffer, Rule
+from app.models import Application, AuditLog, Business, Contract, Decision, Outbox, PreOffer, Rule
 from app.services.application_flow import transition_application
+from app.services.documents.storage import store_signed_contract
 from app.services.explain.llm import rephrase
 from app.services.explain.templates import facts_for_llm
 from app.services.integrations.external import FetchResult, fetch_all
@@ -80,6 +81,9 @@ def process_one(session: Session) -> bool:
         application = session.get(Application, event.payload["application_id"])
         if application is not None and application.status == "CONTRACT_SIGNED":
             transition_application(session, application, "ISSUED", actor_id=None, comment="Средства выданы на счёт")
+            contract = session.scalar(select(Contract).where(Contract.application_id == application.id))
+            if contract is not None:
+                store_signed_contract(session, application, contract)
             session.add(
                 AuditLog(
                     actor_id=None,
