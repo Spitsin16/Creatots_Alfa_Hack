@@ -13,6 +13,7 @@ from app.db import make_session_factory
 from app.models import Application, AuditLog, Business, Contract, Decision, Outbox, PreOffer, Rule
 from app.services.application_flow import transition_application
 from app.services.documents.storage import store_signed_contract
+from app.services.expiry import expire_offers
 from app.services.explain.llm import rephrase
 from app.services.explain.templates import facts_for_llm
 from app.services.integrations.external import FetchResult, fetch_all
@@ -192,6 +193,7 @@ def main() -> None:
             processed = process_one(session)
             if time.monotonic() - last_sweep > 60:
                 release_overdue(session)
+                expire_offers(session)
                 session.commit()
                 last_sweep = time.monotonic()
         if not processed:
