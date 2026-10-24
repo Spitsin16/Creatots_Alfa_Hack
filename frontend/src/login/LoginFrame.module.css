@@ -1,0 +1,291 @@
+/* Каркас экранов входа: тёмный герой слева + светлая правая часть */
+.page {
+  display: grid;
+  grid-template-columns: minmax(360px, 440px) minmax(0, 1fr);
+  gap: 16px;
+  min-height: 100vh;
+  padding: 16px;
+  background: var(--app-bg);
+}
+
+/* ——— Герой ———
+   Высота — не меньше окна, но не фиксированная: содержимое никогда не обрезается.
+   Прилипает при прокрутке; --hero-top считает LoginFrame: 16px, если герой помещается в окно,
+   иначе отрицательный отступ — герой прилипает нижним краем и его низ всегда можно увидеть. */
+.hero {
+  position: sticky;
+  top: var(--hero-top, 16px);
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-height: calc(100vh - 32px);
+  min-width: 0;
+  padding: 32px 40px 28px;
+  border-radius: 28px;
+  color: var(--color-light-text-primary-inverted);
+  background:
+    radial-gradient(120% 70% at 100% 0%, rgba(239, 49, 36, 0.32) 0%, rgba(239, 49, 36, 0) 55%),
+    radial-gradient(90% 60% at 0% 100%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 60%),
+    var(--app-surface-dark);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: none;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.brandText b {
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.brandText small {
+  font-size: 13px;
+  line-height: 16px;
+  color: rgba(255, 255, 255, 0.56);
+}
+
+.heroMain {
+  display: flex;
+  flex-direction: column;
+  margin: auto 0;
+}
+
+.eyebrow {
+  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #ff7a70;
+}
+
+h1.title {
+  margin: 0;
+  font-size: 42px;
+  line-height: 46px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.lead {
+  margin: 16px 0 0;
+  font-size: 17px;
+  line-height: 25px;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.pointIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.pointIcon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.points b {
+  display: block;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.points small {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 19px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.action {
+  margin-top: 24px;
+}
+
+.footnote {
+  flex: none;
+  font-size: 13px;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ——— Правая часть ——— */
+.panel {
+  width: 100%;
+  max-width: 960px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 20px -6px;
+  padding: 6px 10px 6px 4px;
+  border-radius: 10px;
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--app-text);
+  background: var(--color-light-transparent-default-hover, rgba(38, 55, 88, 0.06));
+}
+
+.back svg {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 1100px) {
+  .page {
+    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
+  }
+
+  .hero {
+    padding: 32px 28px 28px;
+  }
+
+  h1.title {
+    font-size: 36px;
+    line-height: 40px;
+  }
+}
+
+/* Узкий экран: герой наверху, всё в одну колонку */
+@media (max-width: 900px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 12px;
+  }
+
+  .hero {
+    position: static;
+    min-height: 0;
+    gap: 28px;
+    padding: 28px;
+    border-radius: 24px;
+  }
+
+  .heroMain {
+    margin: 0;
+  }
+
+  .action {
+    max-width: 440px;
+  }
+
+  .panel {
+    max-width: none;
+    padding: 20px 4px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page {
+    padding: 8px;
+  }
+
+  .hero {
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  h1.title {
+    font-size: 30px;
+    line-height: 34px;
+  }
+
+  .lead {
+    font-size: 16px;
+    line-height: 23px;
+  }
+
+  .points {
+    margin-top: 20px;
+    gap: 12px;
+  }
+
+  .points small {
+    display: none;
+  }
+
+  .pointIcon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+  }
+
+  .pointIcon svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .points li {
+    align-items: center;
+  }
+
+  .footnote {
+    display: none;
+  }
+
+  .panel {
+    padding: 16px 8px 32px;
+  }
+}
