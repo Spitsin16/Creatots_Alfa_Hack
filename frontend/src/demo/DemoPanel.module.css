@@ -1,0 +1,806 @@
+/* ——— Свёрнутая панель: язычок у правого края по центру высоты ——— */
+.tab {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  z-index: var(--z-demo, 45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  /* Уже поля контента (32px): ярлык не наезжает на карточки даже при наведении и с системной полосой прокрутки */
+  width: 26px;
+  padding: 12px 0 10px;
+  border: 0;
+  border-radius: 12px 0 0 12px;
+  background: var(--app-surface-dark);
+  color: #fff;
+  box-shadow: var(--app-shadow-float);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: width 0.15s ease, background 0.15s ease;
+}
+
+.tab:hover {
+  width: 30px;
+  background: #000;
+}
+
+/* Очередь за другим участником: зелёная точка с мягкой пульсацией */
+.tabReady::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--app-surface);
+  border-radius: 50%;
+  background: var(--color-light-status-positive, #2a9d58);
+  animation: demoPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes demoPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(42, 157, 88, 0.45); }
+  50% { box-shadow: 0 0 0 6px rgba(42, 157, 88, 0); }
+}
+
+.tabIcon {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+
+/* Подпись снизу вверх — как корешок книги */
+.tabText {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.tabCount {
+  min-width: 20px;
+  padding: 2px 3px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Открыто окно ассистента (у клиента справа внизу, на телефоне — во весь экран): язычок заходил на его угол,
+   а раскрытая панель закрывала бы его целиком. Пока окно открыто, демо-панель уступает место; закрыли — вернулась. */
+:global(body[data-assistant-open]) .tab,
+:global(body[data-assistant-open]) .aboveAssistant {
+  visibility: hidden;
+}
+
+/* ——— Раскрытая панель: плавающая карточка справа ——— */
+.panel {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: var(--z-demo, 45);
+  display: flex;
+  flex-direction: column;
+  width: var(--app-demo-panel-width, 360px);
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-float), 0 0 0 1px rgba(11, 31, 53, 0.06);
+  outline: none;
+}
+
+/* У клиента справа внизу кнопка ассистента — панель заканчивается над ней */
+.aboveAssistant {
+  bottom: calc(var(--app-fab-offset, 24px) + 48px + 16px);
+}
+
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 16px 14px 20px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.headText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.eyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--app-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 20px 20px;
+}
+
+/* ——— Кто сейчас вошёл ——— */
+.you {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--app-radius-control);
+  background: var(--app-surface-muted);
+}
+
+.youText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.youText small {
+  font-size: 11px;
+  line-height: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.youText b {
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--color-light-neutral-300, #dcdcdd);
+  color: var(--app-text);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.avatarBank {
+  background: var(--app-surface-dark);
+  color: #fff;
+}
+
+.avatarSmall {
+  width: 28px;
+  height: 28px;
+  font-size: 12px;
+}
+
+/* ——— Список сценариев ——— */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lead {
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
+
+.scenario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+  color: var(--app-text);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.scenario:hover {
+  border-color: var(--app-border-strong);
+  background: var(--app-surface-muted);
+}
+
+.scenarioPrimary {
+  border-color: var(--app-text);
+  box-shadow: inset 0 0 0 1px var(--app-text);
+}
+
+.scenarioTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.scenarioTitle em {
+  flex: none;
+  padding: 1px 8px;
+  border-radius: 99px;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 11px;
+  line-height: 16px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.scenarioTitle em.running {
+  background: var(--app-surface-dark);
+}
+
+.scenarioShort {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.scenarioMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+}
+
+.avatars {
+  display: flex;
+}
+
+.avatars > * + * {
+  margin-left: -6px;
+}
+
+.avatars > * {
+  box-shadow: 0 0 0 2px var(--app-surface);
+}
+
+.scenarioArrow {
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  color: var(--app-text-tertiary);
+}
+
+/* ——— Заявка сценария ——— */
+.application {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.application > span:first-child {
+  margin-right: auto;
+}
+
+.appState {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.appId {
+  color: var(--app-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.muted {
+  color: var(--app-text-tertiary);
+  font-weight: 500;
+}
+
+/* ——— Шаги: кружок с номером и линия до следующего шага ——— */
+.steps {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: 2px 0 18px 40px;
+}
+
+/* линия к следующему шагу */
+.step::before {
+  content: '';
+  position: absolute;
+  top: 30px;
+  bottom: 2px;
+  left: 13px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--app-border);
+}
+
+.stepLast {
+  padding-bottom: 4px;
+}
+
+.stepLast::before {
+  display: none;
+}
+
+.stepDone::before {
+  background: var(--color-light-status-positive, #2a9d58);
+}
+
+.stepMark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.stepMark svg {
+  width: 20px;
+  height: 20px;
+}
+
+.stepCurrent .stepMark {
+  background: var(--app-surface-dark);
+  color: #fff;
+}
+
+.stepDone .stepMark {
+  background: var(--color-light-status-positive, #2a9d58);
+  color: #fff;
+}
+
+.stepBroken .stepMark {
+  background: var(--app-accent);
+  color: #fff;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.stepTitle {
+  padding-top: 3px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.stepDone .stepTitle {
+  color: var(--app-text-secondary);
+  font-weight: 500;
+}
+
+.stepCurrent .stepTitle {
+  font-weight: 700;
+}
+
+.stepActor {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.stepActor em {
+  padding: 0 6px;
+  border-radius: 6px;
+  background: var(--color-light-status-muted-alt-info, #e4eefd);
+  color: var(--app-link);
+  font-size: 11px;
+  line-height: 16px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.todo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px 14px;
+  border-radius: var(--app-radius-control);
+  background: var(--app-surface-muted);
+}
+
+.todo p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.where {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--app-text-secondary);
+}
+
+.doneHint {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.doneHint svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--app-positive);
+}
+
+.waiting {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.inlineButton {
+  margin-top: 2px;
+}
+
+.alert {
+  padding: 12px 14px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-status-muted-alt-negative, #fde8e7);
+  color: var(--app-text);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.finale {
+  display: flex;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-status-muted-alt-positive, #e1f5e9);
+}
+
+.finale svg {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--app-positive);
+}
+
+.finale div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* ——— Участники ——— */
+.people {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--app-border);
+}
+
+.peopleTitle {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--app-text-secondary);
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+}
+
+.personText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+}
+
+.personText b {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--app-text);
+}
+
+.personText > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hereTag {
+  flex: none;
+  padding: 0 10px;
+  font-size: 13px;
+  line-height: 32px;
+  color: var(--app-text-tertiary);
+}
+
+/* ——— Низ панели ——— */
+.foot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 20px 12px;
+  border-top: 1px solid var(--app-border);
+  background: var(--app-surface);
+}
+
+.next {
+  justify-content: space-between;
+}
+
+.nextText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  text-align: left;
+}
+
+.nextText b,
+.nextText small {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nextText b {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.nextText small {
+  font-size: 12px;
+  line-height: 14px;
+  font-weight: 500;
+  opacity: 0.72;
+}
+
+.nextLater {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nextLater > span,
+.nextNote {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+}
+
+.footLinks {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.footLinks button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.footLinks button:hover {
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.footLinks svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ——— Телефон: язычок — пилюля слева внизу (справа внизу ассистент), панель — почти на весь экран ——— */
+@media (max-width: 600px) {
+  .tab {
+    top: auto;
+    right: auto;
+    left: 16px;
+    bottom: var(--app-fab-offset, 24px);
+    flex-direction: row;
+    width: auto;
+    height: 44px;
+    padding: 0 14px 0 12px;
+    border-radius: 22px;
+    transform: none;
+  }
+
+  .tab:hover {
+    width: auto;
+  }
+
+  .tabText {
+    writing-mode: horizontal-tb;
+    transform: none;
+  }
+
+  .panel {
+    top: calc(var(--app-topbar-height, 60px) + 8px);
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    max-width: none;
+  }
+
+  .aboveAssistant {
+    bottom: 8px;
+  }
+}
+
+/* ——— Свой клиент из песочницы ——— */
+.note {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-status-muted-alt-info, #e4eefd);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text);
+}
+
+.noteLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--app-link);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.noteLink:hover {
+  text-decoration: underline;
+}
+
+/* ——— Главная кнопка: подпись кнопки кита сжимается, стрелка остаётся у края ——— */
+.nextLabel {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* ——— Пояснение только для сотрудника банка ——— */
+.todo p.bankNote {
+  padding-left: 10px;
+  border-left: 2px solid var(--app-border-strong);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+/* ——— Не удалось узнать статус заявки ——— */
+.syncError {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0 8px;
+  padding: 4px 4px 4px 12px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-status-muted-alt-attention, #fff4e0);
+  color: var(--app-text);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.syncError > span {
+  flex: 1 1 200px;
+}
+
+.syncRetry {
+  flex: none;
+}
+
+.tabDone {
+  display: block;
+  width: 16px;
+  height: 16px;
+  margin: 0 auto;
+}
+
+/* Сочетание клавиш и параметр адреса не разрываем переносом */
+.nowrap {
+  white-space: nowrap;
+}
