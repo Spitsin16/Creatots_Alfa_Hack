@@ -1,0 +1,22 @@
+// Общие примитивы экранов. Контракт и примеры — в README.md рядом.
+export { PageHeader } from './PageHeader'
+export type { PageHeaderProps, BackLink } from './PageHeader'
+export { Card } from './Card'
+export type { CardProps } from './Card'
+export { Money, formatMoney } from './Money'
+export type { MoneyProps } from './Money'
+export { StatusTag, statusColor } from './StatusTag'
+export type { StatusTagProps, StatusColor } from './StatusTag'
+export { ScoreBadge } from './ScoreBadge'
+export type { ScoreBadgeProps } from './ScoreBadge'
+export { KeyValue } from './KeyValue'
+export type { KeyValueItem, KeyValueProps } from './KeyValue'
+export { EmptyState, LoadingState, ErrorState, errorText } from './States'
+export type { EmptyStateProps, LoadingStateProps, ErrorStateProps } from './States'
+export { Stack, Grid } from './Layout'
+export type { StackProps, GridProps } from './Layout'
+export { ErrorBoundary } from './ErrorBoundary'
+
+// Перерисованные общие виджеты (лежат в common/, здесь — для единой точки импорта)
+export { Spinner, Processing } from '../common/Spinner'
+export { Bell } from '../common/Bell'

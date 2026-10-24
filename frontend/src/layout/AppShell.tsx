@@ -1,27 +1,64 @@
-import { Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
-import { homePath, isBank, useAuth, useSession } from '../auth'
+import { ComponentType, Suspense, SVGProps, useEffect, useState } from 'react'
+import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
+import { IconButton } from '@alfalab/core-components/icon-button/esm'
+import { TooltipDesktop } from '@alfalab/core-components/tooltip/esm/desktop'
+import { BanknotesMIcon } from '@alfalab/icons-glyph/BanknotesMIcon'
+import { BurgerMIcon } from '@alfalab/icons-glyph/BurgerMIcon'
+import { ClockLineMIcon } from '@alfalab/icons-glyph/ClockLineMIcon'
+import { CrossMIcon } from '@alfalab/icons-glyph/CrossMIcon'
+import { DocumentLinesMIcon } from '@alfalab/icons-glyph/DocumentLinesMIcon'
+import { DocumentsLinesMIcon } from '@alfalab/icons-glyph/DocumentsLinesMIcon'
+import { ListBulletedMIcon } from '@alfalab/icons-glyph/ListBulletedMIcon'
+import { LogOutMIcon } from '@alfalab/icons-glyph/LogOutMIcon'
+import { RouteLineMIcon } from '@alfalab/icons-glyph/RouteLineMIcon'
+import { ShieldMIcon } from '@alfalab/icons-glyph/ShieldMIcon'
+import { SlidersMIcon } from '@alfalab/icons-glyph/SlidersMIcon'
+import { Me } from '../api'
+import { homePath, isBank, useAuth, useSession, wasSignedOut } from '../auth'
 import { Assistant } from '../client/Assistant'
 import { lastOfferId } from '../client/offerStore'
-import { Spinner } from '../common/Spinner'
+import { DemoPanel } from '../demo/DemoPanel'
+import { useHiddenFlag } from '../demo/demoStore'
+import { roleTitle } from '../demo/personas'
 import { useMyApplications } from '../queries'
+import { ErrorBoundary } from '../ui/ErrorBoundary'
+import { ErrorState, LoadingState } from '../ui/States'
+import styles from './AppShell.module.css'
 
-const roleName: Record<string, string> = {
-  CLIENT: 'Клиент', UNDERWRITER: 'Андеррайтер', RISK_MANAGER: 'Риск-менеджер', RULES_ADMIN: 'Администратор правил',
-}
+type Icon = ComponentType<SVGProps<SVGSVGElement>>
+type NavItem = { to: string; icon: Icon; label: string }
 
-const navByRole: Record<string, [string, string, string][]> = {
-  CLIENT: [['/', '⌂', 'Кредиты'], ['/applications', '☰', 'Мои заявки'], ['/documents', '◫', 'Документы']],
-  UNDERWRITER: [['/bank', '⌂', 'Очередь заявок'], ['/bank/audit', '◎', 'Журнал аудита']],
-  RISK_MANAGER: [['/bank/risk', '⚑', 'Согласования'], ['/bank', '☰', 'Все заявки'], ['/bank/audit', '◎', 'Журнал аудита']],
-  RULES_ADMIN: [['/bank/rules', '⚙', 'Правила'], ['/bank/audit', '◎', 'Журнал аудита']],
+const navByRole: Record<string, NavItem[]> = {
+  CLIENT: [
+    { to: '/', icon: BanknotesMIcon, label: 'Кредиты' },
+    { to: '/applications', icon: DocumentLinesMIcon, label: 'Мои заявки' },
+    { to: '/documents', icon: DocumentsLinesMIcon, label: 'Документы' },
+  ],
+  UNDERWRITER: [
+    { to: '/bank', icon: ListBulletedMIcon, label: 'Очередь заявок' },
+    { to: '/bank/audit', icon: ClockLineMIcon, label: 'Журнал аудита' },
+  ],
+  RISK_MANAGER: [
+    { to: '/bank/risk', icon: ShieldMIcon, label: 'Согласования' },
+    { to: '/bank', icon: ListBulletedMIcon, label: 'Все заявки' },
+    { to: '/bank/audit', icon: ClockLineMIcon, label: 'Журнал аудита' },
+  ],
+  RULES_ADMIN: [
+    { to: '/bank/rules', icon: SlidersMIcon, label: 'Правила' },
+    { to: '/bank/audit', icon: ClockLineMIcon, label: 'Журнал аудита' },
+  ],
 }
 
 // Пускает внутрь кабинета только после входа; иначе — на экран входа с возвратом обратно.
 export function RequireAuth() {
-  const { token, me, loading } = useAuth()
+  const { token, me, loading, error, retry, logout } = useAuth()
   const location = useLocation()
-  if (!token) return <Navigate to={`/login?next=${encodeURIComponent(location.pathname + location.search)}`} replace />
-  if (loading || !me) return <div className="page-loading"><Spinner label="Загружаем кабинет…" /></div>
+  if (!token) return <Navigate to={wasSignedOut() ? '/login' : `/login?next=${encodeURIComponent(location.pathname + location.search)}`} replace />
+  if (error && !loading) return <div className={styles.authError}>
+    <ErrorState title="Не удалось открыть кабинет" error={error} onRetry={retry} />
+    <button type="button" className={styles.authErrorExit} onClick={logout}>Выйти и войти заново</button>
+  </div>
+  if (loading || !me) return <LoadingState view="page" label="Загружаем кабинет…" />
   return <Outlet />
 }
 
@@ -38,22 +75,97 @@ export function RequireRole({ roles }: { roles: string[] }) {
   return <Outlet />
 }
 
+// Имя для профиля: у сотрудников в full_name есть должность («Андеррайтер Смирнова Е.») — убираем её.
+const displayName = (me: Me) => {
+  if (!isBank(me.role)) return me.full_name.split(' ').slice(0, 2).join(' ')
+  return me.full_name.replace(/^(Андеррайтер|Риск-менеджер|Админ правил)\s+/, '')
+}
+
+const profileNote = (me: Me) => {
+  if (isBank(me.role)) return roleTitle[me.role] ?? me.role
+  const business = me.businesses[0]
+  if (!business) return roleTitle.CLIENT
+  return business.membership_kind === 'MCHD' ? `${business.name} · по МЧД` : business.name
+}
+
+/** Оболочка кабинета: сайдбар (на узком экране — верхняя панель с меню), контент, ассистент, демо-панель. */
 export function AppShell() {
   const { logout } = useAuth()
   const { me } = useSession()
   const navigate = useNavigate()
+  const location = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [demoHidden, setDemoHidden] = useHiddenFlag()
   const items = navByRole[me.role] ?? []
-  return <div className="app-shell">
-    <aside className="sidebar">
-      <div className="brand"><span className="brand-mark">A</span><span>Альфа-Бизнес</span></div>
-      <nav>{items.map(([to, icon, label]) =>
-        <NavLink key={to} to={to} end={to === '/' || to === '/bank'} className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}><span>{icon}</span>{label}</NavLink>)}
-      </nav>
-      <div className="profile"><div className="avatar">{me.full_name[0]}</div><div><b>{me.full_name}</b><small>{roleName[me.role] ?? me.role}</small></div>
-        <button title="Выйти" onClick={() => { logout(); navigate('/login') }}>↗</button></div>
+  const bank = isBank(me.role)
+
+  // Меню на телефоне закрывается при переходе и по Esc.
+  useEffect(() => { setMenuOpen(false) }, [location.pathname])
+  useEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenuOpen(false) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
+  const exit = () => { logout(); navigate('/login', { replace: true }) }
+
+  return <div className={styles.shell}>
+    <aside className={[styles.sidebar, menuOpen ? styles.menuOpen : ''].filter(Boolean).join(' ')}>
+      <div className={styles.top}>
+        <Link to={homePath(me.role)} className={styles.brand} aria-label="Альфа-Бизнес — на главную">
+          <span className={styles.brandMark} aria-hidden>А</span>
+          <span className={styles.brandText}>
+            <b>Альфа-Бизнес</b>
+            <small>{bank ? 'Кабинет банка' : 'Кредиты для бизнеса'}</small>
+          </span>
+        </Link>
+        <button type="button" className={styles.menuButton} onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? 'Закрыть меню' : 'Открыть меню'} aria-expanded={menuOpen} aria-controls="app-menu">
+          {menuOpen ? <CrossMIcon /> : <BurgerMIcon />}
+        </button>
+      </div>
+
+      <div className={styles.menu} id="app-menu">
+        <nav className={styles.nav} aria-label="Разделы кабинета">
+          {items.map(({ to, icon: NavIcon, label }) =>
+            <NavLink key={to} to={to} end={to === '/' || to === '/bank'} className={({ isActive }) => [styles.navItem, isActive ? styles.active : ''].filter(Boolean).join(' ')}>
+              <NavIcon className={styles.navIcon} aria-hidden />
+              <span>{label}</span>
+            </NavLink>)}
+        </nav>
+
+        {/* Демо-панель скрыли (для чистых скриншотов) — вернуть её можно и без горячей клавиши */}
+        {demoHidden && <button type="button" className={styles.demoReturn} onClick={() => setDemoHidden(false)}>
+          <RouteLineMIcon aria-hidden />Показать демо-панель
+        </button>}
+
+        <div className={styles.profile}>
+          <span className={styles.avatar} aria-hidden>{displayName(me)[0]}</span>
+          <span className={styles.who}>
+            <b title={me.full_name}>{displayName(me)}</b>
+            <small title={profileNote(me)}>{profileNote(me)}</small>
+          </span>
+          <TooltipDesktop content="Выйти из кабинета" position="top-end" trigger="hover">
+            <IconButton icon={LogOutMIcon} size={32} view="secondary" aria-label="Выйти из кабинета" onClick={exit} className={styles.logout} />
+          </TooltipDesktop>
+          <button type="button" className={styles.logoutText} onClick={exit}><LogOutMIcon aria-hidden />Выйти</button>
+        </div>
+      </div>
     </aside>
-    {!isBank(me.role) && <ClientAssistant />}
-    <main><Outlet /></main>
+    {menuOpen && <div className={styles.scrim} onClick={() => setMenuOpen(false)} aria-hidden />}
+
+    <main className={styles.content}>
+      <div className={styles.inner}>
+        <ErrorBoundary resetKey={location.pathname}>
+          {/* экраны грузятся по маршруту (React.lazy в App.tsx) — пока часть кода не пришла, крутим загрузку */}
+          <Suspense fallback={<LoadingState view="page" />}><Outlet /></Suspense>
+        </ErrorBoundary>
+      </div>
+    </main>
+
+    {!bank && <ClientAssistant />}
+    <DemoPanel />
   </div>
 }
 
@@ -66,6 +178,7 @@ function ClientAssistant() {
     const active = apps.data?.active_id
     if (target === 'application' && active) navigate(`/applications/${active}`)
     else if (target === 'offer' && lastOfferId()) navigate(`/offer/${lastOfferId()}`)
+    else if (target === 'offer') navigate('/#calculator')
     else navigate('/')
   }
   return <Assistant token={token} onNavigate={go} />

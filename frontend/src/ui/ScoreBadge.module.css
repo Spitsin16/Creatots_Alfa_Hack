@@ -1,0 +1,102 @@
+/* Цвета тонов балла: насыщенная заливка, текст с достаточным контрастом */
+.green { --score-bg: #0d8a35; --score-fg: #fff; --score-soft: rgba(255, 255, 255, 0.72); }
+.yellow { --score-bg: #f5a524; --score-fg: #2b1d00; --score-soft: rgba(43, 29, 0, 0.7); }
+.red { --score-bg: #e5281b; --score-fg: #fff; --score-soft: rgba(255, 255, 255, 0.75); }
+.black { --score-bg: #121213; --score-fg: #fff; --score-soft: rgba(255, 255, 255, 0.6); }
+.none { --score-bg: var(--color-light-neutral-200); --score-fg: var(--app-text-secondary); --score-soft: var(--app-text-tertiary); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 44px;
+  border-radius: 99px;
+  background: var(--score-bg);
+  color: var(--score-fg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.s {
+  height: 24px;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.m {
+  height: 32px;
+  padding: 0 14px;
+  font-size: 15px;
+}
+
+.cls {
+  font-weight: 800;
+  opacity: 0.85;
+}
+
+.cls::after {
+  content: '·';
+  margin-left: 6px;
+  opacity: 0.6;
+}
+
+.block {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--score-bg);
+  color: var(--score-fg);
+}
+
+.blockMain,
+.blockSide {
+  display: flex;
+  flex-direction: column;
+}
+
+.blockSide {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.blockLabel {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--score-soft);
+}
+
+.blockScore {
+  font-size: 44px;
+  line-height: 48px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.blockClass {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.none .blockClass,
+.yellow .blockClass {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.blockTone {
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--score-soft);
+}

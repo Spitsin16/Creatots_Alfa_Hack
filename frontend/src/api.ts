@@ -1,15 +1,20 @@
 export type Business = {
   id: string; inn: string; name: string; type: string; membership_kind: string; permissions: string[]
+  /** Срок доверенности (МЧД) у сотрудника клиента; у владельца — null */
+  valid_to?: string | null
 }
 export type Me = { id: string; full_name: string; login: string; role: string; businesses: Business[] }
 export type Offer = {
   id: string; outcome: string; product: string; requested_amount_kopecks: number; limit_kopecks: number;
   rate: number | null; payment_kopecks: number | null; term_months: number;
   advice: { code: string; text: string; new_limit_kopecks: number; new_rate: number | null }[]
+  /** До какого момента действует расчёт (после — пересчитать) */
+  expires_at?: string
 }
 export type Application = {
   id: string; business_id: string; product: string; amount_kopecks: number; term_months: number;
   purpose: string; segment_code: string; status: string; version: number;
+  created_at?: string; pre_offer_id?: string | null;
   timeline?: { from_status: string | null; to_status: string; comment: string | null; at: string }[];
   decision?: { outcome: string; limit_kopecks: number; rate: number | null; explanation: string; advice: Offer['advice'] } | null
   assignee_name?: string | null
@@ -22,17 +27,44 @@ export type BankItem = {
 
 const base = import.meta.env.VITE_API_URL ?? ''
 
+/**
+ * Ошибка запроса к API. message — текст для человека (из ответа бэка), status — HTTP-код
+ * (0 — нет связи с сервером), code — машинный код бэка («PRE_OFFER_EXPIRED», «SEASONAL_NOT_AVAILABLE»…).
+ */
+export class ApiError extends Error {
+  readonly status: number
+  readonly code: string | null
+  constructor(status: number, code: string | null, message: string) {
+    super(message)
+    this.name = 'ApiError'
+    this.status = status
+    this.code = code
+  }
+}
+
+/** Код ошибки бэка, если это ApiError: `apiErrorCode(e) === 'PRE_OFFER_EXPIRED'`. */
+export const apiErrorCode = (e: unknown) => (e instanceof ApiError ? e.code : null)
+
+/** Запрос не дошёл до сервера (нет связи, стенд не запущен). */
+export const isNetworkError = (e: unknown) => e instanceof TypeError || (e instanceof ApiError && e.status === 0)
+
 export async function request<T>(path: string, options: RequestInit = {}, token?: string): Promise<T> {
-  const response = await fetch(`${base}${path}`, {
-    ...options,
-    headers: {
-      'Content-Type': 'application/json',
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...options.headers,
-    },
-  })
+  let response: Response
+  try {
+    response = await fetch(`${base}${path}`, {
+      ...options,
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...options.headers,
+      },
+    })
+  } catch (e) {
+    if (e instanceof DOMException && e.name === 'AbortError') throw e
+    throw new ApiError(0, 'NETWORK', 'Нет связи с сервером. Проверьте подключение и повторите.')
+  }
   const body = await response.json().catch(() => ({}))
-  if (!response.ok) throw new Error(body.message ?? 'Не удалось выполнить запрос')
+  if (!response.ok) throw new ApiError(response.status, typeof body.code === 'string' ? body.code : null, body.message ?? 'Не удалось выполнить запрос')
   return body as T
 }
 
@@ -51,17 +83,25 @@ export type Explanation = {
 }
 export type Forecast = {
   start_balance: number; series: { date: string; balance: number }[]; headline: string; details: string[];
-  suggestion: string | null; gap: { date: string; shortfall: number; overdraft_suggestion: number } | null
+  suggestion: string | null
+  gap: { date: string; shortfall: number; overdraft_suggestion: number; /** что списывается в день разрыва */ reasons?: string[] } | null
+  /** Крупные регулярные платежи (аренда, зарплата, налоги…) */
+  recurring?: { counterparty: string; kind: string; day: number; amount: number }[]
 }
 export type SeasonalSchedule = {
   schedule: { date: string; payment: number; interest: number; principal: number; balance: number }[]
   annuity_payment: number; max_payment: number; min_payment: number; overpayment: number; annuity_overpayment: number
 }
-export type ChatMessage = { id: string; author_side: 'CLIENT' | 'BANK'; author_name: string; text: string; created_at: string }
+export type ChatMessage = {
+  id: string; author_side: 'CLIENT' | 'BANK'; author_name: string; text: string; created_at: string
+  /** У вопроса клиента: до какого времени банк должен ответить и когда ответил */
+  answer_due_at?: string | null; answered_at?: string | null
+}
 export type Chat = { items: ChatMessage[]; open_question_due_text: string | null; overdue: boolean }
 export type NotificationItem = { id: string; title: string; text: string; application_id: string | null; created_at: string; read: boolean }
 
-export const rub = (value: number) => `${new Intl.NumberFormat('ru-RU').format(Math.round(value))} ₽`
+// Неразрывный пробел перед «₽»: знак рубля не уезжает на следующую строку.
+export const rub = (value: number) => `${new Intl.NumberFormat('ru-RU').format(Math.round(value))}\u00a0₽`
 
 export type DocItem = {
   id: string; kind: string; kind_title: string; title: string; filename: string | null; size: number | null
@@ -89,4 +129,8 @@ export const toneTitle: Record<string, string> = {
   green: 'низкий риск', yellow: 'пограничный', red: 'ручная проверка', black: 'отказ', none: 'нет расчёта',
 }
 
-export type MyApplications = { items: { id: string; status: string; active: boolean }[]; active_id: string | null }
+export type MyApplicationItem = {
+  id: string; status: string; active: boolean
+  product?: string; amount_kopecks?: number; term_months?: number; created_at?: string
+}
+export type MyApplications = { items: MyApplicationItem[]; active_id: string | null }

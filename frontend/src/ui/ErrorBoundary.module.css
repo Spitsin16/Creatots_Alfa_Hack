@@ -1,0 +1,73 @@
+.page,
+.compact {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-radius: var(--app-radius-card);
+  background: var(--app-surface);
+}
+
+.page {
+  margin: 8vh auto 0;
+  max-width: 560px;
+  padding: 40px 28px;
+}
+
+.compact {
+  padding: 28px 20px;
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: var(--color-light-status-muted-negative);
+  color: var(--color-light-status-negative);
+}
+
+.icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.title {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+}
+
+.compact .title {
+  font-size: 17px;
+  line-height: 22px;
+}
+
+.text {
+  max-width: 420px;
+  margin-top: 8px;
+  color: var(--app-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.details {
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--app-text-tertiary);
+}
+
+.details code {
+  display: block;
+  margin-top: 6px;
+  font-family: var(--app-font-mono);
+  overflow-wrap: anywhere;
+}
