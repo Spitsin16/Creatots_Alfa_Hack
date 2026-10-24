@@ -83,7 +83,7 @@ export function ApplicationPage() {
   const loanBlock = issued && (loan.isPending ? <LoanPending />
     : loan.error ? <LoanError error={loan.error} onRetry={() => void loan.refetch()} />
       : <LoanCard loan={loan.data} issuedAt={enteredAt('ISSUED', a.timeline ?? [])?.toISOString()} purpose={purposeName[a.purpose]} />)
-  const forecast = issued && loan.data?.forecast && <ForecastCard key="forecast" businessId={a.business_id} title="Прогноз денег на 30 дней"
+  const forecast = issued && loan.data?.forecast && <ForecastCard key="forecast" businessId={a.business_id} title="Деньги на счёте"
     overdraftKopecks={a.product === 'OVERDRAFT' ? a.amount_kopecks : undefined} />
 
   const main = [

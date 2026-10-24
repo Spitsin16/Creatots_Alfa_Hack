@@ -79,7 +79,16 @@ export function useRiskApprovals(enabled = true) {
   const { token } = useSession()
   return useQuery({
     queryKey: keys.approvals,
-    queryFn: () => request<RiskItem[]>('/api/v1/bank/approvals', {}, token),
+    // Бэк отдаёт и «зависшие» согласования по заявкам, которые уже не на ручной проверке (например, истёк срок
+    // после двойного одобрения) — подтвердить их нельзя (409), поэтому показываем только заявки на ручной проверке.
+    queryFn: async () => {
+      const [items, review] = await Promise.all([
+        request<RiskItem[]>('/api/v1/bank/approvals', {}, token),
+        request<QueuePage>('/api/v1/bank/applications?status=MANUAL_REVIEW&page=1&page_size=100', {}, token),
+      ])
+      const open = new Set(review.items.map(x => x.id))
+      return items.filter(x => open.has(x.application_id))
+    },
     enabled,
     refetchInterval: 5000,
   })

@@ -120,7 +120,7 @@ export function OfferPanel(p: OfferPanelProps) {
     <WhyCard ex={ex} loading={exLoading} error={exError} onRetry={retryEx} />
     {adviceSection()}
     {isOverdraft(offer) && <ErrorBoundary compact>
-      <ForecastCard businessId={p.businessId} overdraftKopecks={offer.limit_kopecks} title="Прогноз остатка с этим лимитом" />
+      <ForecastCard businessId={p.businessId} overdraftKopecks={offer.limit_kopecks} title="Деньги на счёте с этим лимитом" />
     </ErrorBoundary>}
     {!manual && nextSteps}
   </>
