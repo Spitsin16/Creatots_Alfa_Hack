@@ -1,0 +1,1122 @@
+/* Экран предложения /offer/:id. Токены — из styles/base.css (--app-*) и палитры кита. */
+
+/* ---------- Герой (тёмная карточка) ---------- */
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 316px;
+  grid-template-areas: "head aside" "details aside";
+  column-gap: 32px;
+  align-items: start;
+}
+
+.heroHead {
+  grid-area: head;
+  min-width: 0;
+}
+
+.heroDetails {
+  grid-area: details;
+  min-width: 0;
+}
+
+.heroTopRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 18px;
+}
+
+.heroProduct {
+  margin: 0;
+  color: var(--color-light-text-primary-inverted);
+}
+
+.heroLabel {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--color-light-text-secondary-inverted);
+  margin-bottom: 4px;
+}
+
+.heroAmountRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.heroAmount {
+  font-size: 56px;
+  line-height: 60px;
+  letter-spacing: -0.03em;
+}
+
+.wasAmount {
+  font-size: 20px;
+  line-height: 26px;
+  color: var(--color-light-text-tertiary-inverted);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+  white-space: nowrap;
+}
+
+.upliftPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(12, 196, 77, 0.16);
+  color: var(--color-light-text-positive-inverted);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.heroRequest {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--color-light-text-primary-inverted);
+}
+
+.heroRequest svg {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+}
+
+.iconPositiveInv { color: var(--color-light-text-positive-inverted); }
+.iconAttentionInv { color: var(--color-light-text-attention-inverted); }
+.iconInfoInv { color: var(--color-light-text-info-inverted); }
+
+.heroMuted {
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.heroLink {
+  color: var(--color-light-text-primary-inverted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.heroLink:hover {
+  color: #fff;
+}
+
+.heroTiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.heroTile {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-control);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.heroTileLabel {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.heroTileValue {
+  margin-top: 4px;
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  color: var(--color-light-text-primary-inverted);
+  font-variant-numeric: tabular-nums;
+}
+
+.heroTileHint {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--color-light-text-tertiary-inverted);
+}
+
+.heroAside {
+  grid-area: aside;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: var(--app-radius-block);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* кнопка кита: поля поуже, чтобы «Рассчитать рефинансирование» помещалось в одну строку */
+.heroAside .asideButton {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.asideNote {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.asideNote svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+}
+
+.asideStrong {
+  color: var(--color-light-text-primary-inverted);
+  font-weight: 600;
+}
+
+/* Выбор суммы овердрафта в заявку: «как запросили» / «весь лимит» */
+.amountChoice {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 4px;
+}
+
+.amountChoiceLabel {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.amountRadios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.amountOption {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--color-light-text-primary-inverted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.inlineLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--color-light-text-primary-inverted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.compareNote {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.compareNote b {
+  color: var(--color-light-text-primary-inverted);
+  font-weight: 600;
+}
+
+/* Сравнение «платёж сейчас → у нас» */
+.compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.compareCell {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-control);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.compareCellSaving {
+  background: rgba(12, 196, 77, 0.14);
+}
+
+.compareArrow {
+  align-self: center;
+  color: var(--color-light-text-secondary-inverted);
+}
+
+.compareValueOld {
+  color: var(--color-light-text-secondary-inverted);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.compareValueSaving {
+  color: var(--color-light-text-positive-inverted);
+}
+
+.counterWhy {
+  margin: 0 0 18px;
+  padding: 12px 16px;
+  border-radius: var(--app-radius-control);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--color-light-text-primary-inverted);
+}
+
+.counterWhy b {
+  font-weight: 600;
+}
+
+/* ---------- Баннер «выписка учтена» ---------- */
+
+.uplift {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 20px 24px;
+  border-radius: var(--app-radius-card);
+  background: var(--color-light-status-muted-positive);
+}
+
+.upliftIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-light-status-positive);
+  color: #fff;
+}
+
+.upliftTitle {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.upliftFlow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--app-text);
+}
+
+.upliftFlow svg {
+  width: 18px;
+  height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.upliftText {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--app-text-secondary);
+}
+
+/* ---------- Стоимость и условия ---------- */
+
+.costLead {
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--app-text-secondary);
+  margin: 0 0 16px;
+}
+
+.costBar {
+  display: flex;
+  gap: 2px;
+  height: 12px;
+  margin: 4px 0 10px;
+}
+
+.costBarPrincipal {
+  border-radius: 6px 0 0 6px;
+  background: var(--color-light-graphic-primary);
+}
+
+.costBarInterest {
+  border-radius: 0 6px 6px 0;
+  background: var(--color-light-graphic-link);
+  min-width: 6px;
+}
+
+.costLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin-bottom: 18px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.costLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.swatchPrincipal { background: var(--color-light-graphic-primary); }
+.swatchInterest { background: var(--color-light-graphic-link); }
+
+.costNote {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--app-radius-control);
+  background: var(--app-surface-muted);
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--app-text-secondary);
+}
+
+.conditions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.condition {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+
+.conditionIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--app-positive);
+}
+
+.conditionIconInfo {
+  color: var(--app-link);
+}
+
+.conditionTitle {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.conditionText {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--app-text-secondary);
+}
+
+/* ---------- Почему такая сумма ---------- */
+
+.why {
+  margin: 0;
+  font-size: 17px;
+  line-height: 25px;
+  color: var(--app-text);
+}
+
+.factors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  align-items: start;
+}
+
+/* только одна колонка (например, одни плюсы) — на всю ширину, список в две колонки */
+.factorsSingle {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.factorsSingle .factorList {
+  display: block;
+  columns: 2;
+  column-gap: 32px;
+}
+
+.factorsSingle .factorItem {
+  break-inside: avoid;
+  margin-bottom: 8px;
+}
+
+.factorCol {
+  min-width: 0;
+  padding: 16px 18px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.factorTitle {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--app-text-secondary);
+  margin-bottom: 10px;
+}
+
+.factorList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.factorItem {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.factorItem::first-letter {
+  text-transform: uppercase;
+}
+
+.factorItem svg {
+  width: 20px;
+  height: 20px;
+}
+
+.plus { color: var(--app-positive); }
+.minus { color: var(--app-attention); }
+
+.ai {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border-radius: var(--app-radius-block);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+}
+
+.aiHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--app-text);
+  margin-bottom: 6px;
+}
+
+.aiHead svg {
+  width: 20px;
+  height: 20px;
+  color: var(--app-link);
+}
+
+.aiText {
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--app-text);
+}
+
+.aiCaption {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-tertiary);
+}
+
+/* ---------- Как получить больше ---------- */
+
+.adviceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.adviceCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 20px;
+  border-radius: var(--app-radius-block);
+  border: 1px solid var(--app-border);
+  background: var(--app-surface);
+}
+
+.adviceWide {
+  grid-column: 1 / -1;
+}
+
+.adviceHead {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.adviceIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.adviceTitle {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.adviceEffect {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--app-text-secondary);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-light-status-muted-positive);
+  color: var(--app-positive);
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip svg {
+  width: 16px;
+  height: 16px;
+}
+
+.costs {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-status-muted-attention);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text);
+}
+
+.costs svg {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: var(--app-attention);
+}
+
+/* Загрузка выписки */
+.drop {
+  border-radius: var(--app-radius-block);
+}
+
+.dropInner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 18px 20px;
+  border: 1.5px dashed var(--app-border-strong);
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.dropText {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.dropTitle {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.dropHint {
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.dropIcon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  color: var(--app-text-secondary);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+/* ---------- Сезонный график ---------- */
+
+.seasonStats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.seasonStat {
+  min-width: 0;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-control);
+  background: var(--app-surface-muted);
+}
+
+.seasonStatLabel {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.seasonStatValue {
+  margin-top: 4px;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--app-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.seasonStatHint {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-tertiary);
+}
+
+.seasonLead {
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--app-text);
+}
+
+.chartHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 8px;
+}
+
+.chartLegend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.chartLegend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.swatchBar {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--color-light-graphic-link);
+}
+
+.swatchLine {
+  width: 16px;
+  height: 0;
+  border-top: 2px dashed var(--color-light-graphic-primary);
+}
+
+.segments {
+  flex: 0 0 auto;
+  width: 280px;
+  max-width: 100%;
+}
+
+.chart {
+  width: 100%;
+  height: 260px;
+}
+
+.tooltip {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-float);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text);
+  max-width: 240px;
+}
+
+.tooltipTitle {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tooltipMuted {
+  color: var(--app-text-secondary);
+}
+
+.tableToggle {
+  margin-top: 12px;
+}
+
+.tableToggle summary {
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-link);
+  width: fit-content;
+}
+
+.tableWrap {
+  margin-top: 10px;
+  max-height: 320px;
+  overflow: auto;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-control);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th,
+.table td {
+  padding: 8px 12px;
+  text-align: right;
+  border-bottom: 1px solid var(--app-border);
+  white-space: nowrap;
+}
+
+.table th:first-child,
+.table td:first-child {
+  text-align: left;
+}
+
+.table th {
+  position: sticky;
+  top: 0;
+  background: var(--app-surface-muted);
+  font-weight: 600;
+  color: var(--app-text-secondary);
+}
+
+.table tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---------- Что дальше ---------- */
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  counter-reset: step;
+}
+
+.steps3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.step {
+  position: relative;
+  min-width: 0;
+  padding-top: 44px;
+  counter-increment: step;
+}
+
+.step::before {
+  content: counter(step);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--app-surface-muted);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.stepTitle {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.stepText {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--app-text-secondary);
+}
+
+/* ---------- Отказ ---------- */
+
+.rejectHead {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.rejectIcon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-light-status-muted-attention);
+  color: var(--app-attention);
+}
+
+.rejectTitle {
+  margin: 0;
+}
+
+.rejectRequest {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
+
+.rejectReason {
+  margin-top: 24px;
+  padding: 18px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.rejectLabel {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--app-text-secondary);
+  margin-bottom: 6px;
+}
+
+.rejectText {
+  margin: 0;
+  font-size: 17px;
+  line-height: 25px;
+  color: var(--app-text);
+}
+
+.rejectState {
+  margin-top: 24px;
+}
+
+.reasonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.reasonGrid .rejectReason {
+  margin-top: 24px;
+}
+
+.reasonTodo {
+  background: var(--color-light-status-muted-positive);
+}
+
+.rejectActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.note {
+  font-size: 14px;
+  line-height: 19px;
+  color: var(--app-text-secondary);
+}
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 1100px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    column-gap: 24px;
+  }
+
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "aside" "details";
+  }
+
+  .heroAside {
+    margin-top: 20px;
+  }
+
+  .factorsSingle .factorList {
+    columns: 1;
+  }
+
+  .adviceGrid,
+  .factors {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .compare {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  }
+
+  .compareCellSaving {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .heroAmount {
+    font-size: 40px;
+    line-height: 46px;
+  }
+
+  .heroTiles,
+  .seasonStats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .heroTiles > :last-child:nth-child(odd),
+  .seasonStats > :last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .heroAside {
+    padding: 16px;
+  }
+
+  .compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .compareArrow {
+    display: none;
+  }
+
+  .uplift {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 18px 20px;
+  }
+
+  .steps,
+  .steps3 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .step {
+    padding-top: 0;
+    padding-left: 44px;
+  }
+
+  .rejectHead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .reasonGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .reasonGrid .rejectReason {
+    margin-top: 16px;
+  }
+
+  .chart {
+    height: 220px;
+  }
+}
+
+.uploadError {
+  margin-top: 12px;
+}
+
+/* Ссылка-кнопка внутри текста на светлом фоне */
+.textLink {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--app-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
