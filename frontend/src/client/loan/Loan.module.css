@@ -1,0 +1,167 @@
+/* ---------- «Мой кредит» ---------- */
+
+.card {
+  min-width: 0;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.heroMain {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.eyebrow {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.heroNote {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.badge {
+  flex: none;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--app-positive) 12%, transparent);
+  color: var(--app-positive);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.tiles {
+  margin-top: 20px;
+}
+
+.section {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid var(--app-border);
+}
+
+.sectionTitle {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.sectionNote {
+  margin: 4px 0 16px;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.sectionNote b {
+  color: var(--app-text);
+  white-space: nowrap;
+}
+
+.chart {
+  min-width: 0;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  margin-top: 8px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.legendNext {
+  background: #212124;
+}
+
+.legendRest {
+  background: #8d8d93;
+}
+
+.toggle {
+  margin-top: 16px;
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-float);
+  pointer-events: none;
+}
+
+.tooltipDate,
+.tooltipSplit {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+/* ---------- Подсказки ---------- */
+
+.tips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.tips li {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.tipIcon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--app-attention);
+}
+
+@media (max-width: 600px) {
+  .hero {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
+
+  .section {
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+}

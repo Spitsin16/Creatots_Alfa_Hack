@@ -1,0 +1,80 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 4px;
+  text-align: center;
+}
+
+.check {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: var(--app-positive);
+  color: #fff;
+}
+
+.check svg {
+  width: 32px;
+  height: 32px;
+}
+
+.title {
+  margin: 0;
+}
+
+.text {
+  margin: 8px 0 0;
+  max-width: 380px;
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* Конфетти: слой поверх модалки (у модалок кита z-index 100), клики проходят насквозь */
+.confetti {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti i {
+  position: absolute;
+  top: -20px;
+  border-radius: 2px;
+  opacity: 0;
+  animation-name: fall;
+  animation-timing-function: cubic-bezier(0.25, 0.6, 0.5, 1);
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+}
+
+.confetti .round {
+  border-radius: 50%;
+}
+
+@keyframes fall {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--drift, 0), 105vh, 0) rotate(var(--spin, 540deg));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti {
+    display: none;
+  }
+}

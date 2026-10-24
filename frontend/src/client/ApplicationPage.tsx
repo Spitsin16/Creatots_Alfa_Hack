@@ -8,7 +8,7 @@ import { productName } from '../api'
 import { useSession } from '../auth'
 import { Bell } from '../common/Bell'
 import { Chat } from '../common/Chat'
-import { clientAction, finalStatuses, formatDate, settledStatuses, trackOf } from '../common/status'
+import { clientAction, enteredAt, finalStatuses, formatDate, settledStatuses, trackOf } from '../common/status'
 import { useApplication } from '../queries'
 import { Card } from '../ui/Card'
 import { Grid, Stack } from '../ui/Layout'
@@ -18,8 +18,13 @@ import { EmptyState, ErrorState, LoadingState } from '../ui/States'
 import { StatusTag } from '../ui/StatusTag'
 import { NextStep, statusCopy } from './application/NextStep'
 import { ConditionsCard, DecisionCard, hasDecision, hasSchedule, HistoryCard, ScheduleCard, SpecialistCard } from './application/Panels'
+import { purposeName } from './application/schedule'
 import { TrackSteps } from './application/TrackSteps'
 import { useApplicationAction } from './application/useApplicationAction'
+import { ForecastCard } from './ForecastCard'
+import { IssuedCelebration, useIssuedCelebration } from './loan/IssuedCelebration'
+import { LoanCard, LoanError, LoanPending, LoanTips } from './loan/LoanCard'
+import { useLoan } from './loan/useLoan'
 import styles from './application/Application.module.css'
 
 // Трекер заявки «как посылка»: этапы, что дальше, решение, подпись кодом, график, чат с банком.
@@ -30,6 +35,10 @@ export function ApplicationPage() {
   const business = me.businesses[0]
   const app = useApplication(id)
   const action = useApplicationAction(id, business.id)
+  const issued = app.data?.status === 'ISSUED'
+  // Кабинет кредита после выдачи: график договора (сезонный, если выбран), прогноз и подсказки — с бэка
+  const loan = useLoan(id, issued)
+  const celebration = useIssuedCelebration(id, app.data?.status, app.isFetchedAfterMount)
 
   if (app.isPending) return <LoadingState view="page" label="Загружаем заявку…" />
   if (app.error || !app.data) {
@@ -70,15 +79,24 @@ export function ApplicationPage() {
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
+  // После выдачи вместо расчётного графика — «Мой кредит» над колонками, прогноз денег в основной колонке
+  const loanBlock = issued && (loan.isPending ? <LoanPending />
+    : loan.error ? <LoanError error={loan.error} onRetry={() => void loan.refetch()} />
+      : <LoanCard loan={loan.data} issuedAt={enteredAt('ISSUED', a.timeline ?? [])?.toISOString()} purpose={purposeName[a.purpose]} />)
+  const forecast = issued && loan.data?.forecast && <ForecastCard key="forecast" businessId={a.business_id} title="Прогноз денег на 30 дней"
+    overdraftKopecks={a.product === 'OVERDRAFT' ? a.amount_kopecks : undefined} />
+
   const main = [
-    a.status === 'ISSUED' && hasSchedule(a) && <ScheduleCard key="schedule" a={a} />,
+    forecast,
     hasDecision(a) && <DecisionCard key="decision" a={a} />,
-    a.status !== 'ISSUED' && hasSchedule(a) && <ScheduleCard key="schedule" a={a} />,
+    !issued && hasSchedule(a) && <ScheduleCard key="schedule" a={a} />,
     withChat && <Card key="chat" padding="m" id="chat"><Chat token={token} applicationId={a.id} side="CLIENT" title="Чат с банком" /></Card>,
     withChat && <HistoryCard key="history" a={a} />,
   ].filter(Boolean)
   const side = [
-    <ConditionsCard key="conditions" a={a} />,
+    issued && loan.data && <LoanTips key="tips" tips={loan.data.tips} />,
+    // После выдачи условия уже в «Моём кредите» — карточку не дублируем (пока он не загрузился — показываем)
+    !(issued && loan.data) && <ConditionsCard key="conditions" a={a} />,
     showSpecialist && withChat && <SpecialistCard key="specialist" a={a} onWrite={writeToSpecialist} />,
     !withChat && <HistoryCard key="history" a={a} />,
   ].filter(Boolean)
@@ -105,11 +123,15 @@ export function ApplicationPage() {
       <NextStep a={a} perms={perms} action={action} onWrite={writeToSpecialist} />
     </Card>
 
+    {loanBlock}
+
     {main.length > 0
       ? <Grid columns="minmax(0, 1fr) 340px" align="start">
         <Stack>{main}</Stack>
         <Stack>{side}</Stack>
       </Grid>
       : <Grid columns={2} align="start">{side}</Grid>}
+
+    <IssuedCelebration open={celebration.open} onClose={celebration.close} product={a.product} amountKopecks={a.amount_kopecks} />
   </Stack>
 }

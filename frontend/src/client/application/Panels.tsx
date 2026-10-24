@@ -33,8 +33,10 @@ export function ConditionsCard({ a }: { a: Application }) {
   const rate = known ? a.decision!.rate! : before ? offerRate : null
   const overdraft = a.product === 'OVERDRAFT'
   const amount = a.amount_kopecks / 100
-  const seasonal = rate != null && seasonalExpected(a) ? seasonalFor(seasonalApi.data, amount, rate, a.term_months) : null
-  const payment = rate != null && isAnnuityProduct(a.product) ? annuitySchedule(amount, rate, a.term_months, null).payment : null
+  const seasonal = a.status !== 'ISSUED' && rate != null && seasonalExpected(a) ? seasonalFor(seasonalApi.data, amount, rate, a.term_months) : null
+  // После выдачи платёж и график — в блоке «Мой кредит» (из договора), здесь не дублируем расчётный
+  const issued = a.status === 'ISSUED'
+  const payment = !issued && rate != null && isAnnuityProduct(a.product) ? annuitySchedule(amount, rate, a.term_months, null).payment : null
   return <Card title={a.status === 'COUNTER_OFFER' ? 'Условия заявки' : 'Условия'} padding="m">
     <KeyValue items={[
       { label: 'Продукт', value: productName(a.product) },
@@ -46,7 +48,7 @@ export function ConditionsCard({ a }: { a: Application }) {
       seasonal
         ? { label: 'Платёж', value: <>от <Money rubles={seasonal.min} /> до <Money rubles={seasonal.max} /></>, hint: 'в месяц, по сезону — расчётно' }
         : payment != null && { label: 'Платёж', value: <Money rubles={payment} prefix="≈" />, hint: known ? 'в месяц, расчётно' : 'в месяц, из предложения — расчётно' },
-      overdraft && known && { label: 'Платёж', value: 'по факту', hint: 'проценты только за дни пользования' },
+      overdraft && known && !issued && { label: 'Платёж', value: 'по факту', hint: 'проценты только за дни пользования' },
       { label: 'Цель', value: purposeName[a.purpose] ?? a.purpose },
     ]} />
     {['DRAFT', 'AWAITING_SIGNATURE'].includes(a.status) && <div className={styles.fineprint}>
@@ -147,6 +149,18 @@ export function DecisionCard({ a }: { a: Application }) {
   </Card>
 }
 
+/** Как работает овердрафт: четыре пункта простым языком (на странице заявки и в кабинете кредита). */
+export function OverdraftHow({ amountKopecks, rate, termMonths, issued }: { amountKopecks: number; rate: number; termMonths: number; issued: boolean }) {
+  const example = Math.min(100_000, amountKopecks / 100)
+  const interest = overdraftInterest(example, rate, 10)
+  return <ul className={styles.howList}>
+    <li><BanknotesMIcon aria-hidden /><div><b>Деньги — когда не хватает на счёте</b><span>Лимит {formatMoney({ kopecks: amountKopecks })} {issued ? 'подключён' : 'подключат'} к расчётному счёту на {termMonths} мес. Платёж пройдёт, даже если своих денег на счёте меньше.</span></div></li>
+    <li><ArrowUpCircleMIcon aria-hidden /><div><b>Гасится поступлениями</b><span>Долг закрывается деньгами, которые приходят на счёт, — вносить платежи по графику не нужно.</span></div></li>
+    <li><CalendarMIcon aria-hidden /><div><b>Каждый транш — до 60 дней</b><span>Взятую сумму нужно вернуть на счёт в течение 60 дней.</span></div></li>
+    <li><PercentMIcon aria-hidden /><div><b>Проценты — только за дни использования</b><span>Ставка {pct(rate)} годовых. Например, {formatMoney({ rubles: example })} на 10 дней — примерно {formatMoney({ rubles: interest })}.</span></div></li>
+  </ul>
+}
+
 type Variant = 'seasonal' | 'equal'
 const monthText = (d: Date) => d.toLocaleDateString('ru-RU', { month: 'long', year: 'numeric' }).replace(/\s*г\.$/, '')
 
@@ -165,15 +179,8 @@ export function ScheduleCard({ a }: { a: Application }) {
   const title = signed ? 'График платежей' : 'Предварительный график'
 
   if (a.product === 'OVERDRAFT') {
-    const example = Math.min(100_000, amount)
-    const interest = overdraftInterest(example, rate, 10)
     return <Card title="Как гасится овердрафт" subtitle="Отдельного графика платежей нет" padding="m">
-      <ul className={styles.howList}>
-        <li><BanknotesMIcon aria-hidden /><div><b>Деньги — когда не хватает на счёте</b><span>Лимит {formatMoney({ kopecks: a.amount_kopecks })} {issued ? 'подключён' : 'подключат'} к расчётному счёту на {a.term_months} мес. Платёж пройдёт, даже если своих денег на счёте меньше.</span></div></li>
-        <li><ArrowUpCircleMIcon aria-hidden /><div><b>Гасится поступлениями</b><span>Долг закрывается деньгами, которые приходят на счёт, — вносить платежи по графику не нужно.</span></div></li>
-        <li><CalendarMIcon aria-hidden /><div><b>Каждый транш — до 60 дней</b><span>Взятую сумму нужно вернуть на счёт в течение 60 дней.</span></div></li>
-        <li><PercentMIcon aria-hidden /><div><b>Проценты — только за дни пользования</b><span>Ставка {pct(rate)} годовых. Например, {formatMoney({ rubles: example })} на 10 дней — примерно {formatMoney({ rubles: interest })}.</span></div></li>
-      </ul>
+      <OverdraftHow amountKopecks={a.amount_kopecks} rate={rate} termMonths={a.term_months} issued={issued} />
     </Card>
   }
 
