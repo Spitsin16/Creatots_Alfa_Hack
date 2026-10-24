@@ -126,7 +126,7 @@ export function Questionnaire({ value: a, onChange, onSubmit, busy, error, permi
     // поэтому при смене цели пересчитываем её — если человек не выбирал её сам и она осталась «по умолчанию» для прежней цели.
     const chosenByUser = userFrequency !== null && a.frequency === userFrequency
     if (!chosenByUser && (!a.purpose || a.frequency === frequencyFor(a.purpose))) patch.frequency = frequencyFor(code)
-    if (code === 'cash_gap' && gap && !amountTouched) patch.amount = gap.overdraft_suggestion
+    if (code === 'cash_gap' && gap && !amountTouched) patch.amount = Math.max(gap.overdraft_suggestion, AMOUNT_MIN)
     set(patch)
   }
 
@@ -157,6 +157,8 @@ export function Questionnaire({ value: a, onChange, onSubmit, busy, error, permi
   const termError = !a.term_months ? 'Укажите срок' : a.term_months < 1 || a.term_months > 120 ? 'Срок — от 1 до 120 месяцев' : null
   const missing = !a.purpose ? 'Выберите, на что нужны деньги' : amountError || termError ? 'Проверьте сумму и срок' : needConsent && !consent ? 'Отметьте согласие на запрос в БКИ и ФНС' : null
   const showGapHint = a.purpose === 'cash_gap' && gap && gap.overdraft_suggestion > 0
+  // Банк не выдаёт меньше минимума — подсказываем не меньше него
+  const suggested = gap ? Math.max(gap.overdraft_suggestion, AMOUNT_MIN) : 0
   const summary = [label('frequency', a.frequency), label('urgency', a.urgency), label('priority', a.priority), label('repayment', a.repayment),
     a.assets.includes('none') || !a.assets.length ? 'без залога' : `залог: ${a.assets.map(c => assets.find(([k]) => k === c)?.[1].toLowerCase() ?? c).join(', ')}`]
 
@@ -193,8 +195,8 @@ export function Questionnaire({ value: a, onChange, onSubmit, busy, error, permi
               onChange={(event, { value }) => onAmount(event, value)} />
             {showGapHint && <p className={styles.fieldHint}>
               По прогнозу {new Date(`${gap.date}T00:00:00`).toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })} может не хватить {formatMoney({ rubles: gap.shortfall })}.{' '}
-              {a.amount !== gap.overdraft_suggestion
-                ? <button type="button" className={styles.inlineLink} onClick={() => { setAmountTouched(true); set({ amount: gap.overdraft_suggestion }) }}>Подставить {formatMoney({ rubles: gap.overdraft_suggestion })}</button>
+              {a.amount !== suggested
+                ? <button type="button" className={styles.inlineLink} onClick={() => { setAmountTouched(true); set({ amount: suggested }) }}>Подставить {formatMoney({ rubles: suggested })}</button>
                 : <>Сумма подобрана, чтобы закрыть разрыв.</>}
             </p>}
             {a.purpose === 'refinance' && <p className={styles.fieldHint}>Укажите остаток долга по кредиту, который хотите перенести.</p>}

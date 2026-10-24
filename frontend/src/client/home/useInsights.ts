@@ -1,5 +1,6 @@
 import { Application, Forecast, Offer } from '../../api'
 import { useMyApplications } from '../../queries'
+import type { CurrentOverdraft } from '../ForecastCard'
 import type { OfferContext } from '../offerStore'
 import { foreignLoans, latestApplication, latestIssued, useApplicationDecision, useLoan } from './data'
 import type { RefinanceCardProps } from './RefinanceCard'
@@ -11,7 +12,7 @@ type SavedOffer = { id: string; offer: Offer; context?: OfferContext } | null
  * Данные для «Перенесите кредит в Альфу» и «Подсказок для бизнеса».
  * Пока что-то грузится или упало — карточки просто не показываются (это дополнения к главной, не основной сценарий).
  */
-export function useInsights({ businessId, forecast, saved, canCalc, onRefinance, onCalc, onPickOverdraft }: {
+export function useInsights({ businessId, forecast, saved, canCalc, onRefinance, onCalc, onPickOverdraft, overdraft }: {
   businessId: string
   forecast: Forecast | undefined
   saved: SavedOffer
@@ -19,6 +20,8 @@ export function useInsights({ businessId, forecast, saved, canCalc, onRefinance,
   onRefinance: () => void
   onCalc: () => void
   onPickOverdraft: (rubles: number) => void
+  /** Овердрафт, который уже выдан или в работе — подсказки не предлагают подобрать новый */
+  overdraft?: CurrentOverdraft
 }): { refinance: RefinanceCardProps | null; tips: Tip[]; ready: boolean } {
   const apps = useMyApplications(businessId)
   const items = apps.data?.items ?? []
@@ -50,7 +53,7 @@ export function useInsights({ businessId, forecast, saved, canCalc, onRefinance,
     loanPaymentShown,
     offer: saved,
     decisions: [activeApp.data, latestApp.data].filter((a): a is Application => !!a),
-    canCalc, onCalc, onPickOverdraft,
+    canCalc, onCalc, onPickOverdraft, overdraft,
   })
 
   // Ждём основные запросы, чтобы карточки не «прыгали» по мере загрузки

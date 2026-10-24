@@ -13,12 +13,15 @@ import { consentUntil, useCalculateOffer } from './calculate'
 import { ForecastCard, useForecast } from './ForecastCard'
 import { lastOfferId, loadOffer } from './offerStore'
 import { Answers, defaultAnswers, Questionnaire } from './Questionnaire'
+import { useCurrentOverdraft } from './home/overdraft'
 import { RefinanceCard } from './home/RefinanceCard'
 import { TipsCard } from './home/TipsCard'
 import { useInsights } from './home/useInsights'
 import styles from './HomePage.module.css'
 
 const CALC_ID = 'calculator'
+/** Минимальная сумма в анкете расчёта (как в Questionnaire) */
+const MIN_AMOUNT = 100_000
 
 const greeting = () => {
   const h = new Date().getHours()
@@ -33,6 +36,8 @@ export function HomePage() {
   const location = useLocation()
   const calculate = useCalculateOffer({ minDuration: 1600 })
   const forecast = useForecast(business.id)
+  // Овердрафт, который уже выдан или в работе: тогда не предлагаем подобрать новый
+  const overdraft = useCurrentOverdraft(business.id)
   const lastId = lastOfferId()
   const last = lastId ? loadOffer(lastId) : null
   const [answers, setAnswers] = useState<Answers>(() => last?.answers ?? defaultAnswers)
@@ -45,8 +50,9 @@ export function HomePage() {
   useEffect(() => { if (location.hash === `#${CALC_ID}`) scrollToCalc() }, [location.hash, forecast.isPending])
 
   // «Подобрать овердрафт» из прогноза: заполняем анкету под кассовый разрыв и ведём к ней.
+  // Сумма не меньше минимума анкеты (100 000 ₽), иначе анкета сразу показала бы ошибку «Минимум 100 000 ₽».
   const pickFromForecast = (rubles: number) => {
-    setAnswers(a => ({ ...a, purpose: 'cash_gap', frequency: 'always', urgency: 'days', amount: rubles, term_months: Math.min(a.term_months || 12, 12) }))
+    setAnswers(a => ({ ...a, purpose: 'cash_gap', frequency: 'always', urgency: 'days', amount: Math.max(rubles, MIN_AMOUNT), term_months: Math.min(a.term_months || 12, 12) }))
     setPrefilled(true)
     scrollToCalc()
   }
@@ -61,7 +67,15 @@ export function HomePage() {
   const insights = useInsights({
     businessId: business.id, forecast: forecast.data, saved: last && lastId ? { id: lastId, offer: last.offer, context: last.context } : null,
     canCalc: business.permissions.includes('FILL'), onRefinance: pickRefinance, onCalc: scrollToCalc, onPickOverdraft: pickFromForecast,
+    overdraft,
   })
+  // Выданный овердрафт закрывает разрыв — анкете незачем подсказывать сумму под него
+  const gap = forecast.data?.gap ?? null
+  const gapCovered = !!gap && overdraft.kind === 'issued' && overdraft.limitKopecks / 100 >= gap.shortfall
+  // Сумму под разрыв анкета подставляет сама (выбор цели, «Подставить N ₽») — поднимаем её до минимума анкеты
+  const formGap = gap && !gapCovered
+    ? { ...gap, overdraft_suggestion: gap.overdraft_suggestion > 0 ? Math.max(gap.overdraft_suggestion, MIN_AMOUNT) : gap.overdraft_suggestion }
+    : null
 
   return <Stack>
     <PageHeader eyebrow={business.name} title={`${greeting()}, ${firstName}`}
@@ -70,7 +84,7 @@ export function HomePage() {
     <ProxyNotice />
 
     <Grid columns="minmax(0, 1.55fr) minmax(0, 1fr)" align="stretch" className={styles.top}>
-      <ForecastCard businessId={business.id} onPick={pickFromForecast} className={styles.forecast} />
+      <ForecastCard businessId={business.id} onPick={pickFromForecast} currentOverdraft={overdraft} className={styles.forecast} />
       <div className={styles.side}>
         <AvailableCard offerId={lastId} offer={last?.offer ?? null} onCalc={scrollToCalc} />
         <ApplicationCard businessId={business.id} />
@@ -82,7 +96,7 @@ export function HomePage() {
     <div ref={calcRef} id={CALC_ID} className={styles.anchor}>
       <Questionnaire value={answers} onChange={setAnswers} onSubmit={a => calculate.mutate(a)}
         busy={calculate.isPending} error={calculate.error} permissions={business.permissions}
-        consentUntil={consentUntil(business.id)} gap={forecast.data?.gap ?? null} prefilled={prefilled} />
+        consentUntil={consentUntil(business.id)} gap={formGap} prefilled={prefilled} />
     </div>
 
     <TipsCard tips={insights.tips} />

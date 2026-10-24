@@ -1,5 +1,6 @@
 import { ReactNode, useId, useLayoutEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from 'react-router'
 import { Area, AreaChart, CartesianGrid, ReferenceArea, ReferenceDot, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import type { TooltipProps } from 'recharts'
 import { Button } from '@alfalab/core-components/button/esm'
@@ -33,9 +34,24 @@ export type ForecastCardProps = {
   overdraftKopecks?: number
   /** Кнопка «Подобрать овердрафт» под прогнозом: получает рекомендуемую сумму в рублях */
   onPick?: (rubles: number) => void
+  /**
+   * Овердрафт, который у клиента уже есть (главная): выданный — рисуем прогноз с его лимитом и не предлагаем подбор;
+   * заявка в работе — ведём в неё. 'loading' — пока не знаем, карточка ждёт, чтобы совет не «перепрыгивал».
+   */
+  currentOverdraft?: CurrentOverdraft
   title?: ReactNode
   className?: string
 }
+
+/** Овердрафт клиента по его заявкам. Суммы — в копейках, как в API. */
+export type CurrentOverdraft =
+  | { kind: 'loading' }
+  | { kind: 'none' }
+  | { kind: 'issued'; limitKopecks: number; applicationId: string; pending?: PendingOverdraft }
+  | ({ kind: 'pending' } & PendingOverdraft)
+
+/** Заявка на овердрафт, которая ещё в работе (черновик, ждёт подписи, проверка, одобрена, подписан договор). */
+export type PendingOverdraft = { applicationId: string; amountKopecks?: number; status: string }
 
 // Цвета графика = токены кита: графит для остатка, красный (status-negative) — когда денег не хватает.
 const INK = '#212124'
@@ -110,12 +126,13 @@ function Headline({ text, negative }: { text: string; negative: boolean }) {
 }
 
 /** Прогноз остатка на 30 дней по регулярным платежам и поступлениям: график, день разрыва, совет. */
-export function ForecastCard({ businessId, overdraftKopecks, onPick, title = 'Деньги на счёте', className }: ForecastCardProps) {
+export function ForecastCard({ businessId, overdraftKopecks, onPick, currentOverdraft, title = 'Деньги на счёте', className }: ForecastCardProps) {
   const forecast = useForecast(businessId, overdraftKopecks)
+  const navigate = useNavigate()
   const subtitle = 'Прогноз на 30 дней по регулярным платежам и поступлениям'
   const cls = [styles.card, className].filter(Boolean).join(' ')
 
-  if (forecast.isPending) return <Card title={title} subtitle={subtitle} className={cls}>
+  if (forecast.isPending || currentOverdraft?.kind === 'loading') return <Card title={title} subtitle={subtitle} className={cls}>
     <LoadingState view="skeleton" rows={4} label="Считаем прогноз…" />
   </Card>
   if (forecast.error) return <Card title={title} subtitle={subtitle} className={cls}>
@@ -128,14 +145,33 @@ export function ForecastCard({ businessId, overdraftKopecks, onPick, title = 'Д
 
   const gap = f.gap
   const lowest = f.series.reduce((a, b) => (b.balance < a.balance ? b : a))
-  // С лимитом овердрафта (страница предложения): нехватка своих денег покрывается лимитом
-  const covered = !!gap && !!overdraftKopecks && overdraftKopecks / 100 >= gap.shortfall
+  // Овердрафт, который у клиента уже выдан (главная). Лимит из предложения (overdraftKopecks) главнее — это другой экран.
+  const own = overdraftKopecks ? undefined : currentOverdraft
+  const issued = own?.kind === 'issued' ? own : undefined
+  const pending = own?.kind === 'pending' ? own : issued?.pending
+  const limitKopecks = overdraftKopecks || issued?.limitKopecks || undefined
+  const limitRubles = limitKopecks ? limitKopecks / 100 : undefined
+  // С лимитом овердрафта нехватка своих денег покрывается лимитом
+  const covered = !!gap && !!limitRubles && limitRubles >= gap.shortfall
+  const partly = !!gap && !!issued && !covered
+  // Сколько не покроет выданный лимит — честная разница прогноза и лимита, округляем вверх до тысячи («около»)
+  const rest = gap && limitRubles ? Math.ceil((gap.shortfall - limitRubles) / 1000) * 1000 : 0
+
+  const headline = gap && issued
+    ? `${dayMonth(gap.date)} остаток уйдёт в минус на ${formatMoney({ rubles: gap.shortfall })} — ${covered ? 'ваш овердрафт это покроет' : 'овердрафт покроет только часть'}`
+    : f.headline
+  const status = covered ? { color: 'green' as const, text: 'Овердрафт закроет разрыв' }
+    : partly ? { color: 'orange' as const, text: 'Овердрафт закроет часть' }
+      : gap ? { color: 'red' as const, text: 'Может не хватить' } : { color: 'green' as const, text: 'Денег хватает' }
+  const open = (id: string) => navigate(`/applications/${id}`)
+
   return <Card title={title} subtitle={subtitle} className={cls}
-    actions={<Status color={gap && !covered ? 'red' : 'green'} view="muted-alt" size={24} shape="rounded" uppercase={false}>{covered ? 'Овердрафт закроет разрыв' : gap ? 'Может не хватить' : 'Денег хватает'}</Status>}>
-    <p className={[styles.headline, gap ? styles.headlineGap : ''].join(' ')}><Headline text={keepAmounts(f.headline)} negative={!!gap && !covered} /></p>
+    actions={<Status color={status.color} view="muted-alt" size={24} shape="rounded" uppercase={false}>{status.text}</Status>}>
+    <p className={[styles.headline, gap ? styles.headlineGap : ''].join(' ')}><Headline text={keepAmounts(headline)} negative={!!gap && !covered} /></p>
 
     <ErrorBoundary compact>
-      <BalanceChart forecast={f} overdraftRubles={overdraftKopecks ? overdraftKopecks / 100 : undefined} covered={covered} />
+      <BalanceChart forecast={f} overdraftRubles={limitRubles} covered={covered}
+        gapText={gap && partly ? `минус ${formatMoney({ rubles: gap.shortfall })}` : undefined} />
     </ErrorBoundary>
 
     {gap && (gap.reasons?.length || f.details.length) ? <div className={styles.reasons}>
@@ -143,7 +179,39 @@ export function ForecastCard({ businessId, overdraftKopecks, onPick, title = 'Д
       <ul>{(gap.reasons?.length ? gap.reasons : f.details).map(r => <li key={r}>{keepAmounts(r)}</li>)}</ul>
     </div> : null}
 
-    {gap && f.suggestion && <div className={styles.suggestion}>
+    {gap && issued && covered && <div className={styles.suggestion}>
+      <span className={[styles.suggestionIcon, styles.suggestionIconOk].join(' ')} aria-hidden><CheckmarkCircleMIcon /></span>
+      <span className={styles.suggestionText}>
+        Ваш овердрафт {formatMoney({ kopecks: issued.limitKopecks })} закроет разрыв — включится сам и погасится первыми поступлениями.
+      </span>
+      <Button view="secondary" size={40} className={styles.suggestionButton} onClick={() => open(issued.applicationId)}>Открыть овердрафт</Button>
+    </div>}
+
+    {gap && issued && partly && <div className={styles.suggestion}>
+      <span className={styles.suggestionIcon} aria-hidden><LightningMIcon /></span>
+      <span className={styles.suggestionText}>
+        Овердрафт {formatMoney({ kopecks: issued.limitKopecks })} закроет часть: не хватит ещё около {formatMoney({ rubles: rest })}.
+        {pending ? ' Заявка на новый овердрафт уже в работе.' : onPick && gap.overdraft_suggestion > 0 ? ' Подберём новый лимит, который закроет весь разрыв.' : ''}
+      </span>
+      {pending
+        ? <Button view="secondary" size={40} className={styles.suggestionButton} onClick={() => open(pending.applicationId)}>Открыть заявку</Button>
+        : onPick && gap.overdraft_suggestion > 0 && <Button view="secondary" size={40} className={styles.suggestionButton} onClick={() => onPick(gap.overdraft_suggestion)}>
+          Увеличить лимит
+        </Button>}
+    </div>}
+
+    {gap && !issued && pending && <div className={styles.suggestion}>
+      <span className={styles.suggestionIcon} aria-hidden><LightningMIcon /></span>
+      <span className={styles.suggestionText}>
+        Заявка на овердрафт{pending.amountKopecks ? ` на ${formatMoney({ kopecks: pending.amountKopecks })}` : ''} уже в работе
+        {pending.amountKopecks
+          ? pending.amountKopecks / 100 >= gap.shortfall ? ' — когда его выдадут, этого лимита хватит на разрыв.' : ` — этого лимита не хватит на весь разрыв: нужно около ${formatMoney({ rubles: gap.overdraft_suggestion })}.`
+          : '.'}
+      </span>
+      <Button view="secondary" size={40} className={styles.suggestionButton} onClick={() => open(pending.applicationId)}>Открыть заявку</Button>
+    </div>}
+
+    {gap && !issued && !pending && f.suggestion && <div className={styles.suggestion}>
       <span className={styles.suggestionIcon} aria-hidden><LightningMIcon /></span>
       <span className={styles.suggestionText}>{keepAmounts(f.suggestion)}</span>
       {onPick && gap.overdraft_suggestion > 0 && <Button view="secondary" size={40} className={styles.suggestionButton} onClick={() => onPick(gap.overdraft_suggestion)}>
@@ -184,7 +252,7 @@ function UpcomingPayments({ forecast }: { forecast: ForecastData }) {
 
 type Point = { date: string; balance: number }
 
-function BalanceChart({ forecast, overdraftRubles, covered }: { forecast: ForecastData; overdraftRubles?: number; covered?: boolean }) {
+function BalanceChart({ forecast, overdraftRubles, covered, gapText }: { forecast: ForecastData; overdraftRubles?: number; covered?: boolean; gapText?: string }) {
   const id = useId().replace(/:/g, '')
   const data: Point[] = forecast.series
   const values = data.map(p => p.balance)
@@ -201,6 +269,9 @@ function BalanceChart({ forecast, overdraftRubles, covered }: { forecast: Foreca
   const xTicks = [0, 7, 14, 21, data.length - 1].filter(i => i < data.length).map(i => data[i].date)
   const gapIndex = gapPoint ? data.indexOf(gapPoint) / Math.max(data.length - 1, 1) : 0
   const gapAlign = gapIndex < 0.4 ? 'start' : gapIndex > 0.6 ? 'end' : 'middle'
+  // Подпись зоны овердрафта — сверху слева, под нулём: снизу у точки разрыва своя подпись (на телефоне они бы наложились).
+  // Узкая зона (лимит мал по сравнению с остатком): подпись не помещается внутри — ставим под зоной, по центру.
+  const zoneThin = !!overdraftRubles && (overdraftRubles / Math.max(domain[1] - domain[0], 1)) * PLOT_H < 24
 
   return <div className={styles.chart}>
     <ResponsiveContainer width="100%" height={CHART_H}>
@@ -219,18 +290,18 @@ function BalanceChart({ forecast, overdraftRubles, covered }: { forecast: Foreca
         </defs>
         <CartesianGrid vertical={false} stroke={GRID} />
         {overdraftRubles ? <ReferenceArea y1={-overdraftRubles} y2={0} fill={POSITIVE} fillOpacity={0.08} stroke="none" ifOverflow="extendDomain"
-          label={{ value: `Овердрафт ${formatMoney({ rubles: overdraftRubles })}`, position: 'insideBottomLeft', fill: '#0d9336', fontSize: 12, fontWeight: 600 }} /> : null}
+          label={{ value: `Овердрафт ${formatMoney({ rubles: overdraftRubles })}`, position: zoneThin ? 'bottom' : 'insideTopLeft', fill: '#0d9336', fontSize: 12, fontWeight: 600 }} /> : null}
         <XAxis dataKey="date" height={X_AXIS_H} ticks={xTicks} tickFormatter={shortDate} tickLine={false} axisLine={false}
           tick={{ fill: AXIS_TEXT, fontSize: 12 }} tickMargin={8} interval={0} padding={{ left: 4, right: 4 }} />
         <YAxis domain={domain} ticks={ticks} tickFormatter={compact} tickLine={false} axisLine={false}
           tick={<YTick />} width={64} interval={0} allowDataOverflow />
-        <Tooltip content={<ChartTooltip />} cursor={{ stroke: INK, strokeOpacity: 0.25, strokeWidth: 1 }} isAnimationActive={false} />
+        <Tooltip content={<ChartTooltip overdraftRubles={overdraftRubles} />} cursor={{ stroke: INK, strokeOpacity: 0.25, strokeWidth: 1 }} isAnimationActive={false} />
         <ReferenceLine y={0} stroke={NEGATIVE} strokeWidth={1} strokeOpacity={dataMin < 0 ? 0.8 : 0.45} />
         {gapPoint && <ReferenceLine segment={[{ x: gapPoint.date, y: domain[1] }, { x: gapPoint.date, y: gapPoint.balance }]} stroke={NEGATIVE} strokeOpacity={0.35} strokeWidth={1} />}
         <Area type="monotone" dataKey="balance" stroke={`url(#stroke-${id})`} strokeWidth={2} fill={`url(#fill-${id})`}
           baseValue={0} activeDot={{ r: 5, stroke: '#fff', strokeWidth: 2, fill: INK }} isAnimationActive={false} />
         {gapPoint && gap && <ReferenceDot x={gapPoint.date} y={gapPoint.balance} r={6} fill={NEGATIVE} stroke="#fff" strokeWidth={2}
-          label={<GapLabel date={gap.date} text={`${covered ? 'из овердрафта' : 'не хватит'} ${formatMoney({ rubles: gap.shortfall })}`} align={gapAlign} />} />}
+          label={<GapLabel date={gap.date} text={gapText ?? `${covered ? 'из овердрафта' : 'не хватит'} ${formatMoney({ rubles: gap.shortfall })}`} align={gapAlign} />} />}
       </AreaChart>
     </ResponsiveContainer>
     {/* Табличный двойник графика — для экранных дикторов. Прячем обёртку: у самой таблицы height: 1px не работает,
@@ -273,11 +344,12 @@ function YTick({ x, y, payload }: { x?: number; y?: number; payload?: { value: n
   return <text x={x} y={y} dy={4} textAnchor="end" fill={AXIS_TEXT} fontSize={12}>{compact(payload?.value ?? 0)}</text>
 }
 
-function ChartTooltip({ active, payload }: TooltipProps<number, string>) {
+function ChartTooltip({ active, payload, overdraftRubles }: TooltipProps<number, string> & { overdraftRubles?: number }) {
   if (!active || !payload?.length) return null
   const p = payload[0].payload as Point
+  const fromOverdraft = p.balance < 0 && !!overdraftRubles && -p.balance <= overdraftRubles
   return <div className={styles.tooltip}>
-    <Money rubles={p.balance} size="s" tone={p.balance < 0 ? 'negative' : 'default'} />
-    <span className={styles.tooltipDate}>{longDate(p.date)}{p.balance < 0 ? ' · не хватает денег' : ''}</span>
+    <Money rubles={p.balance} size="s" tone={p.balance < 0 && !fromOverdraft ? 'negative' : 'default'} />
+    <span className={styles.tooltipDate}>{longDate(p.date)}{fromOverdraft ? ' · из овердрафта' : p.balance < 0 ? ' · не хватает денег' : ''}</span>
   </div>
 }

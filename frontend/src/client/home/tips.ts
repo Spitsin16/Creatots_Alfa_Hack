@@ -1,4 +1,5 @@
 import { Application, Forecast, MyApplicationItem, Offer, productName } from '../../api'
+import type { CurrentOverdraft } from '../ForecastCard'
 import { formatMoney } from '../../ui'
 import { Loan, balanceOn, dayMonth, nextDateInForecast } from './data'
 
@@ -34,6 +35,8 @@ export type TipsInput = {
   canCalc: boolean
   onCalc: () => void
   onPickOverdraft: (rubles: number) => void
+  /** Овердрафт, который уже выдан или в работе: на днях нехватки не предлагаем подобрать новый */
+  overdraft?: CurrentOverdraft
 }
 
 const MAX_TIPS = 4
@@ -56,7 +59,7 @@ const fixText = (text: string) => text
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 /** Крупные регулярные списания в ближайшие 30 дней: хватает ли денег на счёте в этот день. */
-function paymentTips({ forecast, refinanceBanks, onPickOverdraft }: TipsInput): Tip[] {
+function paymentTips({ forecast, refinanceBanks, onPickOverdraft, overdraft }: TipsInput): Tip[] {
   if (!forecast?.series.length || !forecast.recurring?.length) return []
   const gapDate = forecast.gap?.date
   // С разрывом крупные платежи дня разрыва уже расписаны в «Деньгах на счёте» — подсказываем про остальные (до двух).
@@ -72,26 +75,59 @@ function paymentTips({ forecast, refinanceBanks, onPickOverdraft }: TipsInput): 
       const balance = balanceOn(forecast.series, r.date)
       const enough = balance == null || balance >= 0
       const suggestion = forecast.gap?.overdraft_suggestion ?? 0
-      return {
+      const head = {
         id: `pay-${r.counterparty}-${r.day}`,
         icon: 'calendar',
         eyebrow: 'Скоро списание',
         title: `${dayMonth(r.date)} · ${kindWord[r.kind] ?? 'Регулярный платёж'}`,
         amount: r.amount,
-        text: balance == null ? r.counterparty
-          : enough ? `${r.counterparty}. Денег на счёте хватает: к вечеру останется примерно ${approx(balance)}.`
-            : `${r.counterparty}. На счёте может не хватить примерно ${approx(-balance)}.`,
-        tone: enough ? 'ok' : 'warn',
-        action: !enough && suggestion > 0 ? { label: 'Подобрать овердрафт', onClick: () => onPickOverdraft(suggestion) } : undefined,
+      } as const
+      if (balance == null || enough) return {
+        ...head,
+        text: balance == null ? r.counterparty : `${r.counterparty}. Денег на счёте хватает: к вечеру останется примерно ${approx(balance)}.`,
+        tone: 'ok',
       } satisfies Tip
+      return { ...head, ...shortTip(r.counterparty, -balance, suggestion, overdraft, onPickOverdraft) } satisfies Tip
     })
+}
+
+/**
+ * День, когда своих денег не хватит. Есть выданный овердрафт — говорим, покроет ли он нехватку, и подбор не предлагаем:
+ * покрывает — без действия, не покрывает — «Увеличить лимит». Заявка на овердрафт в работе — ведём в неё.
+ */
+function shortTip(counterparty: string, short: number, suggestion: number, overdraft: CurrentOverdraft | undefined,
+  onPickOverdraft: (rubles: number) => void): Pick<Tip, 'text' | 'tone' | 'action'> {
+  const pending = overdraft?.kind === 'pending' ? overdraft : overdraft?.kind === 'issued' ? overdraft.pending : undefined
+  const openPending = pending ? { label: 'Открыть заявку', to: `/applications/${pending.applicationId}` } : undefined
+  if (overdraft?.kind === 'issued') {
+    const limit = overdraft.limitKopecks / 100
+    if (limit >= short) return {
+      text: `${counterparty}. Остаток уйдёт в минус примерно на ${approx(short)} — ваш овердрафт ${formatMoney({ rubles: limit })} это покроет.`,
+      tone: 'info',
+    }
+    return {
+      text: `${counterparty}. Овердрафт ${formatMoney({ rubles: limit })} покроет часть: не хватит ещё около ${formatMoney({ rubles: Math.ceil((short - limit) / 1000) * 1000 })}.`
+        + (pending ? ' Заявка на новый овердрафт уже в работе.' : suggestion > 0 ? ' Подберём новый лимит, который закроет весь разрыв.' : ''),
+      tone: 'warn',
+      action: openPending ?? (suggestion > 0 ? { label: 'Увеличить лимит', onClick: () => onPickOverdraft(suggestion) } : undefined),
+    }
+  }
+  if (pending) return {
+    text: `${counterparty}. На счёте может не хватить примерно ${approx(short)}. Заявка на овердрафт уже в работе.`,
+    tone: 'warn', action: openPending,
+  }
+  return {
+    text: `${counterparty}. На счёте может не хватить примерно ${approx(short)}.`,
+    tone: 'warn',
+    action: suggestion > 0 ? { label: 'Подобрать овердрафт', onClick: () => onPickOverdraft(suggestion) } : undefined,
+  }
 }
 
 /** Выданный кредит: ближайший платёж и подсказки банка (без повтора того, что уже есть на карточках). */
 function loanTips({ loan, loanPaymentShown }: TipsInput): Tip[] {
   if (!loan) return []
   const { item, loan: l } = loan
-  const to = { label: 'Открыть кредит', to: `/applications/${item.id}` }
+  const to = { label: l.product === 'OVERDRAFT' ? 'Открыть овердрафт' : 'Открыть кредит', to: `/applications/${item.id}` }
   const name = productName(item.product ?? l.product)
   const tips: Tip[] = []
   if (l.next_payment && !loanPaymentShown) tips.push({
@@ -101,7 +137,8 @@ function loanTips({ loan, loanPaymentShown }: TipsInput): Tip[] {
   })
   // Подсказка про ближайший платёж повторяет плитку выше; из остальных первой берём ту, что про прогноз
   const rest = l.tips.filter(t => !/^Ближайший платёж/i.test(t))
-  const best = rest.find(t => /прогноз/i.test(t)) ?? rest[0]
+  // У овердрафта про прогноз уже говорит карточка «Деньги на счёте» (с учётом лимита) — берём совет про то, как он работает
+  const best = l.product === 'OVERDRAFT' ? rest.find(t => !/прогноз/i.test(t)) : rest.find(t => /прогноз/i.test(t)) ?? rest[0]
   if (best) tips.push({
     id: 'loan-tip', icon: 'loan', eyebrow: 'Ваш кредит',
     title: `${name} ${l.product === 'OVERDRAFT' ? 'с лимитом' : 'на'} ${formatMoney({ rubles: l.amount })}`,
@@ -111,28 +148,32 @@ function loanTips({ loan, loanPaymentShown }: TipsInput): Tip[] {
 }
 
 /** Советы банка «как получить больше»: только те, где лимит правда растёт или ставка снижается. */
-function adviceTips({ offer, decisions, canCalc, onCalc }: TipsInput): Tip[] {
+function adviceTips({ offer, decisions, canCalc, onCalc, overdraft }: TipsInput): Tip[] {
   type Advice = Offer['advice'][number]
-  const better = (a: Advice, limit: number, rate: number | null) =>
-    !/REFIN/i.test(a.code) && (a.new_limit_kopecks > limit || (a.new_rate != null && rate != null && a.new_rate < rate))
-  const sources: { advice: Advice[]; limit: number; action?: TipAction }[] = []
+  // Выданный овердрафт: совет «лимит овердрафта вырастет до N» при N не больше уже выданного лимита — не рост, а противоречие
+  const issuedOverdraft = overdraft?.kind === 'issued' ? overdraft.limitKopecks : 0
+  const limitUp = (a: Advice, limit: number, product: string) =>
+    a.new_limit_kopecks > limit && !(product === 'OVERDRAFT' && a.new_limit_kopecks <= issuedOverdraft)
+  const better = (a: Advice, limit: number, rate: number | null, product: string) =>
+    !/REFIN/i.test(a.code) && (limitUp(a, limit, product) || (a.new_rate != null && rate != null && a.new_rate < rate))
+  const sources: { advice: Advice[]; limit: number; product: string; action?: TipAction }[] = []
   if (offer && offer.offer.limit_kopecks > 0) sources.push({
-    advice: offer.offer.advice.filter(a => better(a, offer.offer.limit_kopecks, offer.offer.rate)),
-    limit: offer.offer.limit_kopecks,
+    advice: offer.offer.advice.filter(a => better(a, offer.offer.limit_kopecks, offer.offer.rate, offer.offer.product)),
+    limit: offer.offer.limit_kopecks, product: offer.offer.product,
     action: { label: 'Открыть предложение', to: `/offer/${offer.id}` },
   })
   for (const app of decisions) {
     const d = app.decision
     if (!d || d.limit_kopecks <= 0) continue
     sources.push({
-      advice: d.advice.filter(a => better(a, d.limit_kopecks, d.rate)), limit: d.limit_kopecks,
+      advice: d.advice.filter(a => better(a, d.limit_kopecks, d.rate, app.product)), limit: d.limit_kopecks, product: app.product,
       action: canCalc ? { label: 'Рассчитать заново', onClick: onCalc } : undefined,
     })
   }
   const src = sources.find(s => s.advice.length)
   if (!src) return []
   return src.advice.slice(0, 2).map(a => {
-    const title = a.new_limit_kopecks > src.limit
+    const title = limitUp(a, src.limit, src.product)
       ? `Лимит вырастет до ${formatMoney({ kopecks: a.new_limit_kopecks })}`
       : `Ставка снизится до ${String(a.new_rate).replace('.', ',')}%`
     return {
