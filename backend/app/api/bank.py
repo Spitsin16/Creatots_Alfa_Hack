@@ -25,6 +25,7 @@ from app.api.dependencies import get_current_user, get_session
 from app.api.errors import APIError
 from app.models import Application, Approval, AuditLog, Business, DataSnapshot, Decision, Message, User
 from app.services.application_flow import transition_application
+from app.services.notifications.service import notify_risk_approval
 from app.states import InvalidTransition
 
 router = APIRouter(prefix="/api/v1/bank")
@@ -281,6 +282,8 @@ def underwriter_action(
     )
     session.add(approval)
     session.flush()
+    if risk_required:
+        notify_risk_approval(session, application)
     if not risk_required:
         try:
             transition_application(

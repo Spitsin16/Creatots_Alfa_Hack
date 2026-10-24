@@ -20,10 +20,11 @@ from app.services.integrations.external import FetchResult, fetch_all
 from app.services.sla_sweep import release_overdue
 
 
-def _decision_text(result: dict) -> str:
+def _decision_text(result: dict, requested_rub: float | None = None) -> str:
     amount = round((result.get("limit") or 0))
     if result["outcome"] == "APPROVED":
-        return f"Предложение подтверждено: доступно до {amount:,} ₽.".replace(",", " ")
+        granted = round(min(requested_rub, amount)) if requested_rub else amount
+        return f"Одобрено: {granted:,} ₽ — ровно запрошенная сумма. Подпишите договор кодом.".replace(",", " ")
     if result["outcome"] == "COUNTER_OFFER":
         return f"Доступна меньшая сумма — до {amount:,} ₽.".replace(",", " ")
     if result["outcome"] == "MANUAL_REVIEW":
@@ -129,7 +130,7 @@ def process_one(session: Session) -> bool:
     transition_application(session, application, "VALIDATION", actor_id=None, comment="Заявка принята системой")
     transition_application(session, application, "ENRICHMENT", actor_id=None, comment="Данные проверены")
     fetched = _enrich(session, application)
-    explanation_text = _decision_text(result)
+    explanation_text = _decision_text(result, application.amount_kopecks / 100)
     if fetched is not None:
         session.add(
             AuditLog(

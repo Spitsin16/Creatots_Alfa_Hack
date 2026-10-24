@@ -69,6 +69,21 @@ def notify_status(session: Session, application: Application, status: str) -> No
     title, text, sms = message
     send(session, _client_user_ids(session, application.business_id), kind="STATUS", title=title, text=text,
          application_id=application.id, sms=sms)
+    if status == "MANUAL_REVIEW":
+        # сотрудникам: новая заявка в очереди (или возврат к исполнителю)
+        staff = [application.assignee_id] if application.assignee_id else list(
+            session.scalars(select(User.id).where(User.role == "UNDERWRITER")))
+        amount = f"{application.amount_kopecks / 100:,.0f} ₽".replace(",", " ")
+        send(session, staff, kind="QUEUE", title="Заявка на ручной проверке",
+             text=f"{application.product}, {amount} — нужно решение специалиста", application_id=application.id)
+
+
+def notify_risk_approval(session: Session, application: Application) -> None:
+    """Риск-менеджерам: заявка ждёт второго одобрения."""
+    amount = f"{application.amount_kopecks / 100:,.0f} ₽".replace(",", " ")
+    send(session, list(session.scalars(select(User.id).where(User.role == "RISK_MANAGER"))), kind="QUEUE",
+         title="Нужно второе одобрение", text=f"Андеррайтер одобрил {amount} — требуется решение риск-менеджера",
+         application_id=application.id)
 
 
 def notify_client_message(session: Session, application: Application, preview: str) -> None:
