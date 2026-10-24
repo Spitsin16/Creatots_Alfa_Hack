@@ -143,21 +143,3 @@ export function useWorkflow(history: AuditItem[] | undefined): Workflow | null {
  * Среднемесячная выручка по счёту в Альфе — считаем на фронте по операциям (подписываем «расчётно»).
  * Берём не больше 12 последних полных месяцев: последний месяц выписки отбрасываем, если он неполный.
  */
-export function alfaRevenue(snapshots: Snapshots | undefined) {
-  const tx = snapshots?.ALFA?.transactions
-  if (!tx?.length) return null
-  const months = new Map<string, number>()
-  let lastDate = ''
-  for (const t of tx) {
-    if (t.date > lastDate) lastDate = t.date
-    if (t.direction !== 'IN' || t.kind !== 'REVENUE') continue
-    const m = t.date.slice(0, 7)
-    months.set(m, (months.get(m) ?? 0) + t.amount)
-  }
-  let keys = [...months.keys()].sort()
-  if (keys.length > 1 && lastDate && Number(lastDate.slice(8, 10)) < 28) keys = keys.filter(k => k !== lastDate.slice(0, 7))
-  keys = keys.slice(-12)
-  if (!keys.length) return null
-  const total = keys.reduce((a, k) => a + (months.get(k) ?? 0), 0)
-  return { avg: total / keys.length, months: keys.length }
-}

@@ -101,3 +101,9 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* График выручки по месяцам — на всю ширину сетки блоков */
+.wide {
+  grid-column: 1 / -1;
+  min-width: 0;
+}

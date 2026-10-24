@@ -1,6 +1,8 @@
 import { ReactNode, useMemo } from 'react'
 import { Card, EmptyState, KeyValue, KeyValueItem, Money } from '../../ui'
-import { alfaRevenue, Snapshots } from './data'
+import { Snapshots } from './data'
+import { fullMonthsText, monthlyRevenue } from './revenue/monthlyRevenue'
+import { RevenueChart } from './revenue/RevenueChart'
 import { ageText, formatDate, formatDateShort, percent, taxRegimeName } from './text'
 import styles from './SourcesCard.module.css'
 
@@ -11,7 +13,7 @@ const kv = (items: (KeyValueItem | null | undefined | false | '' | 0)[]) => item
 
 /** Что банк получил из источников: реестр, ФНС, БКИ, счёт в Альфе. Показываем только то, что пришло. */
 export function SourcesCard({ snapshots }: { snapshots: Snapshots | undefined }) {
-  const revenue = useMemo(() => alfaRevenue(snapshots), [snapshots])
+  const revenue = useMemo(() => monthlyRevenue(snapshots), [snapshots])
   const reg = snapshots?.REGISTRY
   const fns = snapshots?.FNS
   const bki = snapshots?.BKI
@@ -83,7 +85,7 @@ export function SourcesCard({ snapshots }: { snapshots: Snapshots | undefined })
         <KeyValue items={kv([
           alfa.account?.opened && { label: 'Счёт открыт', value: formatDateShort(alfa.account.opened), hint: ageText(alfa.account.opened) },
           alfa.account?.balance != null && { label: 'Остаток', value: <Money rubles={alfa.account.balance} weight="medium" />, hint: alfa.account.balance_as_of ? `на ${formatDate(alfa.account.balance_as_of)}` : undefined },
-          revenue && { label: 'Выручка в месяц', value: <Money rubles={revenue.avg} weight="medium" />, hint: `расчётно: среднее за ${revenue.months} полных мес. по операциям` },
+          revenue?.hasTransactions && revenue.months.length > 0 && { label: 'Выручка в месяц', value: <Money rubles={revenue.avg} weight="medium" />, hint: `расчётно: среднее за ${fullMonthsText(revenue.months.length)}` },
           { label: 'Кредиты в Альфе', value: alfa.credits?.length ? `${alfa.credits.length}` : 'нет' },
         ] as (KeyValueItem | false | undefined | null | '')[] as KeyValueItem[])} className={styles.kv} />
       </Block>}
@@ -91,6 +93,8 @@ export function SourcesCard({ snapshots }: { snapshots: Snapshots | undefined })
       {assets.length > 0 && <Block title="Имущество клиента">
         <KeyValue items={assets.map((a, i) => ({ key: String(i), label: a.title, value: a.value ? <Money rubles={a.value} weight="medium" /> : '—', hint: a.value ? 'оценка клиента' : undefined }))} className={styles.kv} />
       </Block>}
+
+      {revenue && <div className={styles.wide}><RevenueChart data={revenue} regime={fns?.regime} /></div>}
     </div>
   </Card>
 }
