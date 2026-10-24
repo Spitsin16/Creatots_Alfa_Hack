@@ -1,0 +1,129 @@
+.card {
+  container-type: inline-size;
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cols1 { grid-template-columns: minmax(0, 1fr); }
+.cols2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.cols3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+/* Четыре плитки — сеткой 2×2, чтобы в последнем ряду не было дыры */
+.cols4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.tip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  padding: 18px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--app-surface);
+  color: var(--app-text);
+}
+
+.icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ok { color: var(--color-light-status-positive, #0cc44d); }
+.warn { color: var(--color-light-status-negative, #ff4837); }
+.info { color: var(--app-text); }
+
+.eyebrow {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--app-text-secondary);
+}
+
+.title {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--app-text);
+  overflow-wrap: anywhere;
+}
+
+.amount {
+  margin-top: 2px;
+}
+
+.text {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+  overflow-wrap: break-word;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding: 12px 0 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.action svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.15s ease;
+}
+
+.action:hover {
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.action:hover svg {
+  transform: translateX(3px);
+}
+
+/* Узкая карточка: три плитки — в одну колонку (в две осталась бы дыра), две и четыре — ниже 520px */
+@container (max-width: 760px) {
+  .cols3 { grid-template-columns: minmax(0, 1fr); }
+}
+
+@container (max-width: 520px) {
+  .cols2,
+  .cols4 { grid-template-columns: minmax(0, 1fr); }
+
+  .tip {
+    padding: 16px;
+  }
+}

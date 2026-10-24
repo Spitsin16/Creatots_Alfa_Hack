@@ -110,9 +110,9 @@ function Headline({ text, negative }: { text: string; negative: boolean }) {
 }
 
 /** Прогноз остатка на 30 дней по регулярным платежам и поступлениям: график, день разрыва, совет. */
-export function ForecastCard({ businessId, overdraftKopecks, onPick, title = 'Прогноз денег', className }: ForecastCardProps) {
+export function ForecastCard({ businessId, overdraftKopecks, onPick, title = 'Деньги на счёте', className }: ForecastCardProps) {
   const forecast = useForecast(businessId, overdraftKopecks)
-  const subtitle = 'Остаток на счёте на 30 дней — по регулярным платежам и поступлениям'
+  const subtitle = 'Прогноз на 30 дней по регулярным платежам и поступлениям'
   const cls = [styles.card, className].filter(Boolean).join(' ')
 
   if (forecast.isPending) return <Card title={title} subtitle={subtitle} className={cls}>
@@ -131,7 +131,7 @@ export function ForecastCard({ businessId, overdraftKopecks, onPick, title = 'П
   // С лимитом овердрафта (страница предложения): нехватка своих денег покрывается лимитом
   const covered = !!gap && !!overdraftKopecks && overdraftKopecks / 100 >= gap.shortfall
   return <Card title={title} subtitle={subtitle} className={cls}
-    actions={<Status color={gap && !covered ? 'red' : 'green'} view="muted-alt" size={24} shape="rounded" uppercase={false}>{covered ? 'Овердрафт закроет разрыв' : gap ? 'Возможен разрыв' : 'Денег хватает'}</Status>}>
+    actions={<Status color={gap && !covered ? 'red' : 'green'} view="muted-alt" size={24} shape="rounded" uppercase={false}>{covered ? 'Овердрафт закроет разрыв' : gap ? 'Может не хватить' : 'Денег хватает'}</Status>}>
     <p className={[styles.headline, gap ? styles.headlineGap : ''].join(' ')}><Headline text={keepAmounts(f.headline)} negative={!!gap && !covered} /></p>
 
     <ErrorBoundary compact>

@@ -13,6 +13,9 @@ import { consentUntil, useCalculateOffer } from './calculate'
 import { ForecastCard, useForecast } from './ForecastCard'
 import { lastOfferId, loadOffer } from './offerStore'
 import { Answers, defaultAnswers, Questionnaire } from './Questionnaire'
+import { RefinanceCard } from './home/RefinanceCard'
+import { TipsCard } from './home/TipsCard'
+import { useInsights } from './home/useInsights'
 import styles from './HomePage.module.css'
 
 const CALC_ID = 'calculator'
@@ -22,7 +25,8 @@ const greeting = () => {
   return h < 5 ? 'Доброй ночи' : h < 12 ? 'Доброе утро' : h < 18 ? 'Добрый день' : 'Добрый вечер'
 }
 
-// Главная клиента: «доступно сейчас», прогноз денег, активная заявка и анкета расчёта.
+// Главная клиента: деньги на счёте (прогноз), «доступно сейчас», активная заявка, «перенесите кредит в Альфу»,
+// анкета расчёта и подсказки для бизнеса.
 export function HomePage() {
   const { me } = useSession()
   const business = me.businesses[0]
@@ -47,6 +51,18 @@ export function HomePage() {
     scrollToCalc()
   }
 
+  // «Перенесите кредит в Альфу»: цель «Снизить платёж по кредиту», сумму (остаток долга) клиент вводит сам.
+  // Частота «постоянно под рукой» превратила бы расчёт в овердрафт — сбрасываем её на «один раз».
+  const pickRefinance = () => {
+    setAnswers(a => ({ ...a, purpose: 'refinance', frequency: a.frequency === 'always' ? 'once' : a.frequency }))
+    scrollToCalc()
+  }
+
+  const insights = useInsights({
+    businessId: business.id, forecast: forecast.data, saved: last && lastId ? { id: lastId, offer: last.offer, context: last.context } : null,
+    canCalc: business.permissions.includes('FILL'), onRefinance: pickRefinance, onCalc: scrollToCalc, onPickOverdraft: pickFromForecast,
+  })
+
   return <Stack>
     <PageHeader eyebrow={business.name} title={`${greeting()}, ${firstName}`}
       subtitle="Подберём финансирование по оборотам вашего бизнеса — без справок и визита в офис." actions={<Bell />} />
@@ -61,11 +77,15 @@ export function HomePage() {
       </div>
     </Grid>
 
+    {insights.refinance && <RefinanceCard {...insights.refinance} />}
+
     <div ref={calcRef} id={CALC_ID} className={styles.anchor}>
       <Questionnaire value={answers} onChange={setAnswers} onSubmit={a => calculate.mutate(a)}
         busy={calculate.isPending} error={calculate.error} permissions={business.permissions}
         consentUntil={consentUntil(business.id)} gap={forecast.data?.gap ?? null} prefilled={prefilled} />
     </div>
+
+    <TipsCard tips={insights.tips} />
   </Stack>
 }
 

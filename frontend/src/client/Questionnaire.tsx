@@ -197,6 +197,7 @@ export function Questionnaire({ value: a, onChange, onSubmit, busy, error, permi
                 ? <button type="button" className={styles.inlineLink} onClick={() => { setAmountTouched(true); set({ amount: gap.overdraft_suggestion }) }}>Подставить {formatMoney({ rubles: gap.overdraft_suggestion })}</button>
                 : <>Сумма подобрана, чтобы закрыть разрыв.</>}
             </p>}
+            {a.purpose === 'refinance' && <p className={styles.fieldHint}>Укажите остаток долга по кредиту, который хотите перенести.</p>}
           </div>
           <div className={styles.slider}>
             <SliderInput block size={56} label="Срок" info={months(a.term_months)} disabled={busy}
