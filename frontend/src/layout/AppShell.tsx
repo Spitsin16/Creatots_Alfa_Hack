@@ -4,6 +4,7 @@ import { IconButton } from '@alfalab/core-components/icon-button/esm'
 import { TooltipDesktop } from '@alfalab/core-components/tooltip/esm/desktop'
 import { BanknotesMIcon } from '@alfalab/icons-glyph/BanknotesMIcon'
 import { BurgerMIcon } from '@alfalab/icons-glyph/BurgerMIcon'
+import { ChartColumnThreeMIcon } from '@alfalab/icons-glyph/ChartColumnThreeMIcon'
 import { ClockLineMIcon } from '@alfalab/icons-glyph/ClockLineMIcon'
 import { CrossMIcon } from '@alfalab/icons-glyph/CrossMIcon'
 import { DocumentLinesMIcon } from '@alfalab/icons-glyph/DocumentLinesMIcon'
@@ -36,11 +37,13 @@ const navByRole: Record<string, NavItem[]> = {
   ],
   UNDERWRITER: [
     { to: '/bank', icon: ListBulletedMIcon, label: 'Очередь заявок' },
+    { to: '/bank/stats', icon: ChartColumnThreeMIcon, label: 'Сводка' },
     { to: '/bank/audit', icon: ClockLineMIcon, label: 'Журнал аудита' },
   ],
   RISK_MANAGER: [
     { to: '/bank/risk', icon: ShieldMIcon, label: 'Согласования' },
     { to: '/bank', icon: ListBulletedMIcon, label: 'Все заявки' },
+    { to: '/bank/stats', icon: ChartColumnThreeMIcon, label: 'Сводка' },
     { to: '/bank/audit', icon: ClockLineMIcon, label: 'Журнал аудита' },
   ],
   RULES_ADMIN: [

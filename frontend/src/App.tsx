@@ -20,6 +20,7 @@ const DocumentsRoute = page(() => import('./client/DocumentsRoute'), 'DocumentsR
 const QueuePage = page(() => import('./bank/QueuePage'), 'QueuePage')
 const BankApplicationPage = page(() => import('./bank/BankPages'), 'BankApplicationPage')
 const RiskPage = page(() => import('./bank/BankPages'), 'RiskPage')
+const StatsPage = page(() => import('./bank/stats/StatsPage'), 'StatsPage')
 const RulesPage = page(() => import('./bank/RulesAdmin'), 'RulesPage')
 const AuditRoute = page(() => import('./bank/AuditPage'), 'AuditRoute')
 // Витрина примитивов src/ui — только в dev-сборке (в production вырезается целиком).
@@ -45,6 +46,7 @@ export default function App() {
           <Route element={<RequireRole roles={['UNDERWRITER', 'RISK_MANAGER']} />}>
             <Route index element={<QueuePage />} />
             <Route path="applications/:id" element={<BankApplicationPage />} />
+            <Route path="stats" element={<StatsPage />} />
           </Route>
           <Route path="risk" element={<RequireRole roles={['RISK_MANAGER']} />}><Route index element={<RiskPage />} /></Route>
           <Route path="rules" element={<RequireRole roles={['RULES_ADMIN']} />}><Route index element={<RulesPage />} /></Route>

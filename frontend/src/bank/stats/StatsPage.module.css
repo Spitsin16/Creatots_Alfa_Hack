@@ -1,0 +1,484 @@
+/* ——— Плитки показателей ——— */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid transparent;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-card);
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.tileLink {
+  transition: box-shadow 0.15s ease;
+}
+
+.tileLink:hover {
+  box-shadow: 0 4px 16px rgba(11, 31, 53, 0.08);
+}
+
+.tileLink:focus-visible,
+.attentionItem:focus-visible,
+.barRow:focus-visible {
+  outline: 2px solid var(--color-light-border-link, #2a77ef);
+  outline-offset: 2px;
+}
+
+.tileLabel {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.tileValue {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.tileAccent {
+  color: var(--app-accent);
+}
+
+.tileHint {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-tertiary);
+}
+
+/* ——— Требует внимания ——— */
+.attention {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.attentionItem {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  margin: 0 -12px;
+  border-radius: var(--app-radius-control);
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.attentionItem:hover {
+  background: var(--app-surface-muted);
+}
+
+.attentionIcon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+}
+
+.attentionIcon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.hot {
+  background: var(--color-light-status-info, #e3effd);
+  color: var(--app-link);
+}
+
+.hotNegative {
+  background: var(--color-light-status-negative, #fde7e5);
+  color: var(--app-negative);
+}
+
+.attentionText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.attentionText b {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.attentionText small {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.attentionValue {
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.valueNegative {
+  color: var(--app-negative);
+}
+
+/* ——— Суммы ——— */
+.money {
+  display: flex;
+  flex-direction: column;
+}
+
+.moneyRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.moneyRow:first-child {
+  padding-top: 0;
+}
+
+.moneyRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.moneyText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.moneyText b {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.moneyText small {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+/* ——— Полосы (статусы, продукты) ——— */
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.barRow {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  margin: 0 -10px;
+  border-radius: var(--app-radius-control);
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.barRow:hover {
+  background: var(--app-surface-muted);
+}
+
+.barHead {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.barName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barAmount {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+}
+
+.barCount {
+  min-width: 32px;
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.barTrack {
+  display: block;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--app-surface-muted);
+  overflow: hidden;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+}
+
+/* ——— Авторешения ——— */
+.auto {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.donut {
+  position: relative;
+  flex: none;
+  width: 150px;
+  height: 150px;
+}
+
+.donutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.donutCenter b {
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.donutCenter span {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+.autoSide {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+.legend,
+.classLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend li span:nth-child(2) {
+  flex: 1;
+  color: var(--app-text-secondary);
+}
+
+.legend b {
+  font-variant-numeric: tabular-nums;
+}
+
+.swatch {
+  display: inline-block;
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+
+.autoNote {
+  margin: 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-tertiary);
+}
+
+/* ——— Время до решения ——— */
+.times {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.timeRow:first-child {
+  padding-top: 0;
+}
+
+.timeRow:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.timeLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.timeLabel b {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.timeLabel small {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.timeValue {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.timeValue small {
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--app-text-secondary);
+}
+
+/* ——— Классы риска ——— */
+.classChart {
+  height: 200px;
+}
+
+.classLegend {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+.classLegend li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-float);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.tooltip span {
+  color: var(--app-text-secondary);
+}
+
+.source {
+  margin: 0;
+  max-width: 760px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-tertiary);
+}
+
+@media (max-width: 900px) {
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .tiles {
+    gap: 12px;
+  }
+
+  .tile {
+    padding: 14px 16px;
+  }
+
+  .tileValue {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .auto {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .donut {
+    align-self: center;
+  }
+
+  .moneyRow,
+  .timeRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .timeValue {
+    align-items: flex-start;
+  }
+}
