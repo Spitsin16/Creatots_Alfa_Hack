@@ -1,0 +1,401 @@
+/* ——— Полоса показателей ——— */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid transparent;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-card);
+  color: var(--app-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stat:hover {
+  box-shadow: 0 4px 16px rgba(11, 31, 53, 0.08);
+}
+
+.stat:focus-visible {
+  outline: 2px solid var(--color-light-border-link, #2a77ef);
+  outline-offset: 2px;
+}
+
+.statActive {
+  border-color: var(--app-text);
+}
+
+.statLabel {
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.statValue {
+  font-size: 30px;
+  line-height: 36px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.statValueAccent {
+  color: var(--app-accent);
+}
+
+.statHint {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ——— Карточка очереди ——— */
+.queueCard {
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px 24px 16px;
+}
+
+.tabs {
+  min-width: 0;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.tagIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.product {
+  width: 240px;
+}
+
+.found {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.found b {
+  color: var(--app-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.pad {
+  padding: 8px 24px 24px;
+}
+
+.results {
+  transition: opacity 0.15s ease;
+}
+
+.stale {
+  opacity: 0.55;
+}
+
+/* ——— Таблица ——— */
+.tableWrap {
+  width: 100%;
+}
+
+/* className кита попадает на обёртку — сама таблица внутри */
+.table,
+.table table {
+  width: 100%;
+}
+
+.table table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+/* у кита строка шапки 72px — делаем компактной */
+.table thead tr {
+  height: auto;
+}
+
+th.th {
+  vertical-align: middle;
+  padding-top: 12px;
+  padding-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--app-text-secondary);
+  background: var(--app-surface);
+  border-top: 1px solid var(--app-border);
+  border-bottom: 1px solid var(--app-border);
+}
+
+th.th:first-child,
+td.td:first-child {
+  padding-left: 24px;
+}
+
+th.th:last-child,
+td.td:last-child {
+  padding-right: 24px;
+}
+
+td.td {
+  height: auto;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  vertical-align: middle;
+  border-top-color: var(--app-border);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+td.right {
+  text-align: right;
+}
+
+.row {
+  cursor: pointer;
+}
+
+.row:hover {
+  background: var(--color-light-base-bg-secondary, #f2f3f5);
+}
+
+/* Просроченный вопрос клиента: мягкая красная подложка и полоса слева */
+.rowOverdue {
+  background: #fff5f4;
+  box-shadow: inset 3px 0 0 var(--app-accent);
+}
+
+.row.rowOverdue:hover {
+  background: #ffeceb;
+}
+
+.client {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.clientName {
+  color: var(--app-text);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clientName:hover {
+  text-decoration: underline;
+}
+
+.primary {
+  display: block;
+  color: var(--app-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--app-text-tertiary);
+}
+
+.me {
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.question {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--color-light-text-attention, #c26a00);
+}
+
+.questionOverdue {
+  color: var(--app-negative);
+}
+
+.questionIcon {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+}
+
+/* ——— Список для узких экранов ——— */
+.list {
+  display: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--app-border);
+}
+
+.list li + li {
+  border-top: 1px solid var(--app-border);
+}
+
+.listItem {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.listItem:hover {
+  background: var(--color-light-base-bg-secondary, #f2f3f5);
+}
+
+.listTop,
+.listMid,
+.listBottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.listName {
+  min-width: 0;
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.listMid {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.listMid > :last-child {
+  color: var(--app-text);
+}
+
+.listBottom {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.listBottom .meta {
+  margin-top: 0;
+}
+
+/* ——— Подвал с пагинацией ——— */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 24px 20px;
+  border-top: 1px solid var(--app-border);
+}
+
+.range {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Узкая карточка (ниже ~880px — уже 1200px экрана): таблицу меняем на список */
+@container (max-width: 880px) {
+  .tableWrap {
+    display: none;
+  }
+
+  .list {
+    display: block;
+  }
+
+  .toolbar {
+    padding: 20px 20px 16px;
+  }
+
+  .footer {
+    padding: 16px 20px;
+  }
+
+  .found {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .stats {
+    gap: 12px;
+  }
+
+  .stat {
+    padding: 14px 16px;
+  }
+
+  .statValue {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .statHint {
+    white-space: normal;
+  }
+
+  .product {
+    width: 100%;
+  }
+
+  .pad {
+    padding: 8px 20px 20px;
+  }
+}

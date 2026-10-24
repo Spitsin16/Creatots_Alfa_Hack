@@ -1,0 +1,191 @@
+/* ——— Карточка заявки: две колонки на широком экране ——— */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 20px;
+  align-items: start;
+}
+
+.main,
+.side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.decision,
+.chat {
+  min-width: 0;
+}
+
+/*
+ * Уже 1180px — одна колонка. Панель решения поднимаем наверх (сразу под шапкой),
+ * чат — в самый низ: side «растворяется» в общем потоке через display: contents.
+ */
+@media (max-width: 1180px) {
+  .layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .side {
+    display: contents;
+  }
+
+  .decision {
+    order: 0;
+  }
+
+  .main {
+    order: 1;
+  }
+
+  .chat {
+    order: 2;
+  }
+}
+
+/* ——— Согласования риск-менеджера ——— */
+.riskCard {
+  min-width: 0;
+}
+
+.riskGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 28px;
+}
+
+.riskInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.riskHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.riskTitle {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.riskName {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  color: var(--app-text);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.riskName:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.proposal {
+  padding: 16px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.proposalRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 6px;
+}
+
+.kv {
+  margin: 0;
+}
+
+.reasons {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-bg-attention-muted, #ffefd9);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.reasonIcon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--color-light-text-attention, #ea8313);
+}
+
+.quote {
+  margin: 0;
+  padding: 10px 14px;
+  border-left: 3px solid var(--app-border-strong);
+  border-radius: 0 10px 10px 0;
+  background: var(--app-surface-muted);
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--app-text);
+  overflow-wrap: anywhere;
+}
+
+.quote .label {
+  margin-bottom: 2px;
+}
+
+.open {
+  align-self: flex-start;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-link);
+  text-decoration: none;
+}
+
+.open:hover {
+  text-decoration: underline;
+}
+
+.riskForm {
+  min-width: 0;
+  padding-left: 28px;
+  border-left: 1px solid var(--app-border);
+}
+
+@media (max-width: 1100px) {
+  .riskGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+
+  .riskForm {
+    padding: 20px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--app-border);
+  }
+}

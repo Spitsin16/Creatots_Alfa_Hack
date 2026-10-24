@@ -1,33 +1,33 @@
-import { Link, useNavigate, useParams } from 'react-router'
-import { useSession } from '../auth'
-import { Bell } from '../common/Bell'
-import { AuditPage } from './AuditPage'
+import { useParams } from 'react-router'
+import { Bell, PageHeader, Stack } from '../ui'
 import { ReviewPanel, RiskQueue } from './ReviewPanel'
-import { RulesAdmin } from './RulesAdmin'
+import { useRiskApprovals } from './workplace/data'
+import styles from './BankPages.module.css'
 
 // Карточка заявки — отдельная страница: на неё ведут очередь, согласования и уведомления.
 export function BankApplicationPage() {
   const { id = '' } = useParams()
-  const navigate = useNavigate()
-  return <div className="page bank-page"><header><div>
-    <button className="link dark" onClick={() => (history.length > 1 ? navigate(-1) : navigate('/bank'))}>‹ Назад</button>
-    <h1>Карточка заявки</h1></div><Bell /></header>
-    <ReviewPanel id={id} />
-  </div>
+  return <ReviewPanel key={id} id={id} />
 }
 
+// Второе одобрение риск-менеджера: суммы больше 5 млн ₽ и одобрения вопреки скорингу.
 export function RiskPage() {
-  return <div className="page bank-page"><header><div><span className="eyebrow">Кабинет банка</span><h1>Согласования риска</h1><p>Второе одобрение: суммы свыше 5 млн ₽ и решения вопреки скорингу. <Link className="link" to="/bank">Все заявки ›</Link></p></div><Bell /></header>
+  const list = useRiskApprovals()
+  const count = list.data?.length
+  return <Stack gap={24}>
+    <PageHeader
+      eyebrow="Кабинет банка"
+      title="Согласования"
+      subtitle="Второе одобрение решений андеррайтеров: суммы больше 5 млн ₽, одобрения вопреки скорингу (класс D–E) и выше расчётного лимита."
+      actions={<>
+        {count != null && <div className={styles.counter} aria-label={`Ждут решения: ${count}`}>
+          <b>{count}</b><span>ждут<br />решения</span>
+        </div>}
+        <Bell />
+      </>}
+    />
     <RiskQueue />
-  </div>
+  </Stack>
 }
 
-export function RulesPage() {
-  const { token } = useSession()
-  return <RulesAdmin token={token} />
-}
-
-export function AuditRoute() {
-  const { token } = useSession()
-  return <AuditPage token={token} />
-}
+// Правила (RulesPage) и журнал (AuditRoute) — в RulesAdmin.tsx и AuditPage.tsx: так они грузятся отдельными частями.
