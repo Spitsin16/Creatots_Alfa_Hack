@@ -16,7 +16,7 @@ import { SourcesCard } from './workplace/SourcesCard'
 import {
   BankDetail, RiskItem, scoringDecision, useApplicationDocuments, useApplicationHistory, useBankApplication, useRiskApprovals, useWorkflow,
 } from './workplace/data'
-import { bankStatusName, formatDateTime, outcomeName, productName, purposeName, riskReasons, shortStaffName } from './workplace/text'
+import { bankStatusName, formatDateTime, outcomeName, pendingRiskReasons, productName, purposeName, shortStaffName } from './workplace/text'
 import styles from './ReviewPanel.module.css'
 
 // Карточка заявки андеррайтера: слева клиент, запрос, скоринг, источники, документы, история;
@@ -138,7 +138,7 @@ function RiskApprovalCard({ item, onDone }: { item: RiskItem; onDone: (r: RiskRe
   const outcome = item.proposed_outcome
   // У одобрения в согласование уходит сумма заявки, у контрпредложения — сумма из решения андеррайтера.
   const amount = outcome === 'COUNTER_OFFER' ? item.amount_kopecks : d?.amount_kopecks ?? item.amount_kopecks
-  const reasons = d ? riskReasons(outcome === 'COUNTER_OFFER' ? 'COUNTER_OFFER' : 'APPROVE', amount, scoring?.cls, scoring?.limit_kopecks) : []
+  const reasons = d ? pendingRiskReasons(outcome, amount, scoring) : []
   return <Card as="article" className={styles.riskCard}>
     <div className={styles.riskGrid}>
       <div className={styles.riskInfo}>

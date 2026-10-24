@@ -16,13 +16,18 @@ import { Card, formatMoney, KeyValue, StatusTag } from '../../ui'
 import { BankDetail, InternalDecision, RiskItem, scoringDecision, useRiskApprovals, Workflow } from './data'
 import { RiskDecision, RiskResult } from './RiskDecision'
 import {
-  bankStatusHint, bankStatusName, formatDateTime, outcomeName, percent, rejectReasonName, rejectReasons, RISK_THRESHOLD_KOPECKS, riskReasons, shortStaffName,
+  bankStatusHint, bankStatusName, formatDateTime, outcomeName, pendingRiskReasons, percent, rejectReasonName, rejectReasons, RISK_THRESHOLD_KOPECKS, riskReasons, shortStaffName,
 } from './text'
 import styles from './DecisionPanel.module.css'
 
 type Action = 'APPROVE' | 'COUNTER_OFFER' | 'REQUEST_INFO' | 'REJECT'
 type ActionResponse = { application_id: string; status: string; decision_id: string; approval_id: string; risk_required: boolean }
-type Notice = { tone: 'positive' | 'attention'; title: string; text: string }
+/**
+ * Сообщение о результате действия. Живёт, пока заявка в том статусе, который вернул бэк (status);
+ * «отправлено риск-менеджеру» — ещё и пока у заявки прежний исполнитель (вернул риск-менеджер — исполнителя снимают).
+ * Иначе плашка висела бы до закрытия, хотя статус давно сменился (заявку подтвердил риск-менеджер, клиент подписал…).
+ */
+type Notice = { tone: 'positive' | 'attention'; title: string; text: string; status: string; riskPending?: boolean }
 
 const actions: { value: Action; label: string; hint: string; button: string }[] = [
   { value: 'APPROVE', label: 'Одобрить', hint: 'на сумму заявки', button: 'Одобрить заявку' },
@@ -44,14 +49,17 @@ export function DecisionPanel({ detail, workflow }: { detail: BankDetail; workfl
   const manual = detail.status === 'MANUAL_REVIEW'
   const mine = !!detail.assignee_id && detail.assignee_id === me.id
   const pendingRisk = manual && (!!approval || !!workflow?.pendingRisk)
-  const changed = () => {
-    void client.invalidateQueries({ queryKey: keys.bankApplication(detail.id) })
-    void client.invalidateQueries({ queryKey: keys.bankQueue })
-    void client.invalidateQueries({ queryKey: keys.approvals })
-  }
+  // Обновляем карточку (вместе с историей), очередь и согласования; промис — когда свежие данные пришли.
+  const changed = () => Promise.all([
+    client.invalidateQueries({ queryKey: keys.bankApplication(detail.id) }),
+    client.invalidateQueries({ queryKey: keys.bankQueue }),
+    client.invalidateQueries({ queryKey: keys.approvals }),
+  ])
+  const [noticeAssignee, setNoticeAssignee] = useState<string | null>(null)
+  const shownNotice = notice && notice.status === detail.status && (!notice.riskPending || detail.assignee_id === noticeAssignee) ? notice : null
   const assign = useMutation({
     mutationFn: () => request(`/api/v1/bank/applications/${detail.id}/assign`, { method: 'POST' }, token),
-    onSuccess: () => { setNotice(null); changed() },
+    onSuccess: () => { setNotice(null); void changed() },
   })
   const underwriterDecision = decisionById(detail.decisions, workflow?.lastUnderwriter?.after?.decision_id)
 
@@ -61,7 +69,7 @@ export function DecisionPanel({ detail, workflow }: { detail: BankDetail; workfl
   } else if (pendingRisk) {
     body = <>
       <PendingRisk detail={detail} approval={approval} decision={underwriterDecision} workflow={workflow} />
-      {isRisk && approval && <RiskDecision approval={approval} accent onDone={r => setNotice(riskNotice(r))} />}
+      {isRisk && approval && <RiskDecision approval={approval} accent onDone={r => { void changed().then(() => setNotice(riskNotice(r))) }} />}
       {isRisk && !approval && approvals.isPending && <p className={styles.muted}>Загружаем согласование…</p>}
     </>
   } else if (!detail.assignee_id) {
@@ -75,7 +83,12 @@ export function DecisionPanel({ detail, workflow }: { detail: BankDetail; workfl
   } else if (!mine) {
     body = <p className={styles.text}>Заявку ведёт <b>{shortStaffName(detail.assignee_name) || 'другой специалист'}</b>. Решение может принять только исполнитель.</p>
   } else {
-    body = <ActionForm detail={detail} scoring={scoring} onDone={(n) => { setNotice(n); changed() }} />
+    // плашку показываем, когда карточка уже обновилась: иначе она мигнёт, пока статус в кэше старый
+    body = <ActionForm detail={detail} scoring={scoring} onDone={async n => {
+      await changed()
+      setNoticeAssignee(detail.assignee_id)
+      setNotice(n)
+    }} />
   }
 
   return <Card title="Решение по заявке" as="aside" className={styles.panel} id="decision-panel">
@@ -89,11 +102,11 @@ export function DecisionPanel({ detail, workflow }: { detail: BankDetail; workfl
       <span>Сумма больше 5 млн ₽ — одобрение потребует второго одобрения риск-менеджера</span>
     </div>}
 
-    {notice && <Plate view={notice.tone} title={notice.title} leftAddons={<CheckmarkCircleMIcon className={styles.plateIcon} />} hasCloser onClose={() => setNotice(null)} className={styles.notice}>
-      {notice.text}
+    {shownNotice && <Plate view={shownNotice.tone} title={shownNotice.title} leftAddons={<CheckmarkCircleMIcon className={styles.plateIcon} />} hasCloser onClose={() => setNotice(null)} className={styles.notice}>
+      {shownNotice.text}
     </Plate>}
 
-    {manual && workflow?.returned && !detail.assignee_id && !notice && <Plate view="attention" title="Риск-менеджер вернул решение" className={styles.notice}>
+    {manual && workflow?.returned && !detail.assignee_id && !shownNotice && <Plate view="attention" title="Риск-менеджер вернул решение" className={styles.notice}>
       {workflow.returned.actor_name ?? 'Риск-менеджер'} · {formatDateTime(workflow.returned.at)}. Возьмите заявку в работу и примите решение заново.
     </Plate>}
 
@@ -106,11 +119,11 @@ function decisionById(decisions: InternalDecision[], id: unknown) {
 }
 
 const riskNotice = (r: RiskResult): Notice => r.action === 'APPROVE'
-  ? { tone: 'positive', title: 'Решение подтверждено', text: `Статус заявки: ${(bankStatusName[r.status] ?? r.status).toLowerCase()}. Клиент получил уведомление.` }
-  : { tone: 'attention', title: 'Решение возвращено андеррайтеру', text: 'Заявка снова в очереди на ручной проверке без исполнителя.' }
+  ? { tone: 'positive', title: 'Решение подтверждено', text: `Статус заявки: ${(bankStatusName[r.status] ?? r.status).toLowerCase()}. Клиент получил уведомление.`, status: r.status }
+  : { tone: 'attention', title: 'Решение возвращено андеррайтеру', text: 'Заявка снова в очереди на ручной проверке без исполнителя.', status: r.status }
 
 /** Форма решения андеррайтера: исход, сумма / причина, обязательный комментарий. */
-function ActionForm({ detail, scoring, onDone }: { detail: BankDetail; scoring: InternalDecision | undefined; onDone: (n: Notice) => void }) {
+function ActionForm({ detail, scoring, onDone }: { detail: BankDetail; scoring: InternalDecision | undefined; onDone: (n: Notice) => Promise<void> }) {
   const { token } = useSession()
   const limit = scoring?.limit_kopecks ?? 0
   const [action, setAction] = useState<Action>('APPROVE')
@@ -211,12 +224,13 @@ function ActionForm({ detail, scoring, onDone }: { detail: BankDetail; scoring: 
 }
 
 function successNotice(action: Action, r: ActionResponse, amount: number | null): Notice {
-  if (r.risk_required) return { tone: 'attention', title: 'Отправлено риск-менеджеру', text: 'Решение вступит в силу после второго одобрения. Заявка останется на ручной проверке.' }
+  const status = r.status
+  if (r.risk_required) return { tone: 'attention', title: 'Отправлено риск-менеджеру', text: 'Решение вступит в силу после второго одобрения. Заявка останется на ручной проверке.', status, riskPending: true }
   switch (action) {
-    case 'APPROVE': return { tone: 'positive', title: 'Заявка одобрена', text: 'Клиент получил уведомление в кабинете.' }
-    case 'COUNTER_OFFER': return { tone: 'positive', title: 'Контрпредложение отправлено', text: `Клиенту предложено ${formatMoney({ kopecks: amount ?? 0 })}. Ждём его ответа.` }
-    case 'REQUEST_INFO': return { tone: 'positive', title: 'Документы запрошены', text: 'Клиент получил уведомление в кабинете.' }
-    default: return { tone: 'positive', title: 'Отказ оформлен', text: 'Код причины и комментарий записаны в журнал, клиент получил уведомление.' }
+    case 'APPROVE': return { tone: 'positive', title: 'Заявка одобрена', text: 'Клиент получил уведомление в кабинете.', status }
+    case 'COUNTER_OFFER': return { tone: 'positive', title: 'Контрпредложение отправлено', text: `Клиенту предложено ${formatMoney({ kopecks: amount ?? 0 })}. Ждём его ответа.`, status }
+    case 'REQUEST_INFO': return { tone: 'positive', title: 'Документы запрошены', text: 'Клиент получил уведомление в кабинете.', status }
+    default: return { tone: 'positive', title: 'Отказ оформлен', text: 'Код причины и комментарий записаны в журнал, клиент получил уведомление.', status }
   }
 }
 
@@ -227,11 +241,14 @@ function PendingRisk({ detail, approval, decision, workflow }: { detail: BankDet
   const amount = outcome === 'COUNTER_OFFER' ? approval?.amount_kopecks ?? decision?.limit_kopecks : detail.amount_kopecks
   const comment = approval?.underwriter_comment ?? decision?.explanation
   const who = workflow?.lastUnderwriter
+  // та же проверка, что в списке согласований и в форме андеррайтера
+  const reasons = pendingRiskReasons(outcome, amount, scoringDecision(detail.decisions))
   return <div className={styles.pending}>
     <div className={styles.pendingHead}>
       <ShieldMIcon className={styles.riskIcon} aria-hidden />
       <b>Ждёт второго одобрения риск-менеджера</b>
     </div>
+    {reasons.length > 0 && <p className={styles.pendingReason}>Почему нужно: {reasons.join(', ')}</p>}
     <KeyValue items={[
       outcome ? { label: 'Предложено', value: outcomeName[outcome] ?? outcome } : null,
       amount != null ? { label: 'Сумма', value: formatMoney({ kopecks: amount }) } : null,

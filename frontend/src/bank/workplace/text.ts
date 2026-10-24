@@ -137,6 +137,15 @@ export function riskReasons(action: string, amountKopecks: number, cls: string |
   return reasons
 }
 
+/**
+ * Причины второго одобрения для решения, которое уже ждёт риск-менеджера: исход из согласования/решения
+ * (APPROVED / COUNTER_OFFER), предложенная сумма и скоринговое решение заявки (класс, расчётный лимит).
+ */
+export function pendingRiskReasons(outcome: string | null | undefined, amountKopecks: number | null | undefined, scoring: { cls: string; limit_kopecks: number } | undefined): string[] {
+  if (!outcome || amountKopecks == null) return []
+  return riskReasons(outcome === 'COUNTER_OFFER' ? 'COUNTER_OFFER' : 'APPROVE', amountKopecks, scoring?.cls, scoring?.limit_kopecks)
+}
+
 /** «Андеррайтер Смирнова Е.» → «Смирнова Е.» */
 export const shortStaffName = (name: string | null | undefined) => (name ?? '').replace(/^(Андеррайтер|Риск-менеджер|Администратор правил)\s+/, '')
 
