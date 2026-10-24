@@ -1,140 +1,382 @@
-import { useEffect, useState } from 'react'
-import { request, rubles } from '../api'
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useSearchParams } from 'react-router'
+import { Button } from '@alfalab/core-components/button/esm'
+import { IconButton } from '@alfalab/core-components/icon-button/esm'
+import { Input } from '@alfalab/core-components/input/esm'
+import { Plate } from '@alfalab/core-components/plate/esm'
+import { Status } from '@alfalab/core-components/status/esm'
+import { Tab, Tabs } from '@alfalab/core-components/tabs/esm'
+import { ArrowLeftCurvedSIcon } from '@alfalab/icons-glyph/ArrowLeftCurvedSIcon'
+import { CheckmarkCircleMIcon } from '@alfalab/icons-glyph/CheckmarkCircleMIcon'
+import { ChevronDownSIcon } from '@alfalab/icons-glyph/ChevronDownSIcon'
+import { SlidersMIcon } from '@alfalab/icons-glyph/SlidersMIcon'
+import { request } from '../api'
+import { useSession } from '../auth'
+import { Bell } from '../common/Bell'
+import { Card, EmptyState, ErrorState, Grid, LoadingState, PageHeader, Stack } from '../ui'
+import { ConfirmModal } from './rules/ConfirmModal'
+import { loadDraft, SimResult, SimState, storeDraft } from './rules/draftStore'
+import { diff, formatValue, meta, OFFER_VALID_DAYS, Path, pathKey, plural, Rules, SectionId, sectionOf, setAt, validate } from './rules/meta'
+import { RulesFormContext } from './rules/RuleField'
+import { ClassesSection, CollateralSection, FactorsSection, LimitsSection, RatesSection, RoutingSection } from './rules/Sections'
+import { isDemoPersona, rowDiff, SimulationSummary, SimulationTable } from './rules/SimulationTable'
+import styles from './RulesAdmin.module.css'
 
-type Rules = any
-type Short = { cls: string | null; score: number | null; product: string; outcome: string; limit: number | null; rate: number | null }
-type Row = { persona: string; title: string; before: Short; after: Short; changed: boolean }
-type Listing = { active_version: number; active_rules: Rules; versions: { version: number; active: boolean; created_at: string }[] }
+type Version = { version: number; active: boolean; author_id: string | null; created_at: string }
+type Listing = { active_version: number | null; active_rules: Rules | null; versions: Version[] }
+type AuditEntry = { entity_id: string; actor_name: string | null; after: { comment?: string } | null; at: string }
+type Confirm = { kind: 'save' } | { kind: 'activate'; version: number } | { kind: 'travel' }
 
-const factorTitle: Record<string, string> = {
-  BUSINESS_AGE: 'Срок работы бизнеса, мес.', REVENUE_STABILITY: 'Стабильность выручки (коэф. вариации)',
-  DEBT_LOAD: 'Долговая нагрузка (платежи / выручка)', CREDIT_HISTORY: 'Кредитная история (БКИ)',
-  ALFA_HISTORY: 'История в Альфе', TAX_DEBT: 'Налоговый долг, ₽', INDUSTRY_RISK: 'Отраслевой риск',
-  ALFA_SHARE: 'Доля оборотов в Альфе', DATA_QUALITY: 'Полнота данных',
+const sections: { id: SectionId; title: string; render: () => ReactNode }[] = [
+  { id: 'factors', title: 'Скоринг', render: () => <FactorsSection /> },
+  { id: 'classes', title: 'Классы', render: () => <ClassesSection /> },
+  { id: 'limits', title: 'Лимиты', render: () => <LimitsSection /> },
+  { id: 'rates', title: 'Ставки', render: () => <RatesSection /> },
+  { id: 'routing', title: 'Маршруты', render: () => <RoutingSection /> },
+  { id: 'collateral', title: 'Залог', render: () => <CollateralSection /> },
+]
+
+const dateTime = (iso: string) => {
+  const d = new Date(iso)
+  return Number.isNaN(d.getTime()) ? '' : new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(d)
 }
-const valueTitle: Record<string, string> = {
-  CLEAN_12M: 'без просрочек 12 мес.', NO_HISTORY: 'нет истории', PAST_OVERDUE_LT_30: 'просрочка < 30 дн.',
-  PAST_OVERDUE_GTE_30: 'просрочка ≥ 30 дн.', GOOD_BORROWER: 'хороший заёмщик', NOT_BORROWER: 'не заёмщик',
-  HAD_OVERDUE: 'были просрочки', low: 'низкий', medium: 'средний', high: 'высокий', ALFA_12M: 'Альфа 12 мес.',
-  ALFA_LT_12M: 'Альфа < 12 мес.', STATEMENT_12M: 'выписка 12 мес.', STATEMENT_6_11M: 'выписка 6–11 мес.', FNS_ONLY: 'только ФНС',
-}
-const routeTitle: Record<string, string> = { AUTO: 'автоматически', MANUAL_REVIEW: 'ручная проверка', REJECTED: 'отказ' }
-const outcomeTitle: Record<string, string> = { APPROVED: 'одобрено', COUNTER_OFFER: 'контрпредложение', MANUAL_REVIEW: 'ручная проверка', REJECTED: 'отказ' }
-const assetTitle: Record<string, string> = { real_estate: 'Недвижимость', vehicle: 'Транспорт', equipment: 'Оборудование' }
 
-const bandLabel = (b: Record<string, number>) =>
-  b.eq !== undefined ? `= ${b.eq}` : b.lt !== undefined ? `< ${b.lt}` : b.lte !== undefined ? `≤ ${b.lte}` : b.gt !== undefined ? `> ${b.gt}` : `≥ ${b.gte}`
+const RULES_KEY = ['rules-admin'] as const
+const HISTORY_KEY = ['rules-history'] as const
 
-function Num({ value, onChange, step = 1, suffix }: { value: number; onChange: (v: number) => void; step?: number; suffix?: string }) {
-  return <span className="num"><input type="number" step={step} value={value} onChange={e => onChange(e.target.value === '' ? 0 : Number(e.target.value))} />{suffix && <em>{suffix}</em>}</span>
-}
-
-// Админ правил: форма вместо YAML. Изменение = новая версия; до включения — прогон «было/стало» на персонах.
+// Админ правил: форма вместо YAML. Изменение = новая версия; до включения — прогон «было/стало» на тестовых клиентах.
+// Включение версии и перемотка времени — только после подтверждения в модальном окне.
 export function RulesAdmin({ token }: { token: string }) {
-  const [list, setList] = useState<Listing | null>(null)
-  const [rules, setRules] = useState<Rules | null>(null)
-  const [comment, setComment] = useState('')
-  const [rows, setRows] = useState<Row[] | null>(null)
-  const [tab, setTab] = useState('market')
-  const [busy, setBusy] = useState(false)
-  const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
-  const load = () => request<Listing>('/api/v1/bank/rules', {}, token).then(l => { setList(l); setRules((r: Rules) => r ?? structuredClone(l.active_rules)) })
-  useEffect(() => { void load() }, [])
+  const client = useQueryClient()
+  const listing = useQuery({ queryKey: RULES_KEY, queryFn: () => request<Listing>('/api/v1/bank/rules', {}, token) })
+  // Комментарии и авторы версий — из журнала аудита (необязательно: без них список версий всё равно работает)
+  const history = useQuery({
+    queryKey: HISTORY_KEY,
+    queryFn: () => request<{ items: AuditEntry[] }>('/api/v1/bank/audit?action=RULES_VERSION_CREATED&page_size=200', {}, token),
+    retry: false,
+  })
 
-  // Изменить значение по пути и сбросить устаревший прогон.
-  const set = (path: (string | number)[], value: number) => {
-    setRules((prev: Rules) => {
-      const next = structuredClone(prev)
-      let node = next
-      for (const key of path.slice(0, -1)) node = node[key]
-      node[path[path.length - 1]] = value
-      return next
-    })
-    setRows(null)
+  // Черновик, результат прогона и комментарий — в sessionStorage: уход на «Журнал» и обновление их не теряют
+  const [restored] = useState(loadDraft)
+  const [draft, setDraft] = useState<Rules | null>(restored?.draft ?? null)
+  const [sim, setSim] = useState<SimState | null>(restored?.sim ?? null)
+  const [comment, setComment] = useState(restored?.comment ?? '')
+  const [confirm, setConfirm] = useState<Confirm | null>(null)
+  const [notice, setNotice] = useState<{ view: 'positive' | 'attention'; title: string; text: string } | null>(null)
+  const [lastSaved, setLastSaved] = useState<number | null>(null)
+  const [jump, setJump] = useState(0)
+  const [showSandbox, setShowSandbox] = useState(false)
+  const resultsRef = useRef<HTMLDivElement>(null)
+  const noticeRef = useRef<HTMLDivElement>(null)
+  const checkedRestore = useRef(false)
+
+  // Вкладка — в адресе (?tab=classes), чтобы «Назад» и обновление открывали тот же раздел
+  const [url, setUrl] = useSearchParams()
+  const tabParam = url.get('tab')
+  const tab: SectionId = sections.some(s => s.id === tabParam) ? tabParam as SectionId : 'factors'
+  const setTab = (id: SectionId) => setUrl(prev => {
+    const next = new URLSearchParams(prev)
+    if (id === 'factors') next.delete('tab'); else next.set('tab', id)
+    return next
+  }, { replace: true })
+
+  const base = listing.data?.active_rules ?? null
+  // Черновик из хранилища, посчитанный от другой версии, не показываем ни одного кадра (эффект ниже его сбросит)
+  const staleRestore = !!listing.data && !!restored?.draft && draft === restored.draft && restored.version !== listing.data.active_version
+  const form = (staleRestore ? null : draft) ?? base
+  const changes = useMemo(() => (base && form ? diff(base, form) : []), [base, form])
+  const errors = useMemo(() => (form ? validate(form, changes) : {}), [form, changes])
+  const errorCount = Object.keys(errors).length
+  const formKey = useMemo(() => (form ? JSON.stringify(form) : ''), [form])
+  const fresh = !!sim && sim.key === formKey && changes.length > 0
+  const versions = listing.data?.versions ?? []
+  const activeVersion = listing.data?.active_version ?? null
+  const nextVersion = versions.reduce((m, v) => Math.max(m, v.version), 0) + 1
+  const countBy = changes.reduce<Partial<Record<SectionId, number>>>((acc, ch) => {
+    const s = sectionOf(ch.path)
+    acc[s] = (acc[s] ?? 0) + 1
+    return acc
+  }, {})
+
+  // Сохранённый черновик считался от другой версии (её сменили, пока страница была закрыта) — сбрасываем
+  useEffect(() => {
+    if (!listing.data || checkedRestore.current) return
+    checkedRestore.current = true
+    if (restored && (restored.draft || restored.comment) && restored.version !== listing.data.active_version) {
+      setDraft(null); setSim(null); setComment('')
+      setNotice({ view: 'attention', title: 'Черновик сброшен', text: `Пока вас не было, включили версию ${listing.data.active_version}. Изменения нужно внести заново — уже от неё.` })
+    }
+  }, [listing.data, restored])
+
+  useEffect(() => {
+    if (!listing.data || !checkedRestore.current) return
+    storeDraft(changes.length === 0 && !comment ? null : { version: activeVersion, draft, sim, comment })
+  }, [listing.data, activeVersion, draft, sim, comment, changes.length])
+
+  // После включения версии или перемотки — к сообщению вверху страницы: кнопки были далеко внизу
+  useEffect(() => {
+    if (!jump) return
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    noticeRef.current?.focus({ preventScroll: true })
+  }, [jump])
+
+  const set = (path: Path, value: unknown) => setDraft(d => setAt(d ?? base, path, value))
+  const reset = () => { setDraft(null); setSim(null) }
+  const showNotice = (n: NonNullable<typeof notice>) => { setNotice(n); setJump(j => j + 1) }
+
+  // После включения версии форма начинается заново — от новой действующей версии
+  const afterSwitch = async () => {
+    await client.invalidateQueries({ queryKey: RULES_KEY })
+    void client.invalidateQueries({ queryKey: HISTORY_KEY })
+    setDraft(null); setSim(null); setConfirm(null)
   }
-  const run = async (fn: () => Promise<void>) => { setError(''); setMessage(''); setBusy(true); try { await fn() } catch (e) { setError((e as Error).message) } finally { setBusy(false) } }
-  const check = () => run(async () => setRows((await request<{ personas: Row[] }>('/api/v1/bank/rules/simulate', { method: 'POST', body: JSON.stringify({ rules }) }, token)).personas))
-  const save = () => run(async () => {
-    const r = await request<{ version: number }>('/api/v1/bank/rules', { method: 'POST', body: JSON.stringify({ rules, comment, activate: true }) }, token)
-    setMessage(`Версия ${r.version} сохранена и включена. Новые расчёты идут по ней, прежние решения хранят свою версию.`); setComment(''); setRows(null); void load()
-  })
-  const reset = () => { if (list) { setRules(structuredClone(list.active_rules)); setRows(null) } }
-  const activate = (v: number) => run(async () => {
-    await request(`/api/v1/bank/rules/${v}/activate`, { method: 'POST' }, token)
-    const l = await request<Listing>('/api/v1/bank/rules', {}, token); setList(l); setRules(structuredClone(l.active_rules)); setRows(null)
-    setMessage(`Включена версия ${v}`)
-  })
-  const travel = () => run(async () => {
-    const r = await request<{ expired: string[] }>('/api/v1/bank/admin/time-travel', { method: 'POST', body: JSON.stringify({ days: 31 }) }, token)
-    setMessage(r.expired.length ? `Через 31 день истекут одобрения: ${r.expired.length} — статус «Срок предложения истёк»` : 'Через 31 день просроченных одобрений нет')
-  })
-  const cell = (s: Short) => <>{outcomeTitle[s.outcome] ?? s.outcome}{s.limit ? ` · ${rubles(s.limit * 100)}` : ''}{s.rate ? ` · ${s.rate}%` : ''}{s.score != null ? <small>балл {s.score}</small> : null}</>
 
-  if (!rules) return <div className="page bank-page"><p className="muted">Загружаем правила…</p></div>
-  const tabs = [['market', 'Ставки и лимиты'], ['classes', 'Классы'], ['products', 'Продукты'], ['factors', 'Факторы скоринга'], ['collateral', 'Залог']]
-  return <div className="page bank-page"><header><div><span className="eyebrow">Кабинет банка</span><h1>Правила решения</h1><p>Изменение = новая версия. До включения проверьте, как поменяются решения по тестовым клиентам.</p></div>
-    <div className="metric"><b>v{list?.active_version ?? '…'}</b><span>действует</span></div></header>
-    {message && <div className="notice">{message}</div>}{error && <div className="error">{error}</div>}
-    <div className="rules-layout"><section className="queue">
-      <div className="filters">{tabs.map(([k, l]) => <button key={k} className={`chip ${tab === k ? 'active' : ''}`} onClick={() => setTab(k)}>{l}</button>)}</div>
+  const simulate = useMutation({
+    mutationFn: (rules: Rules) => request<SimResult>('/api/v1/bank/rules/simulate', { method: 'POST', body: JSON.stringify({ rules }) }, token),
+    onSuccess: (result, rules) => {
+      setSim({ key: JSON.stringify(rules), result })
+      requestAnimationFrame(() => resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+    },
+  })
+  const save = useMutation({
+    mutationFn: () => request<{ version: number }>('/api/v1/bank/rules', { method: 'POST', body: JSON.stringify({ rules: form, comment: comment.trim(), activate: true }) }, token),
+    onSuccess: async r => {
+      await afterSwitch(); setComment(''); setLastSaved(r.version)
+      showNotice({ view: 'positive', title: `Версия ${r.version} сохранена и включена`, text: 'Новые расчёты и заявки идут по ней. Уже принятые решения хранят свою версию правил.' })
+    },
+  })
+  const activate = useMutation({
+    mutationFn: (v: number) => request(`/api/v1/bank/rules/${v}/activate`, { method: 'POST' }, token),
+    onSuccess: async (_, v) => {
+      await afterSwitch(); setLastSaved(null)
+      showNotice({ view: 'positive', title: `Включена версия ${v}`, text: 'Новые расчёты идут по ней. Черновик изменений сброшен.' })
+    },
+  })
+  const travel = useMutation({
+    mutationFn: () => request<{ expired: string[] }>('/api/v1/bank/admin/time-travel', { method: 'POST', body: JSON.stringify({ days: 31 }) }, token),
+    onSuccess: r => {
+      setConfirm(null)
+      showNotice({
+        view: 'positive',
+        title: 'Время перемотано на 31 день',
+        text: r.expired.length ? `Истёк срок одобрения у ${r.expired.length} ${plural(r.expired.length, ['заявки', 'заявок', 'заявок'])} — статус «Срок предложения истёк».` : 'Просроченных одобрений нет.',
+      })
+    },
+  })
+  const resetMutations = () => { save.reset(); activate.reset(); travel.reset() }
+  const openConfirm = (c: Confirm) => { resetMutations(); setConfirm(c) }
+  const closeConfirm = () => { setConfirm(null); resetMutations() }
+  // После успеха фокус не возвращаем на кнопку внизу — иначе страница уедет обратно от сообщения
+  // (пока идёт onSuccess, мутация ещё в статусе pending — поэтому учитываем и его)
+  const succeeded = [save, activate, travel].some(m => m.isPending || m.isSuccess)
 
-      {tab === 'market' && <div className="form-grid">
-        <label>Ключевая ставка ЦБ<Num value={rules.market.key_rate} step={0.25} suffix="%" onChange={v => set(['market', 'key_rate'], v)} /></label>
-        <label>Минимальная ставка: ключевая +<Num value={rules.market.rate_floor_over_key} step={0.5} suffix="п.п." onChange={v => set(['market', 'rate_floor_over_key'], v)} /></label>
-        <label>Платежи по всем кредитам, не больше<Num value={Math.round(rules.debt_load.max_payment_share * 100)} suffix="% выручки" onChange={v => set(['debt_load', 'max_payment_share'], v / 100)} /></label>
-        <label>Второе одобрение риск-менеджера от<Num value={rules.outcome.risk_manager_above} step={100000} suffix="₽" onChange={v => set(['outcome', 'risk_manager_above'], v)} /></label>
-        <label>Округление лимита вниз до<Num value={rules.limit.round_down_to} step={1000} suffix="₽" onChange={v => set(['limit', 'round_down_to'], v)} /></label>
-        <label>Срок действия предложения<Num value={rules.outcome.offer_valid_days} suffix="дн." onChange={v => set(['outcome', 'offer_valid_days'], v)} /></label>
-        <h3>Скидка к ставке за обороты в Альфе</h3>
-        {rules.rate.alfa_share_discount.map((d: { gte: number; pp: number }, i: number) => <label key={i}>Доля оборотов ≥ {Math.round(d.gte * 100)}%<Num value={d.pp} step={0.5} suffix="п.п." onChange={v => set(['rate', 'alfa_share_discount', i, 'pp'], v)} /></label>)}
+  const header = <PageHeader
+    eyebrow="Кабинет банка"
+    title="Правила решения"
+    subtitle="Скоринг, классы, лимиты и ставки. Любое изменение сохраняется новой версией: сначала проверьте её на тестовых клиентах, потом включите."
+    actions={<>
+      {activeVersion !== null && <Status color="green" view="muted-alt" size={32} shape="rounded" uppercase={false}>Действует версия {activeVersion}</Status>}
+      <Bell />
+    </>}
+  />
+
+  if (listing.isPending) return <Stack>{header}<LoadingState view="skeleton" rows={6} label="Загружаем правила…" /></Stack>
+  if (listing.error) return <Stack>{header}<ErrorState error={listing.error} title="Не получилось загрузить правила" onRetry={() => listing.refetch()} /></Stack>
+  if (!base || !form) return <Stack>{header}<EmptyState icon={<SlidersMIcon />} title="Нет действующей версии правил" text="Правила загружаются из rules.yaml при запуске стенда. Перезапустите бэкенд или обратитесь к разработчикам." /></Stack>
+
+  const demoRows = sim?.result.personas.filter(r => isDemoPersona(r.persona)) ?? []
+  const otherRows = sim?.result.personas.filter(r => !isDemoPersona(r.persona)) ?? []
+  const comments = new Map((history.data?.items ?? []).map(i => [i.entity_id, i]))
+  const canSave = fresh && errorCount === 0 && comment.trim().length >= 3
+
+  return <RulesFormContext.Provider value={{ draft: form, base, errors, set }}>
+    <Stack>
+      {header}
+
+      {notice && <div ref={noticeRef} tabIndex={-1} className={styles.notice} role="status">
+        <Plate view={notice.view} title={notice.title} hasCloser onClose={() => setNotice(null)} leftAddons={notice.view === 'positive' ? <CheckmarkCircleMIcon /> : undefined}>{notice.text}</Plate>
       </div>}
 
-      {tab === 'classes' && <table className="sim rules-table"><thead><tr><th>Класс</th><th>Балл от</th><th>Коэф. лимита</th><th>Надбавка к ставке</th><th>Решение</th></tr></thead><tbody>
-        {rules.classes.map((c: { name: string; min: number; limit_coef: number; rate_premium: number | null; route: string }, i: number) => <tr key={c.name}>
-          <td><b>{c.name}</b></td>
-          <td><Num value={c.min} onChange={v => set(['classes', i, 'min'], v)} /></td>
-          <td>{c.route === 'REJECTED' ? '—' : <Num value={c.limit_coef} step={0.05} onChange={v => set(['classes', i, 'limit_coef'], v)} />}</td>
-          <td>{c.rate_premium === null ? '—' : <Num value={c.rate_premium} step={0.5} suffix="п.п." onChange={v => set(['classes', i, 'rate_premium'], v)} />}</td>
-          <td>{routeTitle[c.route] ?? c.route}</td></tr>)}
-      </tbody></table>}
+      <Grid columns="minmax(0, 1fr) 304px" align="start">
+        <Card padding="none" className={styles.formCard}>
+          <Tabs
+            view="primary"
+            size="s"
+            scrollable
+            selectedId={tab}
+            onChange={(_, { selectedId }) => setTab(selectedId as SectionId)}
+            className={styles.tabs}
+            containerClassName={styles.tabList}
+          >
+            {sections.map(s => <Tab
+              key={s.id}
+              id={s.id}
+              // Счётчик изменений — надстрочный значок, ширины вкладки не занимает: все шесть вкладок помещаются и с ним
+              title={<span className={styles.tabTitle}>
+                {s.title}
+                {countBy[s.id] ? <>
+                  <span className={styles.tabCount} aria-hidden>{countBy[s.id]}</span>
+                  <span className={styles.srOnly}>, изменено: {countBy[s.id]}</span>
+                </> : null}
+              </span>}
+            >
+              <div className={styles.formBody}>{s.render()}</div>
+            </Tab>)}
+          </Tabs>
+        </Card>
 
-      {tab === 'products' && <table className="sim rules-table"><thead><tr><th>Продукт</th><th>Базовая ставка</th><th>Сумма от</th><th>Сумма до</th><th>Срок, мес.</th><th>Лимит от выручки</th></tr></thead><tbody>
-        {Object.entries(rules.products).map(([code, p]) => { const pr = p as Rules; return <tr key={code}>
-          <td><b>{pr.title}</b></td>
-          <td><Num value={pr.base_rate} step={0.5} suffix="%" onChange={v => set(['products', code, 'base_rate'], v)} /></td>
-          <td><Num value={pr.min_amount} step={50000} onChange={v => set(['products', code, 'min_amount'], v)} /></td>
-          <td><Num value={pr.max_amount} step={100000} onChange={v => set(['products', code, 'max_amount'], v)} /></td>
-          <td className="pair"><Num value={pr.term_months.min} onChange={v => set(['products', code, 'term_months', 'min'], v)} />–<Num value={pr.term_months.max} onChange={v => set(['products', code, 'term_months', 'max'], v)} /></td>
-          <td>{pr.revenue_coef === null ? 'остаток долга' : <Num value={pr.revenue_coef} step={0.1} suffix="× выручка" onChange={v => set(['products', code, 'revenue_coef'], v)} />}</td></tr> })}
-      </tbody></table>}
+        <aside className={styles.side}>
+          <Card title={`Новая версия ${nextVersion}`} subtitle="Ни на что не влияет, пока вы её не включите, и не пропадёт, если уйти со страницы." padding="m">
+            {changes.length === 0
+              ? <p className={styles.muted}>Изменений пока нет. Поменяйте значения в разделах формы — здесь появится список, а изменённые поля подсветятся.</p>
+              : <>
+                <div className={styles.changesHead}>Изменено {changes.length} {plural(changes.length, ['значение', 'значения', 'значений'])}</div>
+                <ul className={styles.changes}>
+                  {changes.map(ch => {
+                    const m = meta(ch.path, base)
+                    const bad = errors[pathKey(ch.path)]
+                    return <li key={pathKey(ch.path)} className={bad ? styles.changeBad : undefined}>
+                      <button type="button" className={styles.changeLabel} onClick={() => setTab(sectionOf(ch.path))}>{m.label}</button>
+                      <span className={styles.changeValues}>
+                        <s>{formatValue(m.kind, ch.before)}</s> → <b>{formatValue(m.kind, ch.after)}</b>
+                      </span>
+                      <IconButton icon={ArrowLeftCurvedSIcon} size={24} view="secondary" className={styles.undo} aria-label={`Вернуть: ${m.label}`} title="Вернуть как было" onClick={() => set(ch.path, ch.before)} />
+                    </li>
+                  })}
+                </ul>
+              </>}
+            {errorCount > 0 && <div className={styles.errorNote} role="alert">Исправьте подсвеченные поля ({errorCount}) — с ними прогон не запустится.</div>}
+            {simulate.error && <div className={styles.errorNote} role="alert">{(simulate.error as Error).message}</div>}
+            <div className={styles.sideActions}>
+              <Button view={fresh ? 'secondary' : 'accent'} size={48} block loading={simulate.isPending} disabled={!changes.length || errorCount > 0} onClick={() => simulate.mutate(form)}>
+                Проверить на клиентах
+              </Button>
+              <Button view="transparent" size={40} block disabled={!changes.length} onClick={reset}>Сбросить изменения</Button>
+            </div>
+          </Card>
 
-      {tab === 'factors' && <div className="factor-editor"><p className="muted">Балл = {rules.scoring.base} + сумма баллов факторов.</p>
-        <label className="inline">База<Num value={rules.scoring.base} onChange={v => set(['scoring', 'base'], v)} /></label>
-        {Object.entries(rules.scoring.factors).map(([code, f]) => { const fx = f as Rules; return <div key={code} className="factor-card"><b>{factorTitle[code] ?? code}</b>
-          <div className="chips">{fx.bands ? fx.bands.map((b: Record<string, number>, i: number) => <label key={i} className="band">{bandLabel(b)}<Num value={b.points} onChange={v => set(['scoring', 'factors', code, 'bands', i, 'points'], v)} /></label>)
-            : Object.entries(fx.values).map(([k, v]) => <label key={k} className="band">{valueTitle[k] ?? k}<Num value={v as number} onChange={nv => set(['scoring', 'factors', code, 'values', k], nv)} /></label>)}</div></div> })}
-      </div>}
+          <Card title="Версии" padding="m">
+            {versions.length === 0 ? <p className={styles.muted}>Версий пока нет.</p> : <ul className={styles.versions}>
+              {versions.map(v => {
+                const h = comments.get(String(v.version))
+                return <li key={v.version} className={v.active ? styles.versionActive : undefined}>
+                  <div className={styles.versionHead}>
+                    <b>Версия {v.version}</b>
+                    {v.active
+                      ? <Status color="green" view="muted-alt" size={20} shape="rounded" uppercase={false}>действует</Status>
+                      : <Button view="secondary" size={32} onClick={() => openConfirm({ kind: 'activate', version: v.version })}>Включить</Button>}
+                  </div>
+                  <div className={styles.versionMeta}>{dateTime(v.created_at)}{h?.actor_name ? ` · ${h.actor_name.replace(/^Админ правил\s+/, '')}` : !v.author_id ? ' · из файла rules.yaml' : ''}</div>
+                  {h?.after?.comment && <div className={styles.versionComment}>«{h.after.comment}»</div>}
+                </li>
+              })}
+            </ul>}
+          </Card>
 
-      {tab === 'collateral' && <div className="form-grid">
-        {Object.entries(rules.collateral.ltv).map(([k, v]) => <label key={k}>{assetTitle[k] ?? k}: доля от оценки<Num value={Math.round((v as number) * 100)} suffix="%" onChange={nv => set(['collateral', 'ltv', k], nv / 100)} /></label>)}
-        <label>Скидка к ставке за залог<Num value={rules.rate.collateral_discount_pp} step={0.5} suffix="п.п." onChange={v => set(['rate', 'collateral_discount_pp'], v)} /></label>
-        <label>Максимум с залогом<Num value={rules.collateral.secured_max_amount} step={1000000} suffix="₽" onChange={v => set(['collateral', 'secured_max_amount'], v)} /></label>
-        <label>Максимальный срок с залогом<Num value={rules.collateral.secured_max_term_months} suffix="мес." onChange={v => set(['collateral', 'secured_max_term_months'], v)} /></label>
-      </div>}
+          <Card title="Перемотка времени" padding="m">
+            <p className={styles.muted}>Для демо: одобрение действует {OFFER_VALID_DAYS} дней. Перемотка покажет, что станет с одобренными, но не подписанными заявками.</p>
+            <Button view="secondary" size={40} block onClick={() => openConfirm({ kind: 'travel' })}>Перемотать на 31 день</Button>
+          </Card>
+        </aside>
+      </Grid>
 
-      <div className="rules-actions"><input placeholder="Что меняем и почему" value={comment} onChange={e => setComment(e.target.value)} />
-        <button className="secondary" onClick={reset} disabled={busy}>Сбросить</button>
-        <button className="secondary" onClick={check} disabled={busy}>Проверить на персонах</button>
-        <button className="primary" disabled={busy || !rows || comment.trim().length < 3} onClick={save}>Сохранить и включить</button></div>
-      {!rows && <p className="muted">Сохранить можно после проверки на персонах и с комментарием.</p>}
-      {rows && <table className="sim"><thead><tr><th>Клиент</th><th>Было</th><th>Стало</th></tr></thead><tbody>
-        {rows.map(r => <tr key={r.persona} className={r.changed ? 'changed' : ''}><td><b>{r.persona}</b><small>{r.title}</small></td><td>{cell(r.before)}</td><td>{cell(r.after)}</td></tr>)}</tbody></table>}
-    </section>
-    <aside className="review-card"><h3>Версии</h3>{list?.versions.map(v => <div key={v.version} className="version-row">
-      <span><b>v{v.version}</b><small>{new Date(v.created_at).toLocaleString('ru-RU')}</small></span>
-      {v.active ? <em>действует</em> : <button className="secondary" onClick={() => activate(v.version)}>Включить</button>}</div>)}
-      <h3>Демо</h3><p className="muted">Одобрение действует 30 дней. Покажите, что будет с неподписанными заявками.</p>
-      <button className="secondary wide" onClick={travel}>Перемотать время на 31 день</button></aside></div>
-  </div>
+      <div ref={resultsRef} className={styles.results}>
+        <Card
+          title="Проверка на тестовых клиентах"
+          subtitle={sim ? `Те же клиенты и данные. В каждой ячейке: было по действующей версии ${sim.result.base_version} → стало по черновику. Изменения подсвечены.` : 'Покажет, как изменятся решения по тестовым клиентам, до включения новой версии.'}
+          actions={sim && !fresh ? <Status color="orange" view="muted-alt" size={24} shape="rounded" uppercase={false}>нужно проверить заново</Status> : undefined}
+        >
+          {!sim && (lastSaved !== null && changes.length === 0
+            ? <EmptyState compact icon={<CheckmarkCircleMIcon />} title={`Версия ${lastSaved} включена`} text="Новые расчёты идут по ней. Для следующей версии измените значения в форме и снова запустите проверку." />
+            : <EmptyState compact icon={<SlidersMIcon />} title="Прогона ещё не было" text="Измените значения в форме и нажмите «Проверить на клиентах» — здесь появится таблица «было → стало» по тестовым клиентам." />)}
+          {sim && <Stack gap={20}>
+            {!fresh && <Plate view="attention" title="Значения изменились после проверки">Запустите проверку ещё раз — сохранить можно только проверенный вариант.</Plate>}
+            <div className={!fresh ? styles.stale : undefined}>
+              <Stack gap={16}>
+                <SimulationSummary rows={demoRows} />
+                <SimulationTable rows={demoRows} />
+                {otherRows.length > 0 && <div>
+                  <button type="button" className={styles.more} aria-expanded={showSandbox} onClick={() => setShowSandbox(v => !v)}>
+                    <ChevronDownSIcon className={showSandbox ? styles.moreIconOpen : styles.moreIcon} aria-hidden />
+                    Клиенты из песочницы: {otherRows.length}, изменится у {otherRows.filter(r => r.changed).length}
+                  </button>
+                  {showSandbox && <div className={styles.moreBody}><SimulationTable rows={otherRows} /></div>}
+                </div>}
+              </Stack>
+            </div>
+            <div className={styles.saveRow}>
+              <Input
+                block
+                size={48}
+                label="Что меняем и почему"
+                labelView="outer"
+                placeholder="Например: подняли ключевую ставку вслед за ЦБ"
+                value={comment}
+                maxLength={500}
+                onChange={(_, { value }) => setComment(value)}
+                hint="Комментарий попадёт в журнал аудита и в список версий"
+              />
+              <Button view={fresh ? 'accent' : 'secondary'} size={48} disabled={!canSave} onClick={() => openConfirm({ kind: 'save' })} className={styles.saveButton}>
+                Сохранить и включить версию {nextVersion}
+              </Button>
+            </div>
+          </Stack>}
+        </Card>
+      </div>
+
+      <ConfirmModal
+        open={confirm?.kind === 'save'}
+        title={`Включить версию ${nextVersion}?`}
+        confirmLabel={`Включить версию ${nextVersion}`}
+        loading={save.isPending}
+        error={save.error ? (save.error as Error).message : undefined}
+        onConfirm={() => save.mutate()}
+        onClose={closeConfirm}
+        restoreFocus={!succeeded}
+      >
+        <p>Новые правила начнут действовать сразу — для всех новых расчётов и заявок всех клиентов.</p>
+        <ul>
+          <li>Изменено {changes.length} {plural(changes.length, ['значение', 'значения', 'значений'])}</li>
+          {sim && <li>По прогону результат изменится у {demoRows.filter(r => r.changed).length} из {demoRows.length} тестовых клиентов{demoRows.some(r => rowDiff(r).outcome) ? ', в том числе решение' : ''}</li>}
+          <li>Уже принятые решения сохранят версию&nbsp;{activeVersion}</li>
+        </ul>
+        <p>Вернуться к прежней версии можно в списке версий.</p>
+      </ConfirmModal>
+
+      <ConfirmModal
+        open={confirm?.kind === 'activate'}
+        title={confirm?.kind === 'activate' ? `Включить версию ${confirm.version}?` : ''}
+        confirmLabel={confirm?.kind === 'activate' ? `Включить версию ${confirm.version}` : 'Включить'}
+        loading={activate.isPending}
+        error={activate.error ? (activate.error as Error).message : undefined}
+        onConfirm={() => confirm?.kind === 'activate' && activate.mutate(confirm.version)}
+        onClose={closeConfirm}
+        restoreFocus={!succeeded}
+      >
+        <p>Сейчас действует версия {activeVersion}. После включения все новые расчёты и заявки пойдут по версии {confirm?.kind === 'activate' ? confirm.version : ''}.</p>
+        {changes.length > 0 && <p>Несохранённые изменения в черновике ({changes.length}) будут сброшены.</p>}
+      </ConfirmModal>
+
+      <ConfirmModal
+        open={confirm?.kind === 'travel'}
+        title="Перемотать время на 31 день?"
+        confirmLabel="Перемотать"
+        loading={travel.isPending}
+        error={travel.error ? (travel.error as Error).message : undefined}
+        onConfirm={() => travel.mutate()}
+        onClose={closeConfirm}
+        restoreFocus={!succeeded}
+      >
+        <p>Это демо-действие для всего стенда: у всех одобренных, но не подписанных заявок истечёт срок предложения.</p>
+        <p>Отменить перемотку нельзя.</p>
+      </ConfirmModal>
+    </Stack>
+  </RulesFormContext.Provider>
+}
+
+/** Маршрут /bank/rules. */
+export function RulesPage() {
+  const { token } = useSession()
+  return <RulesAdmin token={token} />
 }

@@ -1,0 +1,230 @@
+.tableWrap {
+  margin: 0 calc(-1 * var(--app-card-padding));
+  overflow-x: auto;
+}
+
+.table th:first-child,
+.table td:first-child {
+  padding-left: var(--app-card-padding);
+}
+
+.table th:last-child,
+.table td:last-child {
+  padding-right: var(--app-card-padding);
+}
+
+.cell {
+  height: auto;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  vertical-align: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowChanged td:first-child {
+  box-shadow: inset 3px 0 0 var(--color-light-status-attention);
+}
+
+/* Изменившаяся ячейка — та же оранжевая подсветка, что у изменённых полей формы */
+.hl {
+  background: var(--color-light-status-muted-attention);
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.who b {
+  font-weight: 600;
+}
+
+.who span {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+.same {
+  color: var(--app-text);
+}
+
+.change {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 6px;
+  row-gap: 2px;
+}
+
+.old {
+  color: var(--app-text-secondary);
+  text-decoration: line-through;
+  text-decoration-color: var(--app-text-tertiary);
+}
+
+.arrow {
+  color: var(--app-text-tertiary);
+}
+
+.delta {
+  flex-basis: 100%;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+
+.tone-positive { color: var(--app-positive); }
+.tone-negative { color: var(--app-negative); }
+.tone-neutral { color: var(--app-text); }
+
+.reason {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+}
+
+.score {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.score > span:first-child {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+/* Итог прогона */
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  padding: 16px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.summaryMain {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.summaryLabel {
+  font-size: 15px;
+  color: var(--app-text-secondary);
+}
+
+.summaryValue {
+  font-size: 28px;
+  line-height: 32px;
+  font-variant-numeric: tabular-nums;
+}
+
+.summaryList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.summaryList li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 99px;
+  background: var(--app-surface);
+  font-size: 14px;
+}
+
+.summaryList span {
+  color: var(--app-text-secondary);
+}
+
+/* Мобильный вид: карточки вместо таблицы */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  padding: 14px;
+  border: 1px solid var(--app-border);
+  border-radius: var(--app-radius-block);
+}
+
+.cardChanged {
+  border-color: var(--color-light-status-attention);
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.badge,
+.badgeSame {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.badge {
+  background: var(--color-light-status-muted-attention);
+  color: var(--color-light-text-attention);
+}
+
+.badgeSame {
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+
+.cardList > div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.cardList dt {
+  color: var(--app-text-secondary);
+}
+
+.cardList dd {
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .tableWrap {
+    margin: 0 calc(-1 * var(--app-card-padding-mobile));
+  }
+}
