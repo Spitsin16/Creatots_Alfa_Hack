@@ -1,0 +1,15 @@
+{
+  // Типы автотеста отдельно от приложения: `tsc -b` в сборке их не трогает, проверка — `npx tsc -p e2e`.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "types": [],
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true
+  },
+  "include": ["./**/*.ts", "../playwright.config.ts"],
+  "exclude": ["./.out"]
+}
