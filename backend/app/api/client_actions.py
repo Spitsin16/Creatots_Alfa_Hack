@@ -3,10 +3,9 @@
 Плюс демо-инструмент админа «перемотать время» для показа истечения предложений.
 """
 
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from decimal import Decimal
 
-import yaml
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel, Field
 from sqlalchemy import select
@@ -14,13 +13,13 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
-from app.models import Application, AuditLog, Contract, DataSnapshot, Decision, Membership, PreOffer, Rule, User
+from app.api.fixtures import issued_loans
+from app.api.loans import loan_terms
+from app.models import Application, AuditLog, Decision, Membership, PreOffer, User
 from app.services.application_flow import transition_application
 from app.services.expiry import expire_offers
 from app.services.forecast.cashflow import forecast_for_client
-from app.services.scoring.engine import derive
-from app.services.seasonal.schedule import annuity_schedule
-from app.services.seasonal.schedule import build as build_seasonal
+from app.services.scoring.own_loans import forecast_payments
 
 router = APIRouter(prefix="/api/v1", tags=["client-actions"])
 CANCELLABLE = {"DRAFT", "AWAITING_SIGNATURE", "SUBMITTED", "INFO_REQUESTED", "COUNTER_OFFER"}
@@ -167,12 +166,6 @@ def time_travel(payload: TimeTravelRequest, user: User = Depends(get_current_use
     return {"days": payload.days, "expired": expired}
 
 
-def _first_payment(signed: datetime) -> date:
-    d = signed.date()
-    y, m = (d.year + 1, 1) if d.month == 12 else (d.year, d.month + 1)
-    return date(y, m, 1)
-
-
 @router.get("/applications/{application_id}/loan")
 def loan_cabinet(application_id: str, user: User = Depends(get_current_user),
                  session: Session = Depends(get_session)) -> dict:
@@ -180,19 +173,8 @@ def loan_cabinet(application_id: str, user: User = Depends(get_current_user),
     application = _own(session, user, application_id, "VIEW")
     if application.status != "ISSUED":
         raise APIError(409, "LOAN_NOT_ISSUED", "Кредит ещё не выдан")
-    contract = session.scalar(select(Contract).where(Contract.application_id == application.id))
-    decision = _latest(session, application.id)
-    pre_offer = session.get(PreOffer, application.pre_offer_id)
-    snapshot = ((pre_offer.explanation or {}).get("decision_snapshot") or {}) if pre_offer else {}
-    scenario = ((pre_offer.explanation or {}).get("scenario") or {}) if pre_offer else {}
-    rate = float(decision.rate) if decision and decision.rate is not None else 0.0
-    amount = application.amount_kopecks / 100
-    signed = contract.signed_at if contract else datetime.now(UTC)
-    if signed.tzinfo is None:
-        signed = signed.replace(tzinfo=UTC)
-    snaps = {s.source.lower(): s.payload for s in
-             session.scalars(select(DataSnapshot).where(DataSnapshot.business_id == application.business_id))}
-    fixture = {"persona": snaps.get("profile", {}), **{k: snaps[k] for k in ("alfa", "registry", "fns", "bki") if k in snaps}}
+    terms = loan_terms(session, application)
+    rate, amount, signed, snapshot, fixture = terms.rate, terms.amount, terms.signed, terms.snapshot, terms.fixture
     tips: list[str] = []
     result = {
         "product": application.product, "amount": round(amount), "rate": rate, "term_months": application.term_months,
@@ -200,7 +182,10 @@ def loan_cabinet(application_id: str, user: User = Depends(get_current_user),
         "overpayment": None, "tips": tips, "forecast": None,
     }
     if application.product == "OVERDRAFT":
-        result["forecast"] = forecast_for_client(fixture, overdraft_limit=amount) if "alfa" in fixture else None
+        result["forecast"] = forecast_for_client(
+            fixture, overdraft_limit=amount,
+            extra_recurring=forecast_payments(issued_loans(session, application.business_id)),
+        ) if "alfa" in fixture else None
         tips.append("Овердрафт включается сам, когда на счёте не хватает денег, и гасится первыми поступлениями.")
         tips.append(f"Проценты — только за дни использования: 100 000 ₽ на 10 дней ≈ "
                     f"{round(100_000 * rate / 100 * 10 / 365):,} ₽.".replace(",", " "))
@@ -209,27 +194,22 @@ def loan_cabinet(application_id: str, user: User = Depends(get_current_user),
             tips.append(f"По прогнозу {g['date'][8:10]}.{g['date'][5:7]} не хватит {g['shortfall']:,} ₽ — "
                         f"овердрафт закроет разрыв автоматически.".replace(",", " "))
         return result
-    first = _first_payment(signed)
-    rules = yaml.safe_load(session.get(Rule, decision.rules_version).yaml) if decision else None
-    use_seasonal = bool(snapshot.get("seasonal_available") and scenario.get("repayment") == "seasonal" and rules)
+    first, use_seasonal, sched = terms.first_payment, terms.seasonal, terms.schedule
+    months = ["январе", "феврале", "марте", "апреле", "мае", "июне", "июле", "августе", "сентябре", "октябре",
+              "ноябре", "декабре"]
     if use_seasonal:
-        d = derive(fixture)
-        sched = build_seasonal(amount, rate, application.term_months, d["months"], d["monthly_revenue"], first, rules)
-        months = ["январе", "феврале", "марте", "апреле", "мае", "июне", "июле", "августе", "сентябре", "октябре",
-                  "ноябре", "декабре"]
         if sched["peak_months"]:
             tips.append("В сезон платёж выше: " + ", ".join(months[m - 1] for m in sched["peak_months"]) + " — "
                         "выручка в эти месяцы больше.")
         if sched["low_months"]:
             tips.append("В слабые месяцы платёж минимальный: " + ", ".join(months[m - 1] for m in sched["low_months"]) + ".")
-    else:
-        sched = annuity_schedule(amount, rate, application.term_months, first)
-        if snapshot.get("seasonal_available"):
-            tips.append("У бизнеса сезонная выручка — можно перейти на сезонный график: в сезон больше, в межсезонье меньше.")
+    elif snapshot.get("seasonal_available"):
+        tips.append("У бизнеса сезонная выручка — можно перейти на сезонный график: в сезон больше, в межсезонье меньше.")
     result.update(seasonal=use_seasonal, schedule=sched["schedule"], next_payment=sched["schedule"][0],
                   overpayment=sched["overpayment"], max_payment=sched["max_payment"], min_payment=sched["min_payment"])
     if "alfa" in fixture:
-        result["forecast"] = forecast_for_client(fixture)
+        result["forecast"] = forecast_for_client(
+            fixture, extra_recurring=forecast_payments(issued_loans(session, application.business_id)))
         g = result["forecast"]["gap"]
         if g:
             tips.append(f"Кассовый разрыв {g['date'][8:10]}.{g['date'][5:7]} на {g['shortfall']:,} ₽ — подключите "
