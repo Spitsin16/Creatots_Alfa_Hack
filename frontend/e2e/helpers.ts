@@ -15,7 +15,8 @@ export function collectPageErrors(page: Page) {
 export async function enterAs(page: Page, title: string) {
   if (!new URL(page.url()).pathname.startsWith('/login')) await page.goto('/login')
   // Учётки лежат в раскрывающихся плашках — раскрываем закрытые
-  for (const group of await page.locator('[data-login-group][aria-expanded="false"]').all()) await group.click()
+  const closed = page.locator('[data-login-group][aria-expanded="false"]')
+  while (await closed.count()) await closed.first().click()
   await page.getByRole('button', { name: new RegExp(`^Войти: ${title}`) }).click()
   await expect(page).not.toHaveURL(/\/login/)
 }
