@@ -1,15 +1,16 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 import { Button } from '@alfalab/core-components/button/esm'
 import { Typography } from '@alfalab/core-components/typography/esm'
 import { ArrowRightMIcon } from '@alfalab/icons-glyph/ArrowRightMIcon'
 import { CheckmarkCircleMIcon } from '@alfalab/icons-glyph/CheckmarkCircleMIcon'
 import { CheckmarkMIcon } from '@alfalab/icons-glyph/CheckmarkMIcon'
+import { ChevronDownMIcon } from '@alfalab/icons-glyph/ChevronDownMIcon'
 import { Document1CMIcon } from '@alfalab/icons-glyph/Document1CMIcon'
 import { ExclamationCircleMIcon } from '@alfalab/icons-glyph/ExclamationCircleMIcon'
 import { InformationCircleMIcon } from '@alfalab/icons-glyph/InformationCircleMIcon'
 import { MagicWandMIcon } from '@alfalab/icons-glyph/MagicWandMIcon'
 import { productName } from '../../api'
-import { Card, ErrorState, KeyValue, LoadingState, Money } from '../../ui'
+import { Card, ErrorState, Grid, KeyValue, LoadingState, Money } from '../../ui'
 import { OfferContext } from '../offerStore'
 import { OfferData, OfferExplanation, formatDate, formatRate, formatShortDate, isExpired, isOverdraft, loanCost, months, nb, overdraftCost, rub } from './offerMath'
 import styles from './offer.module.css'
@@ -83,6 +84,38 @@ export function CostCard({ offer, overpaymentRub }: { offer: OfferData; overpaym
     </Card>
   }
   return null
+}
+
+/**
+ * «Стоимость и условия» одной строкой, подробности — по нажатию (правка ментора 25.10: на экране слишком много блоков).
+ * В свёрнутом виде — главное: сколько стоит, комиссий нет, до какого числа действует.
+ */
+export function CostAndConditions({ offer, overpaymentRub }: { offer: OfferData; overpaymentRub?: number | null }) {
+  const [open, setOpen] = useState(false)
+  const loan = loanCost(offer, overpaymentRub)
+  const od = overdraftCost(offer)
+  const cost = loan
+    ? `переплата ${rub({ kopecks: loan.interest })} за ${months(offer.term_months)}`
+    : od ? `${formatRate(offer.rate)} годовых, ${rub({ kopecks: od.exampleKopecks })} на ${od.exampleDays}\u00a0дней ≈ ${rub({ kopecks: od.exampleInterest })}` : null
+  const summary = [cost, 'комиссий и страховок нет', 'досрочно без штрафа',
+    !isExpired(offer) && offer.expires_at ? `действует до ${formatDate(offer.expires_at)}` : null].filter(Boolean).join(' · ')
+  return <section className={[styles.more, open ? styles.moreOpen : ''].filter(Boolean).join(' ')}>
+    <button type="button" className={styles.moreToggle} onClick={() => setOpen(!open)} aria-expanded={open} aria-controls="offer-cost-details">
+      <span className={styles.moreText}>
+        <Typography.Title tag="h2" view="small" font="system" className={styles.moreTitle}>Стоимость и условия</Typography.Title>
+        <span className={styles.moreSummary}>{summary}</span>
+      </span>
+      <span className={styles.moreAction}>{open ? 'Свернуть' : 'Подробнее'}<ChevronDownMIcon className={styles.moreChevron} aria-hidden /></span>
+    </button>
+    <div id="offer-cost-details" className={styles.morePanel}>
+      <div className={styles.moreInner}>
+        <Grid columns={2}>
+          <CostCard offer={offer} overpaymentRub={overpaymentRub} />
+          <ConditionsCard offer={offer} />
+        </Grid>
+      </div>
+    </div>
+  </section>
 }
 
 /** Явный блок условий из ТЗ: досрочное погашение, комиссии, страховки, срок действия. */

@@ -1138,3 +1138,93 @@
 @media (prefers-reduced-motion: reduce) {
   .fadeIn, .popIn { animation: none; }
 }
+
+/* ——— «Стоимость и условия»: строка-сводка, подробности раскрываются ——— */
+.more {
+  display: flex;
+  flex-direction: column;
+}
+
+.moreToggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 20px var(--app-card-padding);
+  border: 0;
+  border-radius: var(--app-radius-card);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-card);
+  color: var(--app-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.moreToggle:hover { background: var(--app-surface-muted); }
+.moreToggle:focus-visible { outline: 2px solid var(--app-link); outline-offset: 2px; }
+
+.moreText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.moreTitle { margin: 0; }
+
+.moreSummary {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
+
+.moreAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--app-text-secondary);
+  white-space: nowrap;
+}
+
+.moreChevron {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.25s ease;
+}
+
+.moreOpen .moreChevron { transform: rotate(180deg); }
+
+.morePanel {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.25s ease, visibility 0s linear 0.25s;
+}
+
+.moreOpen .morePanel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows 0.25s ease, visibility 0s;
+}
+
+.moreInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.moreInner > * { margin-top: 16px; }
+
+@media (max-width: 720px) {
+  .moreToggle { padding: 16px var(--app-card-padding-mobile); }
+  .moreAction { font-size: 0; gap: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .moreToggle, .moreChevron, .morePanel, .moreOpen .morePanel { transition: none; }
+}

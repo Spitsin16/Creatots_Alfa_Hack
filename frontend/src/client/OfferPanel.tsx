@@ -1,14 +1,14 @@
 import { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { request } from '../api'
-import { Card, ErrorBoundary, ErrorState, Grid, LoadingState } from '../ui'
+import { Card, ErrorBoundary, ErrorState, LoadingState } from '../ui'
 import { ForecastCard } from './ForecastCard'
 import { OfferContext } from './offerStore'
 import { AdviceSection } from './offer/Advice'
 import { CounterHero, OfferHero } from './offer/Hero'
 import { ApplyTarget, CounterTerms, OfferData, OfferExplanation, SeasonalData, StatementResult, adviceItems, isOverdraft } from './offer/offerMath'
 import { SeasonalCard } from './offer/Seasonal'
-import { ConditionsCard, CostCard, NextSteps, RejectedCard, StatementBanner, WhyCard } from './offer/Sections'
+import { CostAndConditions, NextSteps, RejectedCard, StatementBanner, WhyCard } from './offer/Sections'
 
 // Ключи запросов экрана предложения
 const offerKeys = {
@@ -100,9 +100,9 @@ export function OfferPanel(p: OfferPanelProps) {
     </>
   }
 
-  // при ручной проверке «что будет дальше» — главный вопрос клиента, поэтому сразу под суммой
+  // «Что будет дальше» — только при ручной проверке: тогда это главный вопрос клиента, поэтому сразу под суммой.
+  // В остальных случаях шаги и так видны у кнопки и в трекере заявки (правка ментора 25.10: меньше блоков)
   const manual = offer.outcome === 'MANUAL_REVIEW'
-  const nextSteps = <NextSteps offer={offer} reason={ex?.reason} canSubmit={p.canSubmit || !p.canFill} />
   return <>
     {p.context?.statement && <StatementBanner offer={offer} statement={p.context.statement} />}
     <OfferHero offer={offer} context={p.context} overpaymentRub={overpaymentRub} action={{
@@ -111,17 +111,13 @@ export function OfferPanel(p: OfferPanelProps) {
       recalculating: p.recalculating, onRecalculate: p.onRecalculate, onEditAnswers: p.onEditAnswers,
     }} />
     {p.notice}
-    {manual && nextSteps}
+    {manual && <NextSteps offer={offer} reason={ex?.reason} canSubmit={p.canSubmit || !p.canFill} />}
     {wantsSeasonal && <SeasonalCard data={seasonal.data} loading={seasonal.isPending} error={seasonal.error} onRetry={() => { void seasonal.refetch() }} />}
-    <Grid columns={2}>
-      <CostCard offer={offer} overpaymentRub={overpaymentRub} />
-      <ConditionsCard offer={offer} />
-    </Grid>
+    <CostAndConditions offer={offer} overpaymentRub={overpaymentRub} />
     <WhyCard ex={ex} loading={exLoading} error={exError} onRetry={retryEx} />
     {adviceSection()}
     {isOverdraft(offer) && <ErrorBoundary compact>
       <ForecastCard businessId={p.businessId} overdraftKopecks={offer.limit_kopecks} title="Деньги на счёте с этим лимитом" />
     </ErrorBoundary>}
-    {!manual && nextSteps}
   </>
 }
