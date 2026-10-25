@@ -36,6 +36,13 @@ export function ScoringCard({ detail, unavailableSources = [] }: { detail: BankD
       </div>
     </div>
 
+    {decision.rating && <div className={styles.rating}>
+      <span className={styles.label}>Что значит рейтинг {decision.rating.cls} {decision.rating.score}</span>
+      <b className={styles.bindingTitle}>{decision.rating.title}: {decision.rating.conditions}, {decision.rating.route}</b>
+      {decision.rating.position && <span className={styles.bindingText}>{capitalize(decision.rating.position)}.</span>}
+      <span className={styles.ratingNote}>Буква — класс риска, от него зависят доля лимита, ставка и кто решает. Число — балл: {decision.rating.scale}. Клиент рейтинг не видит.</span>
+    </div>}
+
     <KeyValue
       view="tiles"
       columns={3}
@@ -75,6 +82,8 @@ export function ScoringCard({ detail, unavailableSources = [] }: { detail: BankD
     </div>}
   </Card>
 }
+
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
 /** Факторы как расходящиеся полосы: вправо зелёным — повышают балл, влево красным — снижают. */
 function FactorBars({ factors }: { factors: (readonly [string, number])[] }) {

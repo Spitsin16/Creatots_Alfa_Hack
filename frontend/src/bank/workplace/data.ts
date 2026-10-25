@@ -9,7 +9,10 @@ import { keys, QueuePage } from '../../queries'
 export type InternalDecision = {
   id: string; rules_version: number; score: number; cls: string; factors: Record<string, number>; stop_factors: string[]
   limit_kopecks: number; binding_constraint: string | null; rate: number | null; outcome: string; explanation: string | null
+  /** «A 90» словами (бэк: services/explain/rating.py) — только для банка */
+  rating?: RatingText | null
 }
+export type RatingText = { cls: string; score: number; title: string; conditions: string; route: string; position: string; scale: string; summary: string }
 
 /** Снимки источников по бизнесу (как отдаёт /bank/applications/{id} → snapshots). Все поля необязательные. */
 export type Snapshots = {

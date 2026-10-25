@@ -238,3 +238,20 @@
     gap: 8px;
   }
 }
+
+/* «Что значит A 90» — рейтинг словами под баллом */
+.rating {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-control);
+  border: 1px solid var(--app-border, rgba(11, 31, 53, 0.1));
+}
+
+.ratingNote {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
