@@ -3,6 +3,7 @@
 from datetime import UTC, datetime
 from decimal import Decimal
 
+import yaml
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy import case, exists, func, select
 from sqlalchemy.orm import Session
@@ -23,8 +24,9 @@ from app.api.bank_schemas import (
 )
 from app.api.dependencies import get_current_user, get_session
 from app.api.errors import APIError
-from app.models import Application, Approval, AuditLog, Business, DataSnapshot, Decision, Message, User
+from app.models import Application, Approval, AuditLog, Business, DataSnapshot, Decision, Message, Rule, User
 from app.services.application_flow import transition_application
+from app.services.explain.rating import explain_rating
 from app.services.notifications.service import notify_risk_approval
 from app.states import InvalidTransition
 
@@ -184,10 +186,18 @@ def get_bank_application(
                 rate=float(item.rate) if item.rate is not None else None,
                 outcome=item.outcome,
                 explanation=item.explanation_text,
+                rating=_rating(session, item),
             )
             for item in decisions
         ],
     )
+
+
+def _rating(session: Session, decision: Decision) -> dict | None:
+    rule = session.get(Rule, decision.rules_version)
+    if rule is None or not decision.cls:
+        return None
+    return explain_rating(decision.cls, decision.score, yaml.safe_load(rule.yaml))
 
 
 @router.post("/applications/{application_id}/assign", response_model=AssignResponse)
