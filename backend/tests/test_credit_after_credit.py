@@ -90,3 +90,6 @@ def test_second_loan_sees_the_first(api: TestClient) -> None:
     # платёж по первому кредиту виден в прогнозе кассового разрыва
     loan = api.get(f"/api/v1/applications/{first}/loan", headers=h).json()
     assert any(r["kind"] == "LOAN" for r in loan["forecast"]["recurring"])
+    # и в прогнозе на главной
+    home = api.get(f"/api/v1/businesses/{bid}/forecast", headers=h).json()
+    assert any(r["kind"] == "LOAN" for r in home["recurring"])

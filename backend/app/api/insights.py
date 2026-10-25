@@ -19,12 +19,13 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
-from app.api.fixtures import load_fixture, own_loan_ids
+from app.api.fixtures import issued_loans, load_fixture, own_loan_ids
 from app.models import AuditLog, Outbox, PreOffer, Rule, Statement, User
 from app.services.explain.llm import configured as llm_configured
 from app.services.explain.templates import explain_for_client
 from app.services.forecast.cashflow import forecast_for_client
 from app.services.scoring.engine import decide, derive
+from app.services.scoring.own_loans import forecast_payments
 from app.services.seasonal.schedule import build as build_seasonal
 from app.services.statement_1c.parser import MAX_FILE_BYTES, StatementError, extra_revenue_for_scoring
 
@@ -124,7 +125,9 @@ def cash_gap_forecast(
     """Прогноз остатка на 30 дней и ближайший кассовый разрыв."""
     require_membership(session, user, business_id, "VIEW")
     limit = overdraft_limit_kopecks / 100 if overdraft_limit_kopecks else None
-    return forecast_for_client(_fixture(session, business_id), overdraft_limit=limit)
+    # платежи по кредитам, выданным в кабинете, — тоже регулярные списания (в снимке счёта их ещё нет)
+    return forecast_for_client(_fixture(session, business_id), overdraft_limit=limit,
+                               extra_recurring=forecast_payments(issued_loans(session, business_id)))
 
 
 @router.post("/pre-offers/{pre_offer_id}/statement", status_code=201)
