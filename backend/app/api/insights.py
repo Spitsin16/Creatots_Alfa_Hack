@@ -15,12 +15,12 @@ from uuid import uuid4
 
 import yaml
 from fastapi import APIRouter, Depends, Request
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
-from app.models import AuditLog, DataSnapshot, Outbox, PreOffer, Rule, Statement, User
+from app.api.fixtures import load_fixture, own_loan_ids
+from app.models import AuditLog, Outbox, PreOffer, Rule, Statement, User
 from app.services.explain.llm import configured as llm_configured
 from app.services.explain.templates import explain_for_client
 from app.services.forecast.cashflow import forecast_for_client
@@ -38,11 +38,7 @@ def _today() -> date:
 
 
 def _fixture(session: Session, business_id: str) -> dict:
-    snapshots = session.scalars(select(DataSnapshot).where(DataSnapshot.business_id == business_id)).all()
-    data = {snapshot.source.lower(): snapshot.payload for snapshot in snapshots}
-    if not {"profile", "alfa", "registry", "fns", "bki"}.issubset(data):
-        raise APIError(409, "DATA_INCOMPLETE", "Для расчёта не хватает данных")
-    return {"persona": data["profile"], **{k: data[k] for k in ("alfa", "registry", "fns", "bki")}}
+    return load_fixture(session, business_id)
 
 
 def _pre_offer(session: Session, user: User, pre_offer_id: str, permission: str = "VIEW") -> PreOffer:
@@ -210,6 +206,7 @@ async def upload_statement(
             "advice": advice,
             "decision_snapshot": result,
             "scenario": scenario,
+            "own_loans": own_loan_ids(fixture),
             "statement_id": statement.id,
             "previous_pre_offer_id": pre_offer.id,
         },

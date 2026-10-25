@@ -35,9 +35,10 @@ def human_date(iso: str) -> str:
     return f"{d.day} {MONTHS_GEN[d.month - 1]}"
 
 
-def forecast_for_client(persona: dict, days: int = 30, overdraft_limit: float | None = None) -> dict:
-    """`overdraft_limit` — доступный овердрафт из предложения, если он есть."""
-    f = cashflow_forecast(persona, days)
+def forecast_for_client(persona: dict, days: int = 30, overdraft_limit: float | None = None,
+                        extra_recurring: list[dict] | None = None) -> dict:
+    """`overdraft_limit` — доступный овердрафт; `extra_recurring` — платежи по выданным в кабинете кредитам."""
+    f = cashflow_forecast(persona, days, extra_recurring)
     gap = f["gap"]
     res = {
         "start_balance": round(f["start_balance"]),
