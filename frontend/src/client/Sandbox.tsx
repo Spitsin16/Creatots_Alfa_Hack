@@ -18,7 +18,7 @@ import styles from '../login/Sandbox.module.css'
 type Params = {
   type: string; industry: string; age_months: number; revenue: number; seasonality: string; alfa_share: number
   alfa_credit: string; external_balance: number; external_payment: number; credit_history: string
-  current_overdue_days: number; tax_debt: number; real_estate_value: number
+  current_overdue_days: number; tax_debt: number; real_estate_value: number; asset_kind: string
 }
 // Встречное предложение движка. Сейчас API песочницы его не отдаёт — если начнёт, покажем суммы переноса.
 type Counter = {
@@ -38,7 +38,7 @@ type CreatedWithParams = Created & { params: Params }
 const defaults: Params = {
   type: 'IP', industry: 'medium', age_months: 36, revenue: 1_000_000, seasonality: 'none', alfa_share: 1,
   alfa_credit: 'none', external_balance: 0, external_payment: 0, credit_history: 'clean',
-  current_overdue_days: 0, tax_debt: 0, real_estate_value: 0,
+  current_overdue_days: 0, tax_debt: 0, real_estate_value: 0, asset_kind: 'real_estate',
 }
 
 // Предварительный расчёт — это взгляд банка (проверяющий играет банк), поэтому здесь можно назвать балл и причину кодом словами.
@@ -190,8 +190,11 @@ export function Sandbox({ onLogin }: { onLogin: (token: string) => void }) {
             marks={['20%', '100%']} hint="Остальное клиент проводит через другой банк" onChange={v => set({ alfa_share: v / 100 })} />
         </Group>
         <Group title="Залог" source="Данные клиента">
-          <NumberField label="Недвижимость для залога" value={p.real_estate_value} min={0} max={50_000_000} step={500_000} range={estateRange} unit="₽"
+          <NumberField label="Имущество для залога, оценка" value={p.real_estate_value} min={0} max={50_000_000} step={500_000} range={estateRange} unit="₽"
             marks={['нет', '50 млн']} onChange={v => set({ real_estate_value: v })} />
+          {p.real_estate_value > 0 && <Choice label="Что это за имущество" value={p.asset_kind}
+            options={[['real_estate', 'Недвижимость'], ['vehicle', 'Транспорт, спецтехника'], ['equipment', 'Оборудование']]}
+            onChange={v => set({ asset_kind: v })} />}
         </Group>
       </>}
 

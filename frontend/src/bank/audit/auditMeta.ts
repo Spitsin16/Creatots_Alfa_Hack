@@ -169,7 +169,8 @@ const sandboxParams: [key: string, label: string, format: (v: unknown) => string
   ['external_balance', 'Долг в другом банке', rublesOrNone],
   ['external_payment', 'Платёж в другом банке в месяц', rublesOrNone],
   ['tax_debt', 'Налоговый долг', rublesOrNone],
-  ['real_estate_value', 'Недвижимость для залога', rublesOrNone],
+  ['real_estate_value', 'Имущество для залога', rublesOrNone],
+  ['asset_kind', 'Вид имущества', word({ real_estate: 'недвижимость', vehicle: 'транспорт, спецтехника', equipment: 'оборудование' })],
 ]
 
 const plural = (n: number, forms: [string, string, string]) => {
