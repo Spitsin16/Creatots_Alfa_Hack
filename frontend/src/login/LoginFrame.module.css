@@ -1,291 +1,133 @@
-/* Каркас экранов входа: тёмный герой слева + светлая правая часть */
+/* Каркас экранов входа: строка бренда сверху и одна колонка контента, выровненная по левому краю */
 .page {
-  display: grid;
-  grid-template-columns: minmax(360px, 440px) minmax(0, 1fr);
-  gap: 16px;
   min-height: 100vh;
-  padding: 16px;
   background: var(--app-bg);
 }
 
-/* ——— Герой ———
-   Высота — не меньше окна, но не фиксированная: содержимое никогда не обрезается.
-   Прилипает при прокрутке; --hero-top считает LoginFrame: 16px, если герой помещается в окно,
-   иначе отрицательный отступ — герой прилипает нижним краем и его низ всегда можно увидеть. */
-.hero {
-  position: sticky;
-  top: var(--hero-top, 16px);
-  align-self: start;
+.bar {
   display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-height: calc(100vh - 32px);
-  min-width: 0;
-  padding: 32px 40px 28px;
-  border-radius: 28px;
-  color: var(--color-light-text-primary-inverted);
-  background:
-    radial-gradient(120% 70% at 100% 0%, rgba(239, 49, 36, 0.32) 0%, rgba(239, 49, 36, 0) 55%),
-    radial-gradient(90% 60% at 0% 100%, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 60%),
-    var(--app-surface-dark);
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 20px 32px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex: none;
+  gap: 10px;
+  color: var(--app-text);
+  text-decoration: none;
 }
 
 .brandMark {
   display: grid;
   place-items: center;
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
   background: var(--app-accent);
   color: #fff;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 800;
   line-height: 1;
 }
 
-.brandText {
-  display: flex;
-  flex-direction: column;
-}
-
-.brandText b {
-  font-size: 18px;
-  line-height: 22px;
-  font-weight: 800;
+.brandName {
+  font-size: 17px;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
-.brandText small {
-  font-size: 13px;
-  line-height: 16px;
-  color: rgba(255, 255, 255, 0.56);
-}
-
-.heroMain {
-  display: flex;
-  flex-direction: column;
-  margin: auto 0;
-}
-
-.eyebrow {
-  margin-bottom: 14px;
-  font-size: 13px;
-  line-height: 16px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #ff7a70;
-}
-
-h1.title {
-  margin: 0;
-  font-size: 42px;
-  line-height: 46px;
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  color: #fff;
-}
-
-.lead {
-  margin: 16px 0 0;
-  font-size: 17px;
-  line-height: 25px;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.points {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin: 24px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.points li {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-}
-
-.pointIcon {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
-}
-
-.pointIcon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.points b {
-  display: block;
+.brandProduct {
+  padding-left: 10px;
+  border-left: 1px solid var(--app-border-strong);
   font-size: 15px;
-  line-height: 20px;
-  font-weight: 700;
-  color: #fff;
+  color: var(--app-text-secondary);
 }
 
-.points small {
-  display: block;
-  margin-top: 2px;
-  font-size: 14px;
-  line-height: 19px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.action {
-  margin-top: 24px;
-}
-
-.footnote {
-  flex: none;
+.stand {
   font-size: 13px;
   line-height: 18px;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--app-text-secondary);
+  text-align: right;
 }
 
-/* ——— Правая часть ——— */
-.panel {
-  width: 100%;
-  max-width: 960px;
-  min-width: 0;
+.main {
+  max-width: 920px;
   margin: 0 auto;
-  padding: 28px 24px 48px;
+  padding: 24px 32px 64px;
 }
 
 .back {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  margin: 0 0 20px -6px;
-  padding: 6px 10px 6px 4px;
-  border-radius: 10px;
-  color: var(--app-text-secondary);
+  gap: 6px;
+  margin-bottom: 20px;
   font-size: 15px;
-  line-height: 20px;
-  font-weight: 600;
+  color: var(--app-text-secondary);
   text-decoration: none;
 }
 
-.back:hover {
-  color: var(--app-text);
-  background: var(--color-light-transparent-default-hover, rgba(38, 55, 88, 0.06));
+.back:hover { color: var(--app-text); }
+.back svg { width: 20px; height: 20px; }
+
+.head {
+  max-width: 640px;
+  margin-bottom: 32px;
 }
 
-.back svg {
-  width: 20px;
-  height: 20px;
+.title {
+  margin: 0;
+  letter-spacing: -0.02em;
 }
 
-@media (max-width: 1100px) {
-  .page {
-    grid-template-columns: minmax(320px, 380px) minmax(0, 1fr);
-  }
-
-  .hero {
-    padding: 32px 28px 28px;
-  }
-
-  h1.title {
-    font-size: 36px;
-    line-height: 40px;
-  }
+.lead {
+  margin: 12px 0 0;
+  font-size: 17px;
+  line-height: 26px;
+  color: var(--app-text-secondary);
 }
 
-/* Узкий экран: герой наверху, всё в одну колонку */
-@media (max-width: 900px) {
-  .page {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 8px;
-    padding: 12px;
-  }
-
-  .hero {
-    position: static;
-    min-height: 0;
-    gap: 28px;
-    padding: 28px;
-    border-radius: 24px;
-  }
-
-  .heroMain {
-    margin: 0;
-  }
-
-  .action {
-    max-width: 440px;
-  }
-
-  .panel {
-    max-width: none;
-    padding: 20px 4px 40px;
-  }
+.points {
+  display: grid;
+  gap: 14px;
+  margin: 24px 0 0;
 }
 
-@media (max-width: 600px) {
-  .page {
-    padding: 8px;
-  }
+.points div {
+  padding-left: 14px;
+  border-left: 2px solid var(--app-border-strong);
+}
 
-  .hero {
-    gap: 24px;
-    padding: 24px 20px;
-  }
+.points dt {
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
 
-  h1.title {
-    font-size: 30px;
-    line-height: 34px;
-  }
+.points dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
 
-  .lead {
-    font-size: 16px;
-    line-height: 23px;
-  }
+.action { margin-top: 24px; }
 
-  .points {
-    margin-top: 20px;
-    gap: 12px;
-  }
+.footnote {
+  max-width: 640px;
+  margin: 40px 0 0;
+  font-size: 13px;
+  line-height: 19px;
+  color: var(--app-text-tertiary);
+}
 
-  .points small {
-    display: none;
-  }
-
-  .pointIcon {
-    width: 32px;
-    height: 32px;
-    border-radius: 10px;
-  }
-
-  .pointIcon svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .points li {
-    align-items: center;
-  }
-
-  .footnote {
-    display: none;
-  }
-
-  .panel {
-    padding: 16px 8px 32px;
-  }
+@media (max-width: 720px) {
+  .bar { padding: 16px; }
+  .stand { display: none; }
+  .main { padding: 8px 16px 48px; }
+  .lead { font-size: 16px; line-height: 24px; }
 }

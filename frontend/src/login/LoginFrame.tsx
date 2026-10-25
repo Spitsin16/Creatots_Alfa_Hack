@@ -1,82 +1,56 @@
-import { ComponentType, ReactNode, SVGProps, useEffect, useRef } from 'react'
+import { ComponentType, ReactNode, SVGProps } from 'react'
 import { Link } from 'react-router'
 import { Typography } from '@alfalab/core-components/typography/esm'
 import { ArrowBackMIcon } from '@alfalab/icons-glyph/ArrowBackMIcon'
 import styles from './LoginFrame.module.css'
 
-export type HeroPoint = { icon: ComponentType<SVGProps<SVGSVGElement>>; title: string; text: string }
+export type HeroPoint = { icon?: ComponentType<SVGProps<SVGSVGElement>>; title: string; text: string }
 
 type Props = {
-  /** Надзаголовок героя: «Умный кредитный кабинет» */
-  eyebrow: string
-  /** Главная фраза экрана (h1) */
+  /** Заголовок экрана (h1) */
   title: ReactNode
   /** Пояснение под заголовком */
-  lead: ReactNode
-  /** Три ценности продукта с иконками */
+  lead?: ReactNode
+  /** Короткие факты под заголовком: что будет на экране (без иконок — только текст) */
   points?: HeroPoint[]
-  /** Главное действие в герое (красная кнопка) */
+  /** Главное действие под заголовком */
   action?: ReactNode
-  /** Мелкая строка внизу героя */
+  /** Мелкая строка внизу страницы */
   footnote?: ReactNode
-  /** Ссылка «назад» над правой частью */
+  /** Ссылка «назад» над заголовком */
   back?: { to: string; label: string }
+  /** Устаревшее: надзаголовок больше не выводим (правка ментора 25.10 — меньше «шаблонных» элементов) */
+  eyebrow?: string
   children: ReactNode
 }
 
-const GAP = 16
-
 /**
- * Герой прилипает при прокрутке, но никогда не обрезается. Помещается в окно — стоит сверху (top 16).
- * Выше окна — прилипает нижним краем: сначала уезжает ровно настолько, чтобы показать низ, и дальше стоит.
+ * Каркас экранов входа (выбор учётки, путь не-клиента, песочница): спокойная светлая страница
+ * в одну колонку, как служебные экраны интернет-банка. Сверху — строка бренда и пометка демо-стенда.
  */
-function useStickyHero() {
-  const ref = useRef<HTMLElement>(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const update = () => el.style.setProperty('--hero-top', `${Math.min(GAP, window.innerHeight - el.offsetHeight - GAP)}px`)
-    update()
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update)
-    observer?.observe(el)
-    window.addEventListener('resize', update)
-    return () => { observer?.disconnect(); window.removeEventListener('resize', update) }
-  }, [])
-  return ref
-}
-
-/**
- * Каркас экранов входа: слева тёмный герой с ценностью продукта (на десктопе прилипает при прокрутке),
- * справа — выбор учётки, путь не-клиента или песочница. На узком экране герой уходит наверх.
- */
-export function LoginFrame({ eyebrow, title, lead, points, action, footnote, back, children }: Props) {
-  const heroRef = useStickyHero()
+export function LoginFrame({ title, lead, points, action, footnote, back, children }: Props) {
   return <div className={styles.page}>
-    <aside className={styles.hero} ref={heroRef}>
-      <div className={styles.brand}>
+    <header className={styles.bar}>
+      <Link to="/login" className={styles.brand} aria-label="Альфа-Бизнес, к выбору учётки">
         <span className={styles.brandMark} aria-hidden>А</span>
-        <span className={styles.brandText}><b>Альфа-Бизнес</b><small>Кредиты для бизнеса</small></span>
-      </div>
+        <span className={styles.brandName}>Альфа-Бизнес</span>
+        <span className={styles.brandProduct}>Кредиты</span>
+      </Link>
+      <span className={styles.stand}>Демо-стенд, данные синтетические</span>
+    </header>
 
-      <div className={styles.heroMain}>
-        <div className={styles.eyebrow}>{eyebrow}</div>
-        <Typography.Title tag="h1" view="xlarge" font="system" weight="bold" className={styles.title}>{title}</Typography.Title>
-        <p className={styles.lead}>{lead}</p>
-        {points && <ul className={styles.points}>
-          {points.map(({ icon: Icon, title: pointTitle, text }) => <li key={pointTitle}>
-            <span className={styles.pointIcon} aria-hidden><Icon /></span>
-            <span><b>{pointTitle}</b><small>{text}</small></span>
-          </li>)}
-        </ul>}
+    <main className={styles.main}>
+      {back && <Link to={back.to} className={styles.back}><ArrowBackMIcon aria-hidden />{back.label}</Link>}
+      <div className={styles.head}>
+        <Typography.Title tag="h1" view="large" font="system" weight="bold" className={styles.title}>{title}</Typography.Title>
+        {lead && <p className={styles.lead}>{lead}</p>}
+        {points && <dl className={styles.points}>
+          {points.map(p => <div key={p.title}><dt>{p.title}</dt><dd>{p.text}</dd></div>)}
+        </dl>}
         {action && <div className={styles.action}>{action}</div>}
       </div>
-
-      {footnote && <div className={styles.footnote}>{footnote}</div>}
-    </aside>
-
-    <main className={styles.panel}>
-      {back && <Link to={back.to} className={styles.back}><ArrowBackMIcon aria-hidden />{back.label}</Link>}
       {children}
+      {footnote && <p className={styles.footnote}>{footnote}</p>}
     </main>
   </div>
 }
