@@ -61,7 +61,7 @@ type Enter = ReturnType<typeof useDemoEnter>
 export function LoginPage() {
   const demo = useDemoEnter()
   const main = personas.find(p => p.primary) ?? personasOf('client')[0]
-  const clients = personasOf('client').filter(p => p !== main)
+  const clients = personasOf('client')
   const bank = personasOf('bank')
   const guest = personasOf('guest')[0]
   const heroError = demo.errorFor('hero')

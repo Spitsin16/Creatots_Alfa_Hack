@@ -1,4 +1,5 @@
 import { Amount } from '@alfalab/core-components/amount/esm'
+import { useCountUp } from './motion'
 import styles from './Money.module.css'
 
 type Size = 'inherit' | 's' | 'm' | 'l' | 'xl'
@@ -35,4 +36,13 @@ export function Money({ kopecks, rubles, size = 'inherit', tone = 'default', pre
 export function formatMoney(value: { kopecks: number } | { rubles: number }) {
   const rub = 'kopecks' in value ? value.kopecks / 100 : value.rubles
   return `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 0 }).format(Math.round(rub))} ₽`
+}
+
+/**
+ * Сумма, которая «доезжает» до нового значения: показывает, что именно изменилось (лимит вырос после выписки).
+ * Анимация короткая (меньше секунды) и при «уменьшить движение» не запускается.
+ */
+export function CountingMoney({ kopecks, fromKopecks, ...rest }: Omit<MoneyProps, 'rubles' | 'kopecks'> & { kopecks: number; fromKopecks?: number | null }) {
+  const value = useCountUp(kopecks, fromKopecks)
+  return <Money kopecks={Math.round(value) === kopecks ? kopecks : Math.round(value / 100) * 100} {...rest} />
 }
