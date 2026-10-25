@@ -95,8 +95,10 @@ def download_document(document_id: str, user: User = Depends(get_current_user),
     file = session.get(StoredFile, doc.file_id) if doc.file_id else None
     if file is None:
         raise APIError(404, "FILE_NOT_FOUND", "Файл не найден")
+    # договор в HTML (его формирует система) открывается в браузере; остальное — скачивается
+    disposition = "inline" if file.content_type == "text/html" else "attachment"
     return Response(content=file.data, media_type=file.content_type,
-                    headers={"Content-Disposition": f"attachment; filename*=UTF-8''{quote(file.filename)}"})
+                    headers={"Content-Disposition": f"{disposition}; filename*=UTF-8''{quote(file.filename)}"})
 
 
 class AttachRequest(BaseModel):
