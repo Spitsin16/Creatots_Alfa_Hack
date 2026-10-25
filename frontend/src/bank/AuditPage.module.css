@@ -1,0 +1,474 @@
+.card {
+  overflow: hidden;
+}
+
+.pad {
+  padding: 0 var(--app-card-padding) var(--app-card-padding);
+}
+
+/* Фильтры */
+.filters {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+  padding: var(--app-card-padding) var(--app-card-padding) 0;
+}
+
+.filterAction,
+.filterSearch {
+  min-width: 0;
+}
+
+.searchIcon {
+  color: var(--app-text-secondary);
+}
+
+.resetButton {
+  white-space: nowrap;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 20px;
+  padding: 16px var(--app-card-padding) 8px;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+/* Таблица */
+.table th:first-child,
+.table td:first-child {
+  padding-left: var(--app-card-padding);
+}
+
+.table th:last-child,
+.table td:last-child {
+  padding-right: 16px;
+}
+
+.row:hover td {
+  background: var(--app-surface-muted);
+}
+
+.rowOpen td {
+  background: var(--app-surface-muted);
+}
+
+.cell {
+  height: auto;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  vertical-align: top;
+}
+
+.when {
+  display: flex;
+  flex-direction: column;
+  font-variant-numeric: tabular-nums;
+}
+
+.when b {
+  font-weight: 600;
+}
+
+.when span {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+.who {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+}
+
+.avatar {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.rowOpen .avatar,
+.row:hover .avatar {
+  background: var(--app-surface);
+}
+
+.avatarSystem svg {
+  width: 18px;
+  height: 18px;
+}
+
+.whoText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.whoName {
+  overflow-wrap: anywhere;
+}
+
+.whoRole {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.actionTitle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translateY(-1px);
+}
+
+.tone-positive { background: var(--color-light-status-positive); }
+.tone-negative { background: var(--color-light-status-negative); }
+.tone-attention { background: var(--color-light-status-attention); }
+.tone-info { background: var(--color-light-status-info); }
+.tone-neutral { background: var(--app-border-strong); }
+
+.summary {
+  padding-left: 16px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.object,
+.objectLink {
+  display: flex;
+  flex-direction: column;
+}
+
+.objectLink {
+  color: var(--app-link);
+  text-decoration: none;
+}
+
+.objectLink:hover .objectType {
+  text-decoration: underline;
+}
+
+.objectType {
+  font-weight: 500;
+}
+
+.objectRef {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.chevronCell {
+  text-align: right;
+}
+
+.chevron {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--app-text-secondary);
+  cursor: pointer;
+}
+
+.chevron:hover {
+  background: var(--app-surface);
+}
+
+.chevron svg,
+.mChevron {
+  transition: transform 0.15s ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+/* Раскрытые подробности */
+.expandCell {
+  padding: 0 !important;
+  background: var(--app-surface-muted);
+}
+
+.details {
+  margin: 0 16px 16px var(--app-card-padding);
+  padding: 16px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+}
+
+.detailList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 4px 24px;
+  margin: 0;
+}
+
+.detailList > div {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.detailList dt {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.detailList dd {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.detailList dd b {
+  font-weight: 500;
+}
+
+.detailList s {
+  color: var(--app-text-tertiary);
+}
+
+.detailChanged {
+  background: var(--color-light-status-muted-info);
+}
+
+.arrow {
+  color: var(--app-text-tertiary);
+}
+
+.noDetails {
+  margin: 0;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.detailFoot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--app-border);
+}
+
+.detailMeta {
+  font-size: 13px;
+  color: var(--app-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.detailMeta code {
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  color: var(--app-text);
+}
+
+.detailButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pagination {
+  padding: 8px var(--app-card-padding) 16px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Мобильный вид: карточки */
+.cards {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 0 8px;
+  list-style: none;
+}
+
+.mCard {
+  padding: 14px var(--app-card-padding-mobile);
+  border-top: 1px solid var(--app-border);
+}
+
+.mHead {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mChevron {
+  flex: 0 0 auto;
+  color: var(--app-text-secondary);
+}
+
+.mMeta {
+  padding-left: 16px;
+  font-size: 13px;
+  color: var(--app-text-secondary);
+}
+
+.mObject {
+  margin-top: 6px;
+  padding-left: 16px;
+  font-size: 14px;
+}
+
+.mObject .object,
+.mObject .objectLink {
+  flex-direction: row;
+  gap: 6px;
+}
+
+.mCard .details {
+  margin: 12px 0 0;
+  padding: 12px;
+  background: var(--app-surface-muted);
+}
+
+.mCard .detailList {
+  grid-template-columns: 1fr;
+}
+
+.mPagination {
+  display: flex;
+  justify-content: center;
+  padding: 8px 8px 20px;
+}
+
+@media (max-width: 900px) {
+  .filters {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .resetButton {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}
+
+@media (max-width: 600px) {
+  .filters {
+    grid-template-columns: 1fr;
+    padding: var(--app-card-padding-mobile) var(--app-card-padding-mobile) 0;
+  }
+
+  .meta {
+    padding: 12px var(--app-card-padding-mobile) 8px;
+  }
+
+  .pad {
+    padding: 0 var(--app-card-padding-mobile) var(--app-card-padding-mobile);
+  }
+}
+
+/* Широкая строка деталей (список номеров) — на всю ширину */
+.detailList > .detailWide {
+  grid-column: 1 / -1;
+}
+
+.refsToggle {
+  margin-left: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 14px;
+  color: var(--app-link);
+  cursor: pointer;
+}
+
+.refsToggle:hover {
+  text-decoration: underline;
+}
+
+.refs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 168px;
+  margin: 8px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.ref,
+.refLink {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: var(--app-surface-muted);
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--app-text);
+  white-space: nowrap;
+}
+
+.refLink {
+  color: var(--app-link);
+  text-decoration: none;
+}
+
+.refLink:hover {
+  background: var(--color-light-status-muted-info);
+}
+
+.mCard .ref,
+.mCard .refLink {
+  background: var(--app-surface);
+}

@@ -1,0 +1,34 @@
+.field {
+  min-width: 0;
+}
+
+.control {
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Изменено относительно действующей версии: мягкая оранжевая заливка и рамка */
+.changed .control {
+  background-color: var(--color-light-status-muted-attention);
+  box-shadow: inset 0 0 0 1px var(--color-light-status-attention);
+}
+
+.was {
+  color: var(--color-light-text-attention);
+  font-weight: 500;
+}
+
+.suffix {
+  padding-right: 4px;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

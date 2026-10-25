@@ -9,8 +9,20 @@ Direct Python dependencies (pinned in backend/requirements.lock):
 - Ruff, https://docs.astral.sh/ruff/ (MIT)
 - Uvicorn, https://www.uvicorn.org/ (BSD-3-Clause)
 
+Direct frontend dependencies (pinned in frontend/package-lock.json):
+- React, React DOM, https://react.dev/ (MIT)
+- React Router, https://reactrouter.com/ (MIT)
+- TanStack Query, https://tanstack.com/query (MIT)
+- Alfa-Bank Core Components (@alfalab/core-components and its @alfalab/* packages), https://github.com/core-ds/core-components (MIT)
+- Alfa-Bank Icons (@alfalab/icons-glyph), https://github.com/core-ds/icons (MIT)
+- Recharts, https://recharts.org/ (MIT)
+  Proprietary Alfa-Bank fonts (Styrene, Alfa Interface Sans) are not bundled; the system font stack is used.
+- Vite, @vitejs/plugin-react, https://vite.dev/ (MIT)
+- TypeScript, https://www.typescriptlang.org/ (Apache-2.0)
+- Playwright Test (@playwright/test, dev only: browser end-to-end test), https://playwright.dev/ (Apache-2.0)
+
 GitHub Actions used in CI:
-- actions/checkout, actions/setup-python, actions/setup-node (MIT)
+- actions/checkout, actions/setup-python, actions/setup-node, actions/upload-artifact (MIT)
 
 Container images used by docker-compose.yml (not redistributed, pulled at run time):
 - postgres:16-alpine, https://hub.docker.com/_/postgres (PostgreSQL License)

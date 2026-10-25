@@ -1,90 +1,127 @@
-import { ChangeEvent, useEffect, useState } from 'react'
-import { Explanation, Offer, SeasonalSchedule, productName, request, rub, rubles } from '../api'
+import { ReactNode } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { request } from '../api'
+import { Card, ErrorBoundary, ErrorState, Grid, LoadingState } from '../ui'
+import { ForecastCard } from './ForecastCard'
+import { OfferContext } from './offerStore'
+import { AdviceSection } from './offer/Advice'
+import { CounterHero, OfferHero } from './offer/Hero'
+import { ApplyTarget, CounterTerms, OfferData, OfferExplanation, SeasonalData, StatementResult, adviceItems, isOverdraft } from './offer/offerMath'
+import { SeasonalCard } from './offer/Seasonal'
+import { ConditionsCard, CostCard, NextSteps, RejectedCard, StatementBanner, WhyCard } from './offer/Sections'
 
-// Предложение: сумма, «почему такая сумма», факторы словами, «как получить больше»,
-// загрузка выписки 1С из другого банка (пересчёт) и сезонный график.
-export function OfferPanel({ token, offer, onOffer, onContinue, canContinue, repayment, onRefinance }: {
-  token: string; offer: Offer; onOffer: (o: Offer) => void; onContinue: () => void; canContinue: boolean; repayment: string; onRefinance?: (amount: number, term: number) => void
-}) {
-  const [ex, setEx] = useState<Explanation | null>(null)
-  const [schedule, setSchedule] = useState<SeasonalSchedule | null>(null)
-  const [note, setNote] = useState('')
-  const [busy, setBusy] = useState(false)
-
-  useEffect(() => {
-    setEx(null); setSchedule(null)
-    const fetchEx = () => request<Explanation>(`/api/v1/pre-offers/${offer.id}/explanation`, {}, token).then(setEx).catch(() => undefined)
-    void fetchEx()
-    const later = setTimeout(fetchEx, 8000)  // текст от LLM (если включена) приходит асинхронно
-    if (repayment === 'seasonal') {
-      request<SeasonalSchedule>(`/api/v1/pre-offers/${offer.id}/seasonal-schedule`, {}, token).then(setSchedule).catch(() => setSchedule(null))
-    }
-    return () => clearTimeout(later)
-  }, [offer.id, repayment, token])
-
-  const upload = async (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setBusy(true); setNote('')
-    try {
-      const res = await request<{ previous_limit_kopecks: number; pre_offer: Offer; statement: { full_months: number } }>(
-        `/api/v1/pre-offers/${offer.id}/statement`,
-        { method: 'POST', body: file, headers: { 'Content-Type': 'application/octet-stream' } }, token)
-      setNote(`Выписка учтена (${res.statement.full_months} мес.): сумма ${rubles(res.previous_limit_kopecks)} → ${rubles(res.pre_offer.limit_kopecks)}`)
-      onOffer(res.pre_offer)
-    } catch (err) { setNote((err as Error).message) } finally { setBusy(false); e.target.value = '' }
-  }
-
-  const rejected = offer.outcome === 'REJECTED'
-  const noLimit = offer.limit_kopecks <= 0
-  // Запрос укладывается в лимит — даём ровно столько, сколько просили, и не предлагаем больше.
-  const fits = !rejected && !noLimit && offer.requested_amount_kopecks <= offer.limit_kopecks
-  return <section className="offer-card">
-    <div>
-      <span className="eyebrow">{rejected ? 'Решение' : noLimit ? 'Предложение банка' : offer.outcome === 'MANUAL_REVIEW' ? 'Предварительно, решит специалист' : 'Предварительно одобрено'}</span>
-      <h2>{rejected || noLimit ? (ex?.headline ?? productName(offer.product)) : productName(offer.product)}</h2>
-      {!rejected && !noLimit && <><strong className="money">{rubles(fits ? offer.requested_amount_kopecks : offer.limit_kopecks)}</strong>
-        <p>{productName(offer.product)} · до {offer.term_months} мес. · ставка {offer.rate}% годовых
-          {offer.payment_kopecks ? ` · платёж ${rubles(offer.payment_kopecks)}/мес.` : ''}</p>
-        <p className="muted">{fits ? 'Это ровно та сумма, которую вы запросили' : `Вы запросили ${rubles(offer.requested_amount_kopecks)} — сейчас можем до ${rubles(offer.limit_kopecks)}`}</p></>}
-      {ex?.reason && <div className="callout">{ex.reason}</div>}
-      {ex?.counter && <div className="callout">{ex.counter}
-        {onRefinance && ex.counter_terms?.product === 'REFINANCE' && <div><button className="primary" onClick={() => onRefinance(ex.counter_terms!.amount, ex.counter_terms!.term)}>Рассчитать рефинансирование</button></div>}</div>}
-      {ex?.summary && <div className="summary"><p>{ex.summary}</p><small>Сформулировано ИИ по данным расчёта, цифры сверены</small></div>}
-      {ex?.why_amount && !fits && <><h3>Почему такая сумма</h3><p>{ex.why_amount}</p></>}
-      {ex && (ex.strengths.length > 0 || ex.weaknesses.length > 0) && <ul className="factors">
-        {ex.strengths.map(s => <li key={s} className="plus">{s}</li>)}
-        {ex.weaknesses.map(s => <li key={s} className="minus">{s}</li>)}
-      </ul>}
-      {schedule && <SeasonalTable s={schedule} />}
-    </div>
-    <div className="offer-side">
-      {fits ? <><h3>Что дальше</h3><ol className="next-steps">
-        <li>Оформите заявку — данные уже в банке, ничего заполнять не нужно</li>
-        <li>Проверка займёт около минуты, статус обновится сам</li>
-        <li>Подпишите договор кодом из SMS</li>
-        <li>Деньги придут на расчётный счёт сразу после подписи</li></ol></> : <>
-      <h3>{rejected ? 'Что поможет в следующий раз' : 'Как получить больше'}</h3>
-      {ex && ex.advice.length === 0 && <p className="muted">{rejected ? 'Устраните причину выше — и подайте заявку снова, данные уже есть в банке.' : 'Это лучшее предложение на ваших данных.'}</p>}
-      {(ex?.advice ?? []).map(a => <div className="advice" key={a.code}><span>↗</span><div><b>{a.text}</b>
-        {a.costs && <small>{a.costs}</small>}
-        {a.code === 'UPLOAD_STATEMENT' && <label className="upload secondary">{busy ? 'Загружаем…' : 'Загрузить выписку 1С'}
-          <input type="file" accept=".txt" onChange={upload} disabled={busy} hidden /></label>}
-      </div></div>)}</>}
-      {note && <div className="notice">{note}</div>}
-      {canContinue && !rejected && offer.limit_kopecks > 0 && <button className="primary wide" onClick={onContinue}>Оформить заявку</button>}
-    </div>
-  </section>
+// Ключи запросов экрана предложения
+const offerKeys = {
+  explanation: (id: string) => ['pre-offer', id, 'explanation'] as const,
+  seasonal: (id: string) => ['pre-offer', id, 'seasonal'] as const,
 }
 
-function SeasonalTable({ s }: { s: SeasonalSchedule }) {
-  const year = s.schedule.slice(0, 12)
-  const max = Math.max(...year.map(r => r.payment))
-  return <div className="seasonal">
-    <h3>Сезонный график: больше в сезон, меньше в межсезонье</h3>
-    <p className="muted">Обычный платёж {rub(s.annuity_payment)}; по сезонному — от {rub(s.min_payment)} до {rub(s.max_payment)}.
-      Переплата {rub(s.overpayment)} вместо {rub(s.annuity_overpayment)}.</p>
-    <div className="season-bars">{year.map(r => <div key={r.date}><i style={{ height: `${(r.payment / max) * 100}%` }} title={rub(r.payment)} />
-      <small>{new Date(r.date).toLocaleDateString('ru-RU', { month: 'short' })}</small></div>)}</div>
-  </div>
+export type OfferPanelProps = {
+  token: string
+  businessId: string
+  offer: OfferData
+  /** Способ погашения из анкеты: 'seasonal' — показываем сезонный график */
+  repayment: string
+  context?: OfferContext
+  canFill: boolean
+  canSubmit: boolean
+  /** Заявка по этому расчёту уже создана — вместо «Оформить» ведём в неё */
+  applicationId?: string
+  onOpenApplication: (applicationId: string) => void
+  creating: boolean
+  /** Что сейчас оформляется: как запросили или весь лимит овердрафта */
+  creatingTarget?: ApplyTarget
+  onContinue: (target: ApplyTarget) => void
+  /** Можно оформить весь лимит овердрафта (если в расчёте выписка — её файл ещё в памяти вкладки) */
+  fullLimitReady: boolean
+  refinancing: boolean
+  onRefinance: (terms: CounterTerms) => void
+  onStatement: (result: StatementResult, file: Blob) => void
+  /** Пересчитать по тем же ответам (истёк срок) */
+  recalculating: boolean
+  onRecalculate: () => void
+  /** Вернуться к анкете и поменять ответы */
+  onEditAnswers: () => void
+  /** Ошибки действий (создание заявки, пересчёт) — сразу под главной карточкой */
+  notice?: ReactNode
+}
+
+/**
+ * Предложение банка: герой с суммой и кнопкой, полная стоимость и условия, «почему такая сумма»,
+ * «как получить больше» (с загрузкой выписки 1С), сезонный график, прогноз для овердрафта, что дальше.
+ * Отдельно — встречное предложение (рефинансирование) и отказ.
+ */
+export function OfferPanel(p: OfferPanelProps) {
+  const { offer, token } = p
+  const explanation = useQuery({
+    queryKey: offerKeys.explanation(offer.id),
+    queryFn: () => request<OfferExplanation>(`/api/v1/pre-offers/${offer.id}/explanation`, {}, token),
+    staleTime: 60_000,
+    // Текст от LLM (если она включена) готовится асинхронно — пока его нет, один раз переспрашиваем через 8 с
+    refetchInterval: q => q.state.data && !q.state.data.summary && q.state.dataUpdateCount < 2 ? 8_000 : false,
+  })
+  const wantsSeasonal = p.repayment === 'seasonal' && !!offer.payment_kopecks && offer.limit_kopecks > 0 && !isOverdraft(offer)
+  const seasonal = useQuery({
+    queryKey: offerKeys.seasonal(offer.id),
+    queryFn: () => request<SeasonalData>(`/api/v1/pre-offers/${offer.id}/seasonal-schedule`, {}, token),
+    enabled: wantsSeasonal,
+    staleTime: Infinity,
+    retry: false,
+  })
+
+  // переплата при равных платежах — из графика банка, если он посчитан (одна цифра на весь экран)
+  const overpaymentRub = seasonal.data?.annuity_overpayment ?? null
+  const ex = explanation.data
+  const exLoading = explanation.isPending
+  const exError = explanation.error
+  const retryEx = () => { void explanation.refetch() }
+  const advice = adviceItems(offer, ex)
+  const adviceSection = (rejected?: boolean) => <AdviceSection offer={offer} items={advice} loading={exLoading} rejected={rejected}
+    canUpload={p.canFill} token={token} onStatement={p.onStatement} onEditAnswers={p.onEditAnswers} />
+
+  if (offer.outcome === 'REJECTED') {
+    return <>
+      <RejectedCard offer={offer} ex={ex} loading={exLoading} error={exError} onRetry={retryEx} onRecalculate={p.onEditAnswers} />
+      {advice.length > 0 && adviceSection(true)}
+    </>
+  }
+
+  if (offer.limit_kopecks <= 0) {
+    const counter = ex?.counter_terms as CounterTerms | null | undefined
+    return <>
+      {exLoading && <LoadingState view="block" label="Загружаем предложение банка…" />}
+      {!exLoading && exError != null && <ErrorState error={exError} title="Не получилось загрузить предложение" onRetry={retryEx} />}
+      {counter && <CounterHero offer={offer} terms={counter} canFill={p.canFill}
+        busy={p.refinancing} onRefinance={() => p.onRefinance(counter)} />}
+      {ex && !counter && <Card title={ex.headline} subtitle={ex.counter ?? ex.reason ?? undefined} />}
+      {p.notice}
+      {ex && <WhyCard title={counter ? 'Почему не можем выдать запрошенную сумму' : 'Почему так'} ex={ex} loading={false} error={null} onRetry={retryEx} />}
+      {adviceSection()}
+    </>
+  }
+
+  // при ручной проверке «что будет дальше» — главный вопрос клиента, поэтому сразу под суммой
+  const manual = offer.outcome === 'MANUAL_REVIEW'
+  const nextSteps = <NextSteps offer={offer} reason={ex?.reason} canSubmit={p.canSubmit || !p.canFill} />
+  return <>
+    {p.context?.statement && <StatementBanner offer={offer} statement={p.context.statement} />}
+    <OfferHero offer={offer} context={p.context} overpaymentRub={overpaymentRub} action={{
+      canFill: p.canFill, canSubmit: p.canSubmit, applicationId: p.applicationId, onOpenApplication: p.onOpenApplication,
+      busy: p.creating, busyTarget: p.creatingTarget, onContinue: p.onContinue, fullLimitReady: p.fullLimitReady,
+      recalculating: p.recalculating, onRecalculate: p.onRecalculate, onEditAnswers: p.onEditAnswers,
+    }} />
+    {p.notice}
+    {manual && nextSteps}
+    {wantsSeasonal && <SeasonalCard data={seasonal.data} loading={seasonal.isPending} error={seasonal.error} onRetry={() => { void seasonal.refetch() }} />}
+    <Grid columns={2}>
+      <CostCard offer={offer} overpaymentRub={overpaymentRub} />
+      <ConditionsCard offer={offer} />
+    </Grid>
+    <WhyCard ex={ex} loading={exLoading} error={exError} onRetry={retryEx} />
+    {adviceSection()}
+    {isOverdraft(offer) && <ErrorBoundary compact>
+      <ForecastCard businessId={p.businessId} overdraftKopecks={offer.limit_kopecks} title="Деньги на счёте с этим лимитом" />
+    </ErrorBoundary>}
+    {!manual && nextSteps}
+  </>
 }

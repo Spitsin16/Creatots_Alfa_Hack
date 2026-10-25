@@ -1,0 +1,109 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.block {
+  min-width: 0;
+  padding: 16px;
+  border-radius: var(--app-radius-block);
+  border: 1px solid var(--app-border);
+}
+
+.blockTitle {
+  margin: 0 0 8px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.flags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.flagBad,
+.flagOk {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.flagBad {
+  background: var(--color-light-bg-negative-muted, #ffebeb);
+  color: var(--app-negative);
+}
+
+.flagOk {
+  background: var(--color-light-bg-positive-muted, #dff8e5);
+  color: var(--app-positive);
+}
+
+/* KeyValue внутри блока — плотнее и мельче */
+.kv.kv > div {
+  padding: 7px 0;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.kv.kv > div:first-child {
+  padding-top: 0;
+}
+
+.kv.kv > div:last-child {
+  padding-bottom: 0;
+}
+
+.note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
+
+.loans {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.loan + .loan {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--app-border);
+}
+
+.loanHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.loanMeta {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* График выручки по месяцам — на всю ширину сетки блоков */
+.wide {
+  grid-column: 1 / -1;
+  min-width: 0;
+}

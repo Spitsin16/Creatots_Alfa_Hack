@@ -1,0 +1,170 @@
+/* Плавающая кнопка: правый нижний угол, над контентом, под поповерами и демо-панелью */
+.fab {
+  position: fixed;
+  right: var(--app-fab-offset, 24px);
+  bottom: var(--app-fab-offset, 24px);
+  z-index: var(--z-assistant, 40);
+}
+
+.fabButton {
+  box-shadow: var(--app-shadow-float);
+}
+
+.window {
+  position: fixed;
+  right: var(--app-fab-offset, 24px);
+  bottom: var(--app-fab-offset, 24px);
+  z-index: var(--z-assistant, 40);
+  width: 400px;
+  max-height: min(640px, calc(100vh - 48px));
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-float);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 14px 14px 16px;
+  border-bottom: 1px solid var(--app-border);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--app-surface-dark);
+  color: #fff;
+}
+
+.headText {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.headText b {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.headText small {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 120px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px;
+}
+
+.bubble {
+  align-self: flex-start;
+  max-width: 88%;
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  background: var(--app-surface-muted);
+  font-size: 15px;
+  line-height: 21px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.mine {
+  align-self: flex-end;
+  border-radius: 16px 16px 4px 16px;
+  background: var(--app-surface-dark);
+  color: #fff;
+}
+
+.action {
+  display: flex;
+  margin-top: 10px;
+}
+
+.typing {
+  padding: 4px 2px;
+}
+
+/* Готовые вопросы — одна строка с горизонтальной прокруткой, чтобы не съедать ленту */
+.chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  padding: 0 16px 12px;
+  flex: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+}
+
+.chips::-webkit-scrollbar {
+  display: none;
+}
+
+.chips > * {
+  flex: none;
+}
+
+.form {
+  padding: 12px 16px 16px;
+  border-top: 1px solid var(--app-border);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .fab {
+    right: 16px;
+    bottom: 16px;
+  }
+
+  /* на телефоне — круглая кнопка только с иконкой */
+  .fabLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .fab .fabButton {
+    width: 56px;
+    min-width: 0;
+    height: 56px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .window {
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
+    width: auto;
+    max-height: calc(100vh - 16px);
+  }
+}

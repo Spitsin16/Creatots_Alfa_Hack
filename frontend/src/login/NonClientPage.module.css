@@ -1,0 +1,85 @@
+.card {
+  max-width: 760px;
+  padding: 32px;
+  border-radius: var(--app-radius-card);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow-card);
+}
+
+.eyebrow {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+  color: var(--app-text-secondary);
+}
+
+h2.title {
+  margin: 6px 0 24px;
+  font-size: 28px;
+  line-height: 34px;
+  letter-spacing: -0.02em;
+  color: var(--app-text);
+}
+
+.steps {
+  margin-left: -8px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-width: 560px;
+}
+
+.step b {
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.step span {
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--app-text-secondary);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.error {
+  margin: 12px 0 0;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--color-light-status-muted-alt-negative, #fff0ef);
+  color: var(--app-negative);
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.note {
+  margin: 14px 0 0;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-tertiary);
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: var(--app-card-padding-mobile);
+  }
+
+  h2.title {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  .actions > * {
+    width: 100%;
+  }
+}

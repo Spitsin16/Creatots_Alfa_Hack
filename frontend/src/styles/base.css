@@ -1,0 +1,150 @@
+/*
+ * Базовые стили приложения поверх токенов кита (@alfalab/core-components/vars).
+ * Порядок подключения в main.tsx: токены кита → этот файл → стили компонентов (кит и CSS-модули экранов).
+ * Стили экранов — в CSS-модулях рядом с их файлами.
+ */
+
+/*
+ * Шрифты. Фирменные Styrene / Alfa Interface Sans не бандлим: подменяем все шрифтовые переменные
+ * кита на системный стек. Селектор html:root сильнее, чем :root в CSS компонентов кита
+ * (типографика кита заново объявляет эти переменные и подключается позже).
+ */
+html:root {
+  --app-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Inter, Arial, sans-serif;
+  --app-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-family: var(--app-font);
+  --font-family-system: var(--app-font);
+  --font-family-styrene: var(--app-font);
+  --font-family-alfasans: var(--app-font);
+}
+
+/*
+ * Токены приложения: короткие имена поверх палитры кита. Берите их в CSS-модулях,
+ * чтобы все экраны выглядели одинаково (см. src/ui/README.md).
+ */
+:root {
+  /* Поверхности */
+  --app-bg: var(--color-light-base-bg-secondary);            /* фон страницы, #f2f3f5 */
+  --app-surface: var(--color-light-base-bg-primary);         /* карточка, #fff */
+  --app-surface-muted: var(--color-light-neutral-100);       /* подложка внутри карточки */
+  --app-surface-dark: var(--color-light-accent-secondary);   /* тёмный акцентный блок, #212124 */
+  --app-border: var(--color-light-neutral-300);              /* тонкая граница / разделитель */
+  --app-border-strong: var(--color-light-neutral-400);
+
+  /* Текст */
+  --app-text: var(--color-light-text-primary);
+  --app-text-secondary: var(--color-light-text-secondary);
+  --app-text-tertiary: var(--color-light-text-tertiary);
+  --app-accent: var(--color-light-accent-primary);           /* красный Альфы: главное действие и ошибки */
+  --app-positive: var(--color-light-text-positive);
+  --app-attention: var(--color-light-text-attention);
+  --app-negative: var(--color-light-text-negative);
+  --app-link: var(--color-light-text-info);
+
+  /* Формы */
+  --app-radius-card: 24px;
+  --app-radius-block: 16px;
+  --app-radius-control: 12px;
+  --app-card-padding: 28px;
+  --app-card-padding-mobile: 20px;
+  --app-shadow-card: 0 1px 2px rgba(11, 31, 53, 0.04);
+  --app-shadow-float: 0 12px 40px rgba(11, 31, 53, 0.16);
+
+  /* Сетка оболочки */
+  --app-sidebar-width: 256px;
+  --app-content-max: 1160px;
+  --app-content-pad: 32px;
+  --app-content-pad-mobile: 16px;
+  --app-topbar-height: 60px;
+
+  /*
+   * Слои. Кит: поповеры и тултипы — 50, модальные окна — 100, тосты — 1000.
+   * Наши плавающие элементы — ниже поповеров, чтобы выпадашки внутри них не прятались.
+   */
+  --z-shell: 20;      /* сайдбар и верхняя панель */
+  --z-assistant: 40;  /* кнопка и окно ассистента (справа внизу) */
+  --z-demo: 45;       /* выезжающая демо-панель (справа) и её ярлык */
+
+  /* Места под плавающие элементы справа */
+  --app-fab-offset: 24px;        /* отступ кнопки ассистента от правого и нижнего края */
+  --app-fab-safe-bottom: 96px;   /* столько места снизу контента оставляем под кнопку ассистента */
+  --app-demo-panel-width: 360px;
+
+  color-scheme: light;
+}
+
+html,
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: var(--app-font);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--app-font);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+/* Только цвет и отступ подчёркивания: кнопки-ссылки кита и строки-ссылки задают оформление сами */
+a {
+  color: var(--app-link);
+  text-underline-offset: 3px;
+}
+
+/* Видимый фокус с клавиатуры — у всех интерактивных элементов */
+:focus-visible {
+  outline: 2px solid var(--color-light-status-info);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--color-light-status-muted-alt-negative);
+}
+
+/* Цифры в суммах и таблицах — одинаковой ширины */
+.tabular,
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

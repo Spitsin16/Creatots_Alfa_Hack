@@ -1,0 +1,268 @@
+.list {
+  display: flex;
+  flex-direction: column;
+  /* Раскладку строки выбираем по ширине самого списка: он бывает и во всю карточку, и во вложенном блоке на телефоне */
+  container-type: inline-size;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 0;
+  border-top: 1px solid var(--app-border);
+}
+
+.row:first-child {
+  border-top: 0;
+  padding-top: 4px;
+}
+
+.icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+}
+
+.icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.expired .icon {
+  color: var(--app-negative);
+}
+
+.main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.name {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+  color: var(--app-text);
+  overflow-wrap: anywhere;
+}
+
+.expired .name {
+  color: var(--app-text-secondary);
+}
+
+.meta {
+  margin-top: 2px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.tags:empty {
+  display: none;
+}
+
+.tag {
+  max-width: 100%;
+}
+
+.attached {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.attached a {
+  color: var(--app-link);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.attached a:hover {
+  text-decoration: underline;
+}
+
+.rowError {
+  color: var(--app-negative);
+  font-size: 13px;
+}
+
+.actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  align-self: center;
+}
+
+.emptyLine {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drop {
+  border-radius: var(--app-radius-block);
+}
+
+.dropInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.dropIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+}
+
+.dropText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.dropText b {
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.dropText span {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+}
+
+.attach {
+  display: flex;
+  justify-content: center;
+}
+
+.requested {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.requestedForm {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.kindSelect {
+  min-width: 0;
+}
+
+.stored {
+  padding: 4px 16px 0;
+  border-radius: var(--app-radius-block);
+  border: 1px solid var(--app-border);
+}
+
+.storedTitle {
+  padding: 12px 0 4px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.expiredNote {
+  color: var(--app-negative);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.note {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+@media (max-width: 900px) {
+  .requestedForm {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Узкий список (телефон, вложенный блок): кнопки уходят под название, текст не сжимается в столбик */
+@container (max-width: 520px) {
+  .row {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    column-gap: 12px;
+    row-gap: 10px;
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .actions {
+    align-self: start;
+  }
+
+  /* Есть кнопка («Приложить») — кнопки уходят строкой ниже, под название */
+  .withAction .actions {
+    grid-column: 2 / -1;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .stored {
+    padding: 4px 12px 0;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  /* На телефоне перетаскивать некуда — оставляем только кнопку */
+  .dropText b {
+    display: none;
+  }
+}
+
+/* На узком экране сетка складывается в колонку — форму загрузки ставим над длинным списком хранилища */
+@media (max-width: 900px) {
+  .uploadCard {
+    order: -1;
+  }
+}

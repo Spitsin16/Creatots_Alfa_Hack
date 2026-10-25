@@ -1,0 +1,318 @@
+/* ---------- Активная заявка ---------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heroTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.heroMain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.heroEyebrow {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.heroTitle {
+  color: var(--app-text);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.heroButton {
+  flex: none;
+}
+
+.heroTodo {
+  color: var(--app-attention);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.mini {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.miniStep {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.miniBar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--app-surface-muted);
+  box-shadow: inset 0 0 0 1px var(--app-border);
+}
+
+.miniLabel {
+  color: var(--app-text-tertiary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.mini-done .miniBar,
+.mini-success .miniBar {
+  background: var(--color-light-status-positive, #0cc44d);
+  box-shadow: none;
+}
+
+.mini-waiting .miniBar,
+.mini-current .miniBar {
+  background: var(--color-light-status-info, #2288fa);
+  box-shadow: none;
+}
+
+.mini-action .miniBar {
+  background: var(--color-light-status-attention, #f7a738);
+  box-shadow: none;
+}
+
+.mini-failed .miniBar {
+  background: var(--color-light-status-negative, #ef3124);
+  box-shadow: none;
+}
+
+.mini-done .miniLabel,
+.mini-success .miniLabel {
+  color: var(--app-text-secondary);
+}
+
+.mini-waiting .miniLabel,
+.mini-current .miniLabel,
+.mini-action .miniLabel,
+.mini-failed .miniLabel {
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.miniCaption {
+  display: none;
+  margin-top: -14px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+/* ---------- Список заявок ---------- */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -4px 0 16px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  margin: 0 -12px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(110px, 0.9fr) 72px 120px minmax(0, 1.4fr) 20px;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 12px;
+}
+
+.head {
+  padding-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--app-border);
+  color: var(--app-text-tertiary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.item {
+  border-radius: 14px;
+  color: var(--app-text);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.item + .item {
+  box-shadow: 0 -1px 0 var(--app-border);
+}
+
+.item:hover {
+  background: var(--app-surface-muted);
+  box-shadow: none;
+}
+
+.item:hover + .item {
+  box-shadow: none;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--app-link);
+  outline-offset: -2px;
+}
+
+.current {
+  background: var(--color-light-status-muted-alt-info, #eaf4ff);
+}
+
+.current:hover {
+  background: var(--color-light-status-muted-alt-info, #eaf4ff);
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.product b {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.product small {
+  color: var(--app-text-tertiary);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.right {
+  text-align: right;
+}
+
+.amount {
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+.term,
+.date {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.dateTerm {
+  display: none;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.todo {
+  color: var(--app-attention);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.chevron {
+  width: 20px;
+  height: 20px;
+  color: var(--app-text-tertiary);
+}
+
+.none {
+  padding: 20px 12px;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+}
+
+/* Узкий экран: строки таблицы превращаются в карточки */
+@media (max-width: 900px) {
+  .heroTop {
+    flex-direction: column;
+  }
+
+  .heroButton {
+    width: 100%;
+  }
+
+  .head {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'product amount'
+      'status date';
+    gap: 8px 12px;
+  }
+
+  .product { grid-area: product; }
+  .amount { grid-area: amount; }
+  .status { grid-area: status; }
+  .date { grid-area: date; text-align: right; align-self: start; }
+  .dateTerm { display: inline; }
+  .term,
+  .chevron {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .heroTitle {
+    font-size: 22px;
+    line-height: 28px;
+  }
+
+  .mini {
+    gap: 4px;
+  }
+
+  .miniLabel {
+    display: none;
+  }
+
+  .miniCaption {
+    display: block;
+  }
+
+  .table {
+    margin: 0 -8px;
+  }
+
+  .row {
+    padding: 12px 8px;
+  }
+}

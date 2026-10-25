@@ -1,0 +1,51 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 20px;
+  vertical-align: middle;
+}
+
+.light {
+  color: inherit;
+}
+
+.spinner {
+  flex: none;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.processing {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0;
+  padding: 18px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.processing .wrap {
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.bar {
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.hint {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}

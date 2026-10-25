@@ -1,0 +1,240 @@
+.top {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 20px;
+  align-items: stretch;
+}
+
+.badge {
+  min-height: 112px;
+}
+
+.outcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+  padding: 16px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+}
+
+.outcomeValue {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.reasons {
+  margin: 6px 0 0;
+  padding: 0 0 0 18px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.reasons li + li {
+  margin-top: 2px;
+}
+
+.tiles {
+  margin-top: 20px;
+}
+
+.binding {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-control);
+  border: 1px solid var(--app-border);
+}
+
+.bindingTitle {
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.bindingText {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}
+
+.compare {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.compareOver {
+  color: var(--color-light-text-attention, #b85c00);
+}
+
+.compareOk {
+  color: var(--app-positive);
+}
+
+.compareIcon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+}
+
+.plate {
+  margin-top: 16px;
+}
+
+.stopList {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.factorsHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 28px 0 12px;
+}
+
+.h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.formula {
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--app-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.formula b {
+  color: var(--app-text);
+}
+
+.factors {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.factor {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(80px, 1fr) 40px;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.factor + .factor {
+  border-top: 1px dashed var(--app-border);
+}
+
+.factorName {
+  color: var(--app-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.track {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  background: var(--app-surface-muted);
+}
+
+.axis {
+  position: absolute;
+  left: 50%;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--app-border-strong);
+}
+
+.barPos,
+.barNeg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.barPos {
+  left: 50%;
+  border-radius: 0 5px 5px 0;
+  background: #0d8a35;
+}
+
+.barNeg {
+  right: 50%;
+  border-radius: 5px 0 0 5px;
+  background: #e5281b;
+}
+
+.factorValue {
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.pos { color: var(--app-positive); }
+.neg { color: var(--app-negative); }
+.zero { color: var(--app-text-tertiary); }
+
+.clientText {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: var(--app-radius-control);
+  background: var(--app-surface-muted);
+}
+
+.clientText p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.empty {
+  margin: 0;
+  color: var(--app-text-secondary);
+}
+
+@media (max-width: 600px) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .badge {
+    min-height: 0;
+  }
+
+  .factor {
+    grid-template-columns: minmax(0, 1fr) 72px 36px;
+    gap: 8px;
+  }
+}

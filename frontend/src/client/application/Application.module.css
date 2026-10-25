@@ -1,0 +1,756 @@
+/* ---------- Трекер: статус, шаги, «что дальше» ---------- */
+
+.tracker {
+  display: flex;
+  flex-direction: column;
+  /* Прокрутка к трекеру (после отправки документа) — с запасом под липкую верхнюю панель на телефоне */
+  scroll-margin-top: 16px;
+}
+
+@media (max-width: 900px) {
+  .tracker {
+    scroll-margin-top: calc(var(--app-topbar-height, 60px) + 12px);
+  }
+}
+
+.trackerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
+.updated {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--app-text-tertiary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.headline {
+  margin: 14px 0 0;
+  color: var(--app-text);
+}
+
+.lead {
+  margin: 6px 0 0;
+  max-width: 720px;
+  color: var(--app-text-secondary);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.lead b {
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.steps {
+  margin: 24px 0 0;
+  padding: 16px 12px;
+  border-radius: var(--app-radius-block);
+  border: 1px solid var(--app-border);
+  overflow: hidden;
+}
+
+.steps-vertical {
+  padding: 12px 12px 4px;
+}
+
+.steps-wide .stepLabel,
+.steps-tight .stepLabel {
+  white-space: nowrap;
+}
+
+/* Плотная строка: подпись текущего шага длиннее обычного («Ждёт директора») — ужимаем линии и поля, а не переносим названия */
+.steps-tight [class*='steps__dash_'] {
+  min-width: 12px;
+  margin-right: 4px;
+}
+
+.steps-tight [class*='steps__text_'] {
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.steps-tight .stepLabel {
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.stepLabel {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.stepSub {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-tertiary);
+  white-space: nowrap;
+}
+
+.step-todo .stepLabel,
+.step-skipped .stepLabel {
+  color: var(--app-text-tertiary);
+  font-weight: 500;
+}
+
+.step-action .stepSub {
+  color: var(--app-attention);
+  font-weight: 600;
+}
+
+.step-waiting .stepSub {
+  color: var(--app-link);
+  font-weight: 600;
+}
+
+.step-failed .stepSub {
+  color: var(--app-negative);
+  font-weight: 600;
+}
+
+.step-success .stepSub {
+  color: var(--app-positive);
+}
+
+/* Остановленный шаг (отменена / срок истёк): серый кружок с крестиком вместо чёрного кружка текущего шага */
+.steps [class*='steps__option']:has(.stoppedIndicator) {
+  background: var(--color-light-neutral-translucent-300, rgba(15, 25, 55, 0.1));
+  color: var(--app-text-secondary);
+}
+
+.steps [class*='steps__option']:has(.stoppedIndicator)::after {
+  content: '✕';
+  font-size: 12px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+.stoppedIndicator {
+  display: none !important;
+}
+
+.next {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 20px;
+  padding: 20px 24px 24px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+}
+
+.nextLabel {
+  color: var(--app-text-secondary);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.nextText {
+  margin: 0;
+  max-width: 760px;
+  color: var(--app-text);
+  font-size: 15px;
+  line-height: 22px;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.confirm {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  color: var(--app-text);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.confirmButtons {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Согласие на БКИ и ФНС перед отправкой */
+.consent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+}
+
+.consentTitle {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.consentText {
+  margin: -6px 0 0;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.consentButton {
+  margin-top: 4px;
+}
+
+.inlineNote {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* Подпись кодом */
+.sign {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+}
+
+.signLabel {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
+}
+
+.code {
+  max-width: 100%;
+}
+
+.signHint {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.signHint b {
+  color: var(--app-text);
+  font-family: var(--app-font-mono);
+  letter-spacing: 0.1em;
+}
+
+.signButton {
+  margin-top: 4px;
+}
+
+/* Запрос документов */
+.quote {
+  margin: 0;
+  padding: 14px 16px;
+  border-left: 3px solid var(--color-light-status-attention, #f7a738);
+  border-radius: 0 12px 12px 0;
+  background: var(--app-surface);
+  color: var(--app-text);
+  font-size: 16px;
+  line-height: 22px;
+}
+
+.quoteLabel {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--app-text-secondary);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+}
+
+.counter {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+}
+
+.counterProduct {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.counterProduct small {
+  color: var(--app-text-tertiary);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.variants {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.variantsLabel {
+  margin-right: 4px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+@media (max-width: 600px) {
+  .variantsLabel {
+    flex-basis: 100%;
+  }
+}
+
+.contract {
+  padding: 12px 16px 0;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+}
+
+/* Советы при отказе */
+.advice {
+  padding: 16px 20px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface);
+}
+
+.adviceTitle {
+  margin-bottom: 8px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.adviceList {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 21px;
+}
+
+/* ---------- Боковые карточки ---------- */
+
+.muted {
+  color: var(--app-text-tertiary);
+  font-weight: 400;
+}
+
+.fineprint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.specialist {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--app-surface-dark);
+  color: var(--color-light-text-primary-inverted);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.avatarEmpty {
+  background: var(--app-surface-muted);
+  color: var(--app-text-tertiary);
+}
+
+.specialistText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.specialistText b {
+  font-size: 17px;
+  line-height: 22px;
+  color: var(--app-text);
+}
+
+.specialistRole {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.specialistNote {
+  margin: 12px 0 16px;
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.history {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.historyItem {
+  position: relative;
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 0 0 14px;
+}
+
+.historyItem:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--app-border);
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--app-border-strong);
+}
+
+.dot-green { background: var(--color-light-status-positive, #0cc44d); }
+.dot-orange { background: var(--color-light-status-attention, #f7a738); }
+.dot-blue { background: var(--color-light-status-info, #2288fa); }
+.dot-red { background: var(--color-light-status-negative, #ef3124); }
+.dot-grey { background: var(--app-border-strong); }
+
+.historyText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.historyText b {
+  color: var(--app-text);
+  font-weight: 600;
+}
+
+.historyText span {
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  overflow-wrap: anywhere;
+}
+
+.historyTime {
+  color: var(--app-text-tertiary);
+  font-size: 12px;
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.more {
+  margin-top: 4px;
+}
+
+/* ---------- Решение банка ---------- */
+
+.decisionText {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.decisionTerms {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--color-light-status-muted-alt-positive, #e6f8ec);
+  color: var(--app-text);
+  font-size: 15px;
+  line-height: 21px;
+}
+
+.decisionIcon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: var(--color-light-status-positive, #0cc44d);
+}
+
+.more2 {
+  margin-top: 20px;
+}
+
+.gainList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gainList li {
+  display: flex;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--app-text);
+}
+
+.gainList small {
+  display: block;
+  margin-top: 2px;
+  color: var(--app-positive);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.gainIcon {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: var(--app-positive);
+}
+
+/* ---------- График платежей ---------- */
+
+.howList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 20px;
+}
+
+.howList li {
+  display: flex;
+  gap: 12px;
+}
+
+.howList li > svg {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+}
+
+.howList li div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.howList b {
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--app-text);
+}
+
+.howList span {
+  color: var(--app-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.tableWrap {
+  margin-top: 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.table th {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--app-border);
+  color: var(--app-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--app-border);
+  color: var(--app-text);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.table th:first-child,
+.table td:first-child,
+.table th:nth-child(2),
+.table td:nth-child(2) {
+  text-align: left;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.num {
+  color: var(--app-text-tertiary) !important;
+}
+
+@media (max-width: 900px) {
+  .steps {
+    padding: 8px 8px 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .headline {
+    margin-top: 12px;
+  }
+
+  .lead {
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  .next {
+    padding: 16px 12px;
+  }
+
+  /* Вложенные блоки внутри «Что дальше» на телефоне — без своих полей, чтобы тексту хватало ширины */
+  .counter {
+    padding: 0;
+    background: transparent;
+  }
+
+  /* Плитки условий — белые на сером фоне «Что дальше» */
+  .counter .counterTiles > div {
+    background: var(--app-surface);
+  }
+
+  .consent {
+    padding: 16px 12px;
+  }
+
+  .buttons > .confirm {
+    flex-basis: 100%;
+  }
+
+  .sign {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .howList {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .buttons > * {
+    flex: 1 1 auto;
+  }
+}
+
+.decisionLimit {
+  display: block;
+  margin-top: 2px;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
+@media (max-width: 600px) {
+  /* На телефоне в графике — № / дата / платёж / остаток, без разбивки */
+  .table th:nth-child(4),
+  .table td:nth-child(4),
+  .table th:nth-child(5),
+  .table td:nth-child(5) {
+    display: none;
+  }
+
+  .table th,
+  .table td {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  /* Графа «Долг» на телефоне скрыта — пояснение к ней тоже */
+  .dashNote {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .signButton {
+    width: 100%;
+  }
+}
+
+.nowrap {
+  white-space: nowrap;
+}

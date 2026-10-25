@@ -1,0 +1,118 @@
+.panel {
+  min-width: 0;
+}
+
+.kv {
+  margin-bottom: 4px;
+}
+
+.body {
+  margin-top: 20px;
+}
+
+.text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 22px;
+  color: var(--app-text);
+}
+
+.muted {
+  color: var(--app-text-tertiary);
+  font-weight: 400;
+}
+
+.take {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.radios {
+  margin: 0;
+}
+
+.riskBadge {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--app-radius-control);
+  background: var(--color-light-bg-attention-muted, #ffefd9);
+  color: var(--app-text);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.form .riskBadge {
+  margin-top: 0;
+}
+
+.riskIcon {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--color-light-text-attention, #ea8313);
+}
+
+.notice {
+  margin-top: 16px;
+}
+
+.plateIcon {
+  width: 24px;
+  height: 24px;
+}
+
+.pending {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--app-radius-block);
+  background: var(--app-surface-muted);
+  margin-bottom: 16px;
+}
+
+.pendingHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 20px;
+}
+
+.quote {
+  margin: 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--app-border-strong);
+  border-radius: 0 8px 8px 0;
+  background: var(--app-surface);
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.settled {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.settled .pending {
+  margin-bottom: 0;
+}
+
+.pendingReason {
+  margin: -4px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--app-text-secondary);
+}

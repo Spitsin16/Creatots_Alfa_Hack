@@ -1,0 +1,386 @@
+/* ——— Каркас: сайдбар слева, контент справа ——— */
+.shell {
+  display: grid;
+  grid-template-columns: var(--app-sidebar-width) minmax(0, 1fr);
+  min-height: 100vh;
+  background: var(--app-bg);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-shell);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 24px 16px 20px;
+  background: var(--app-surface);
+  border-right: 1px solid var(--app-border);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.brand:hover {
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.brandText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brandText b {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.brandText small {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+  white-space: nowrap;
+}
+
+.menuButton {
+  display: none;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ——— Навигация ——— */
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 36px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: var(--app-radius-control);
+  color: var(--app-text-secondary);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.navItem:hover {
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+  text-decoration: none;
+}
+
+.navIcon {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+.active {
+  position: relative;
+  background: var(--app-surface-muted);
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.active .navIcon {
+  color: var(--app-accent);
+}
+
+/* ——— Профиль ——— */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 16px 4px 0 8px;
+  border-top: 1px solid var(--app-border);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-light-neutral-200);
+  color: var(--app-text);
+  font-weight: 700;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.who b {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* роль / фирма — до двух строк: «Администратор правил», «ООО «СтройБаза» · по МЧД» */
+.who small {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.who b {
+  font-size: 14px;
+  line-height: 19px;
+}
+
+.who small {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+}
+
+.logout {
+  flex: none;
+}
+
+.logoutText {
+  display: none;
+}
+
+.scrim {
+  display: none;
+}
+
+/* ——— Контент ——— */
+.content {
+  min-width: 0;
+}
+
+.inner {
+  max-width: var(--app-content-max);
+  margin: 0 auto;
+  padding: 36px var(--app-content-pad) var(--app-fab-safe-bottom);
+}
+
+/* ——— Узкий экран: верхняя панель + выпадающее меню ——— */
+@media (max-width: 900px) {
+  /* Верхняя панель — своей высоты: на коротких страницах лишняя высота уходит контенту, а не шапке */
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+  }
+
+  .sidebar {
+    height: auto;
+    padding: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--app-border);
+  }
+
+  .top {
+    height: var(--app-topbar-height);
+    padding: 0 8px 0 var(--app-content-pad-mobile);
+  }
+
+  .brandMark {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    font-size: 18px;
+  }
+
+  .menuButton {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: var(--app-text);
+    cursor: pointer;
+  }
+
+  .menuButton:hover {
+    background: var(--app-surface-muted);
+  }
+
+  .menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: calc(100vh - var(--app-topbar-height));
+    overflow-y: auto;
+    padding: 8px var(--app-content-pad-mobile) 16px;
+    background: var(--app-surface);
+    border-bottom: 1px solid var(--app-border);
+    box-shadow: var(--app-shadow-float);
+  }
+
+  .menuOpen .menu {
+    display: flex;
+  }
+
+  .nav {
+    margin-top: 0;
+  }
+
+  .profile {
+    margin-top: 12px;
+    padding: 12px 0 0;
+  }
+
+  /* Тултип на касание не работает — на телефоне выход подписан текстом */
+  .logout {
+    display: none;
+  }
+
+  .logoutText {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex: none;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 99px;
+    background: var(--app-surface-muted);
+    color: var(--app-text);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .logoutText svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-shell) - 1);
+    background: rgba(0, 0, 0, 0.32);
+  }
+
+  .inner {
+    padding: 20px var(--app-content-pad-mobile) var(--app-fab-safe-bottom);
+  }
+}
+
+/* ——— Профиль не загрузился (нет связи / сбой сервера), а сессия жива ——— */
+.authError {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 15vh var(--app-content-pad-mobile) 0;
+}
+
+.authErrorExit {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--app-link);
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.authErrorExit:hover {
+  text-decoration: underline;
+}
+
+/* «Показать демо-панель» — над профилем, только пока панель скрыта */
+.demoReturn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  border: 1px dashed var(--app-border-strong);
+  border-radius: var(--app-radius-control);
+  background: none;
+  color: var(--app-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.demoReturn:hover {
+  border-color: var(--app-text-secondary);
+  color: var(--app-text);
+}
+
+.demoReturn svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+
+/* профиль прижат к низу; если над ним кнопка демо-панели — прижимает она */
+.demoReturn + .profile {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .demoReturn {
+    margin: 12px 0 0;
+  }
+
+  .demoReturn + .profile {
+    margin-top: 12px;
+  }
+}

@@ -1,0 +1,93 @@
+/* ——— EmptyState ——— */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 48px 24px;
+  border-radius: var(--app-radius-card);
+  background: var(--app-surface);
+}
+
+.compact {
+  padding: 28px 12px;
+  background: transparent;
+}
+
+.emptyIcon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: var(--app-surface-muted);
+  color: var(--app-text-secondary);
+}
+
+.emptyIcon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.emptyTitle {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--app-text);
+}
+
+.emptyText {
+  max-width: 440px;
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--app-text-secondary);
+}
+
+.emptyAction {
+  margin-top: 20px;
+}
+
+/* ——— LoadingState ——— */
+.loading {
+  display: flex;
+  align-items: center;
+}
+
+.loading-block {
+  justify-content: center;
+  min-height: 160px;
+  padding: 32px 24px;
+  border-radius: var(--app-radius-card);
+  background: var(--app-surface);
+}
+
+.loading-inline {
+  padding: 8px 0;
+}
+
+.loading-page {
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.skeleton {
+  display: grid;
+  gap: 12px;
+}
+
+.skeletonRow {
+  height: 48px;
+}
+
+/* ——— ErrorState ——— */
+.error {
+  margin: 0 0 16px;
+}
+
+.errorIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-light-status-negative);
+}
