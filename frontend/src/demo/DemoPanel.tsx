@@ -164,7 +164,7 @@ function Panel({ scenario, facts, sync, done, state, update, withAssistant, onHi
     className={[styles.panel, withAssistant ? styles.aboveAssistant : ''].filter(Boolean).join(' ')}>
     <header className={styles.head}>
       <div className={styles.headText}>
-        <span className={styles.eyebrow}>{scenario ? `Демо-сценарий · ${finished ? 'пройден' : `шаг ${currentIndex + 1} из ${scenario.steps.length}`}` : 'Демо для жюри'}</span>
+        <span className={styles.eyebrow}>{scenario ? `Демо-сценарий · ${finished ? 'пройден' : `шаг ${currentIndex + 1} из ${scenario.steps.length}`}` : 'Демо-сценарии'}</span>
         <Typography.Title tag="h2" view="xsmall" font="system" weight="bold" className={styles.title}>{scenario?.title ?? 'Что показать'}</Typography.Title>
       </div>
       <IconButton icon={ChevronForwardMIcon} size={32} view="secondary" aria-label="Свернуть демо-панель" onClick={() => update({ open: false })} />
