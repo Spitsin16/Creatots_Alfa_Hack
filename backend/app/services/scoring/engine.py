@@ -296,7 +296,7 @@ def advice(rules, p, d, sc, base):
     if d["tax_debt"] > 0:
         try_("PAY_TAX_DEBT", f"Закройте налоговый долг {d['tax_debt']:,} ₽".replace(",", " "), overrides=dict(tax_debt=0))
     if p["alfa"]["credits"] and d["credit_history"] != "CLEAN_12M":
-        try_("PAY_ON_TIME", "Платите без просрочек — пересмотр через 6 месяцев",
+        try_("PAY_ON_TIME", "Вносите платежи по графику — через 6 месяцев пересчитаем предложение",
              overrides=dict(credit_history="CLEAN_12M"))
     # залог: отдельный расчёт
     assets = [a for a in sc.get("assets", []) if a != "none"]
