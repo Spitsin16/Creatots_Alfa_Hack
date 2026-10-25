@@ -158,15 +158,44 @@
   text-align: left;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.row:hover { background: var(--app-surface-muted); }
-.row:active { background: var(--color-light-neutral-200, #e9ebee); }
 .row:focus-visible { outline: 2px solid var(--app-link); outline-offset: -2px; }
 .row:disabled { cursor: default; }
 .row:disabled:not(.loading) { opacity: 0.6; }
-.row:disabled:hover { background: transparent; }
+
+/* Строка под курсором загорается красным Альфы на фоне белых — видно, кого выбираешь (просьба команды 25.10) */
+.row:not(:disabled):hover,
+.row.loading {
+  background: var(--app-accent);
+  color: #fff;
+}
+
+.row:not(:disabled):active { background: var(--color-light-accent-primary-press, #d42a1f); }
+
+.row .sub,
+.row .hint,
+.row .opens,
+.row .outcome,
+.row .login,
+.row .chevron,
+.row .icon {
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.row:not(:disabled):hover :is(.sub, .hint, .opens, .outcome, .login, .chevron),
+.row.loading :is(.sub, .hint, .opens, .outcome, .login) {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.row:not(:disabled):hover .icon,
+.row.loading .icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.row:not(:disabled):hover .chevron { transform: translateX(4px); }
 
 .icon {
   display: grid;
@@ -329,5 +358,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .row, .groupToggle, .groupChevron, .panel, .groupOpen .panel { transition: none; }
+  .row, .groupToggle, .groupChevron, .panel, .groupOpen .panel,
+  .row .sub, .row .hint, .row .opens, .row .outcome, .row .login, .row .chevron, .row .icon { transition: none; }
+  .row:not(:disabled):hover .chevron { transform: none; }
 }
