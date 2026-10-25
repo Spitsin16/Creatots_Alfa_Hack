@@ -20,7 +20,7 @@ import { DocumentTxtMIcon } from '@alfalab/icons-glyph/DocumentTxtMIcon'
 import { DocumentsLinesMIcon } from '@alfalab/icons-glyph/DocumentsLinesMIcon'
 import { DownloadMIcon } from '@alfalab/icons-glyph/DownloadMIcon'
 import { PaperclipMIcon } from '@alfalab/icons-glyph/PaperclipMIcon'
-import { DocItem, downloadFile, request, uploadFile } from '../api'
+import { DocItem, downloadFile, openFile, request, uploadFile } from '../api'
 import { Bell } from './Bell'
 import { Spinner } from './Spinner'
 import { Card } from '../ui/Card'
@@ -85,9 +85,12 @@ type DocRowProps = {
 export function DocRow({ doc, token, action, attachedTo }: DocRowProps) {
   const [state, setState] = useState<'idle' | 'loading' | 'error'>('idle')
   const Icon = iconFor(doc)
+  // Договор система формирует HTML-страницей (с пометкой «демо») — его открываем, остальное скачиваем
+  const viewable = !!doc.filename?.endsWith('.html')
   const download = async () => {
     setState('loading')
-    try { await downloadFile(`/api/v1/documents/${doc.id}/file`, doc.filename ?? 'file', token); setState('idle') }
+    const path = `/api/v1/documents/${doc.id}/file`
+    try { await (viewable ? openFile(path, token) : downloadFile(path, doc.filename ?? 'file', token)); setState('idle') }
     catch { setState('error') }
   }
   const meta = [doc.kind_title, doc.filename && doc.filename !== doc.title ? doc.filename : null, sizeText(doc.size)].filter(Boolean).join(' · ')
@@ -105,12 +108,14 @@ export function DocRow({ doc, token, action, attachedTo }: DocRowProps) {
           Приложен к {attachedTo.length === 1 ? 'заявке' : 'заявкам'}{' '}
           {attachedTo.map((id, i) => <span key={id}>{i > 0 && ', '}<Link to={`/applications/${id}`}>№ {id.slice(0, 8)}</Link></span>)}
         </span>}
-        {state === 'error' && <span className={styles.rowError}>Не удалось скачать — попробуйте ещё раз</span>}
+        {state === 'error' && <span className={styles.rowError}>Не удалось {viewable ? 'открыть' : 'скачать'} — попробуйте ещё раз</span>}
       </div>
     </div>
     <div className={styles.actions}>
       {action}
-      <IconButton icon={DownloadMIcon} size={40} view="secondary" aria-label={`Скачать «${doc.title}»`} title="Скачать" loading={state === 'loading'} onClick={() => void download()} />
+      {viewable
+        ? <Button size={40} view="secondary" loading={state === 'loading'} onClick={() => void download()}>Открыть договор</Button>
+        : <IconButton icon={DownloadMIcon} size={40} view="secondary" aria-label={`Скачать «${doc.title}»`} title="Скачать" loading={state === 'loading'} onClick={() => void download()} />}
     </div>
   </div>
 }

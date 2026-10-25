@@ -18,6 +18,11 @@ export type ScoreBadgeProps = {
  * (зелёный — низкий риск, жёлтый — пограничный, красный — ручная проверка, чёрный — отказ).
  * Клиенту баллы и классы показывать нельзя (правило кейса).
  */
+// Класс словами — для подсказки. Условия (доля лимита, ставка) зависят от версии правил: их пишет карточка заявки.
+const CLASS_MEANING: Record<string, string> = {
+  A: 'надёжный заёмщик', B: 'хороший заёмщик', C: 'средний риск', D: 'пограничный риск — решает андеррайтер', E: 'высокий риск — отказ',
+}
+
 export function ScoreBadge({ cls, score, status, size = 's', className }: ScoreBadgeProps) {
   const tone = scoreTone(cls, status)
   const title = toneTitle[tone]
@@ -34,7 +39,7 @@ export function ScoreBadge({ cls, score, status, size = 's', className }: ScoreB
       </div>
     </div>
   }
-  return <span className={[styles.pill, styles[size], styles[tone], className].filter(Boolean).join(' ')} title={`Класс ${cls ?? '—'} · ${title}`}>
+  return <span className={[styles.pill, styles[size], styles[tone], className].filter(Boolean).join(' ')} title={cls ? `${cls} ${hasScore ? score : ''} — ${CLASS_MEANING[cls] ?? title}. Буква — класс риска, число — балл скоринга` : title}>
     {cls && <b className={styles.cls}>{cls}</b>}
     <span>{hasScore ? score : '—'}</span>
   </span>

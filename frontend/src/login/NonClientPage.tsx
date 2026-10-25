@@ -26,7 +26,7 @@ export function NonClientPage() {
   const error = errorFor('nonclient', example.login)
   return <LoginFrame
     eyebrow="Ещё не клиент"
-    title={<>Сначала счёт —<br />потом кредит</>}
+    title="Сначала счёт, потом кредит"
     lead="Кредитный кабинет считает предложение по реальным оборотам бизнеса. Без счёта в Альфе опереться не на что, поэтому путь начинается с него."
     points={[
       { icon: DocumentLinesMIcon, title: 'Без справок о выручке', text: 'Обороты банк видит по счёту сам — анкета короткая' },
@@ -56,7 +56,7 @@ export function NonClientPage() {
       </div>
       {error && <p className={styles.error} role="alert">{error}</p>}
       <p className={styles.note}>
-        Демо: войдём под клиентом «{example.subtitle.split(' · ')[0]}» — так кабинет выглядит, когда обороты уже идут через счёт.
+        Демо: войдём под клиентом «{example.subtitle.split(', ')[0]}» — так кабинет выглядит, когда обороты уже идут через счёт.
         Сайт банка откроется в новой вкладке.
       </p>
     </section>

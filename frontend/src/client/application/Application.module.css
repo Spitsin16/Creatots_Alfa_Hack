@@ -754,3 +754,23 @@
 .nowrap {
   white-space: nowrap;
 }
+
+/* Статус сменился у клиента на глазах: заголовок и следующий шаг сменяются мягко, шаг трека «подсвечивается» */
+.statusSwap { animation: statusIn 0.45s ease-out both; }
+.statusSwapLate { animation: statusIn 0.45s ease-out 0.12s both; }
+
+.step[aria-current='step'] .stepLabel { animation: stepArrive 0.6s ease-out; }
+
+@keyframes statusIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes stepArrive {
+  from { opacity: 0.2; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .statusSwap, .statusSwapLate, .step[aria-current='step'] .stepLabel { animation: none; }
+}

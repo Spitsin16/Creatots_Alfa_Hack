@@ -13,6 +13,7 @@ import { useApplication } from '../queries'
 import { Card } from '../ui/Card'
 import { Grid, Stack } from '../ui/Layout'
 import { formatMoney } from '../ui/Money'
+import { useChangedSinceMount } from '../ui/motion'
 import { PageHeader } from '../ui/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '../ui/States'
 import { StatusTag } from '../ui/StatusTag'
@@ -39,6 +40,7 @@ export function ApplicationPage() {
   // Кабинет кредита после выдачи: график договора (сезонный, если выбран), прогноз и подсказки — с бэка
   const loan = useLoan(id, issued)
   const celebration = useIssuedCelebration(id, app.data?.status, app.isFetchedAfterMount)
+  const statusChanged = useChangedSinceMount(app.data?.status)
 
   if (app.isPending) return <LoadingState view="page" label="Загружаем заявку…" />
   if (app.error || !app.data) {
@@ -117,10 +119,15 @@ export function ApplicationPage() {
           <IconButton icon={RepeatMIcon} size={24} view="secondary" aria-label="Обновить статус" title="Обновить" onClick={() => { void app.refetch(); action.refresh() }} />
         </span>
       </div>
-      <Typography.Title tag="h2" view="medium" font="system" className={styles.headline}>{copy.headline}</Typography.Title>
-      {copy.lead && <p className={styles.lead}>{copy.lead}</p>}
+      {/* Статус сменился, пока клиент смотрит (решение, выдача) — заголовок и следующий шаг плавно сменяются */}
+      <div key={a.status} className={statusChanged ? styles.statusSwap : undefined}>
+        <Typography.Title tag="h2" view="medium" font="system" className={styles.headline}>{copy.headline}</Typography.Title>
+        {copy.lead && <p className={styles.lead}>{copy.lead}</p>}
+      </div>
       <TrackSteps track={track} status={a.status} waitingFor={waitingFor} />
-      <NextStep a={a} perms={perms} action={action} onWrite={writeToSpecialist} />
+      <div key={`next-${a.status}`} className={statusChanged ? styles.statusSwapLate : undefined}>
+        <NextStep a={a} perms={perms} action={action} onWrite={writeToSpecialist} />
+      </div>
     </Card>
 
     {loanBlock}

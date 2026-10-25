@@ -12,7 +12,7 @@ import { InformationCircleMIcon } from '@alfalab/icons-glyph/InformationCircleMI
 import { LightningMIcon } from '@alfalab/icons-glyph/LightningMIcon'
 import { UsersMIcon } from '@alfalab/icons-glyph/UsersMIcon'
 import { productName } from '../../api'
-import { Card, Money, StatusTag } from '../../ui'
+import { Card, CountingMoney, Money, StatusTag } from '../../ui'
 import { OfferContext } from '../offerStore'
 import { ApplyTarget, CounterTerms, OfferData, amountLabel, creditKopecks, formatDate, formatRate, hasHeadroom, isExpired, isOverdraft, loanCost, months, rub } from './offerMath'
 import styles from './offer.module.css'
@@ -91,10 +91,11 @@ export function OfferHero({ offer, context, overpaymentRub, action }: {
     </div>
     <div className={styles.heroLabel}>{amountLabel(offer.product)}{preliminary ? ', предварительно' : ''}</div>
     <div className={styles.heroAmountRow}>
-      <div className={styles.heroAmount}><Money kopecks={amount} tone="inverted" /></div>
+      {/* выписка подняла лимит — сумма «доезжает» от прежней, чтобы было видно, что изменилось */}
+      <div className={styles.heroAmount}><CountingMoney kopecks={amount} fromKopecks={uplift && overdraft ? uplift.previousLimitKopecks : null} tone="inverted" /></div>
       {uplift && <>
-        <span className={styles.wasAmount} aria-label={`было ${rub({ kopecks: uplift.previousLimitKopecks })}`}>{rub({ kopecks: uplift.previousLimitKopecks })}</span>
-        <span className={styles.upliftPill}>+{rub({ kopecks: offer.limit_kopecks - uplift.previousLimitKopecks })} по выписке</span>
+        <span className={`${styles.wasAmount} ${styles.fadeIn}`} aria-label={`было ${rub({ kopecks: uplift.previousLimitKopecks })}`}>{rub({ kopecks: uplift.previousLimitKopecks })}</span>
+        <span className={`${styles.upliftPill} ${styles.popIn}`}>+{rub({ kopecks: offer.limit_kopecks - uplift.previousLimitKopecks })} по выписке</span>
       </>}
     </div>
     <div className={styles.heroRequest}>

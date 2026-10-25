@@ -1120,3 +1120,21 @@
   text-underline-offset: 3px;
   cursor: pointer;
 }
+
+/* Движение только там, где что-то изменилось (ui/motion.ts): выписка подняла лимит */
+.fadeIn { animation: offerFadeIn 0.4s ease-out both; }
+.popIn { animation: offerPopIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) 0.75s both; }
+
+@keyframes offerFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes offerPopIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn, .popIn { animation: none; }
+}

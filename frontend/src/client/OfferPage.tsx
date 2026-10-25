@@ -159,7 +159,10 @@ export function OfferPage() {
   const { offer, answers, context } = saved
   const recalcNow = () => recalc.mutate()
   const notice = create.error
-    ? expiredError(create.error)
+    ? apiErrorCode(create.error) === 'PRE_OFFER_STALE'
+      ? <ErrorState error={new Error('С момента расчёта вам выдали кредит — новый платёж меняет сумму. Пересчитаем по тем же ответам, это несколько секунд.')}
+          title="Расчёт устарел" onRetry={recalcNow} retryLabel="Пересчитать предложение" />
+      : expiredError(create.error)
       ? <ErrorState error={new Error('Расчёт действует 30 дней, и этот срок прошёл. Пересчитаем по тем же ответам и свежим данным — это несколько секунд.')}
           title="Срок предложения истёк" onRetry={recalcNow} retryLabel="Пересчитать предложение" />
       : <ErrorState error={create.error} title="Не получилось оформить заявку" onRetry={() => create.variables && create.mutate(create.variables)} />

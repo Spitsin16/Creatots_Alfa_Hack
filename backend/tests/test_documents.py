@@ -104,4 +104,32 @@ def test_signed_contract_lands_in_storage(api: TestClient) -> None:
     items = api.get(f"/api/v1/businesses/{bid}/documents", headers=h).json()["items"]
     contract = next(i for i in items if i["kind"] == "CONTRACT")
     assert contract["status"] == "SIGNED" and contract["application_id"] == app_id
-    assert "ДОГОВОР" in api.get(f"/api/v1/documents/{contract['id']}/file", headers=h).text
+    r = api.get(f"/api/v1/documents/{contract['id']}/file", headers=h)
+    # правка ментора 25.10: договор — HTML-страница с пометкой ДЕМО, открывается в браузере
+    assert r.headers["content-type"].startswith("text/html") and r.headers["content-disposition"].startswith("inline")
+    assert "ДЕМО" in r.text and "не имеет юридической силы" in r.text and "Овердрафт" in r.text
+    assert "<script" not in r.text.lower()  # только кнопка печати, без скриптов
+    assert contract["filename"].endswith("-demo.html")
+
+
+def test_html_upload_is_rejected(api: TestClient) -> None:
+    h = login(api, "p3b")
+    bid = business(api, h)
+    r = upload(api, f"/api/v1/businesses/{bid}/documents", h, data=b"<script>alert(1)</script>",
+               ctype="text/html", name="x.html")
+    assert r.status_code == 422 and r.json()["code"] == "UNSUPPORTED_TYPE"
+
+
+def test_annuity_contract_has_schedule() -> None:
+    from datetime import UTC, datetime
+
+    from app.services.documents.contract_html import render_contract
+    from app.services.seasonal.schedule import annuity_schedule
+
+    sched = annuity_schedule(1_000_000, 20.0, 12, datetime(2026, 11, 1).date())
+    html = render_contract(application_id="abc12345-0000", product="WORKING_CAPITAL", purpose="inventory",
+                           amount=1_000_000, rate=20.0, term_months=12, signed_at=datetime(2026, 10, 25, 11, 0, tzinfo=UTC),
+                           business={"name": "ИП <Тест>", "inn": "123", "type": "IP"}, signer="Иванов И.",
+                           schedule=sched, seasonal=False)
+    assert html.count("<tr><td>") == 12 and "ИП &lt;Тест&gt;" in html and "14:00 (МСК)" in html
+    assert "ДЕМО-2610-ABC123" in html

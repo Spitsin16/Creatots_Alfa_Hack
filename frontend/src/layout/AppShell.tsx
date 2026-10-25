@@ -1,7 +1,6 @@
 import { ComponentType, Suspense, SVGProps, useEffect, useState } from 'react'
 import { Link, Navigate, NavLink, Outlet, useLocation, useNavigate } from 'react-router'
-import { IconButton } from '@alfalab/core-components/icon-button/esm'
-import { TooltipDesktop } from '@alfalab/core-components/tooltip/esm/desktop'
+import { Button } from '@alfalab/core-components/button/esm'
 import { BanknotesMIcon } from '@alfalab/icons-glyph/BanknotesMIcon'
 import { BurgerMIcon } from '@alfalab/icons-glyph/BurgerMIcon'
 import { ChartColumnThreeMIcon } from '@alfalab/icons-glyph/ChartColumnThreeMIcon'
@@ -143,16 +142,18 @@ export function AppShell() {
           <RouteLineMIcon aria-hidden />Показать демо-панель
         </button>}
 
+        {/* Правка ментора 25.10: выход — подписанной кнопкой, а не иконкой-стрелкой */}
         <div className={styles.profile}>
-          <span className={styles.avatar} aria-hidden>{displayName(me)[0]}</span>
-          <span className={styles.who}>
-            <b title={me.full_name}>{displayName(me)}</b>
-            <small title={profileNote(me)}>{profileNote(me)}</small>
-          </span>
-          <TooltipDesktop content="Выйти из кабинета" position="top-end" trigger="hover">
-            <IconButton icon={LogOutMIcon} size={32} view="secondary" aria-label="Выйти из кабинета" onClick={exit} className={styles.logout} />
-          </TooltipDesktop>
-          <button type="button" className={styles.logoutText} onClick={exit}><LogOutMIcon aria-hidden />Выйти</button>
+          <div className={styles.profileRow}>
+            <span className={styles.avatar} aria-hidden>{displayName(me)[0]}</span>
+            <span className={styles.who}>
+              <b title={me.full_name}>{displayName(me)}</b>
+              <small title={profileNote(me)}>{profileNote(me)}</small>
+            </span>
+          </div>
+          <Button view="secondary" size={40} block leftAddons={<LogOutMIcon aria-hidden />} onClick={exit} className={styles.logoutButton}>
+            Выйти из кабинета
+          </Button>
         </div>
       </div>
     </aside>

@@ -27,6 +27,8 @@ INDUSTRIES = {  # группа риска → ОКВЭД (группы — ка�
     "medium": ("96.02", "услуги"),
     "high": ("41.20", "строительство"),
 }
+ASSET_TITLES = {"real_estate": "Коммерческая недвижимость", "vehicle": "Транспорт или спецтехника",
+                "equipment": "Оборудование"}
 HISTORY = {"clean": (True, 0), "none": (False, 0), "past_lt30": (True, 15), "past_gte30": (True, 45)}
 
 
@@ -44,7 +46,8 @@ class SandboxParams:
     credit_history: str = "clean"    # clean | none | past_lt30 | past_gte30
     current_overdue_days: int = 0    # текущая просрочка в БКИ
     tax_debt: int = 0                # налоговый долг, ₽
-    real_estate_value: int = 0       # недвижимость для залога, ₽ (0 — нет)
+    real_estate_value: int = 0       # оценка имущества для залога, ₽ (0 — нет); имя поля — для совместимости API
+    asset_kind: str = "real_estate"  # real_estate | vehicle | equipment — что за имущество
 
 
 def _inn(seed: str, ip: bool) -> str:
@@ -106,7 +109,8 @@ def validate(p: SandboxParams) -> None:
         (p.credit_history in HISTORY, "Неизвестная кредитная история"),
         (0 <= p.current_overdue_days <= 365, "Просрочка — от 0 до 365 дней"),
         (0 <= p.tax_debt <= 50_000_000, "Налоговый долг — до 50 млн ₽"),
-        (0 <= p.real_estate_value <= 1_000_000_000, "Оценка недвижимости — до 1 млрд ₽"),
+        (0 <= p.real_estate_value <= 1_000_000_000, "Оценка имущества — до 1 млрд ₽"),
+        (p.asset_kind in ASSET_TITLES, "Неизвестный вид имущества"),
     ]
     for ok, message in checks:
         if not ok:
@@ -214,7 +218,7 @@ def build(p: SandboxParams, sid: str, owner_name: str) -> dict:
     inn = _inn(sid, ip)
     name = f"ИП {owner_name}" if ip else f"ООО «Песочница-{sid[-4:].upper()}»"
     fns_2025 = round(sum(rev * season[i] for i in range(12)), -3) if reg < date(2025, 1, 1) else None
-    assets = ([dict(kind="real_estate", title="Коммерческая недвижимость (песочница)", value=p.real_estate_value)]
+    assets = ([dict(kind=p.asset_kind, title=f"{ASSET_TITLES[p.asset_kind]} (песочница)", value=p.real_estate_value)]
               if p.real_estate_value else [])
     title = f"Песочница: {'ИП' if ip else 'ООО'}, {industry_title}, {rev // 1000} тыс. ₽/мес"
     return dict(

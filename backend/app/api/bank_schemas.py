@@ -42,6 +42,7 @@ class InternalDecision(BaseModel):
     rate: float | None
     outcome: str
     explanation: str | None
+    rating: dict | None = None  # «A 90» словами: что значит класс, условия, запас до соседних классов
 
 
 class BankApplicationDetail(BankApplicationItem):

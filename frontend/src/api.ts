@@ -120,6 +120,18 @@ export async function downloadFile(path: string, filename: string, token: string
   setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
 
+/** Открыть документ в новой вкладке (договор в HTML). Вкладку открываем сразу — иначе браузер сочтёт её всплывающим окном. */
+export async function openFile(path: string, token: string): Promise<void> {
+  const tab = window.open('', '_blank')
+  try {
+    const response = await fetch(`${base}${path}`, { headers: { Authorization: `Bearer ${token}` } })
+    if (!response.ok) throw new Error('Не удалось открыть файл')
+    const url = URL.createObjectURL(await response.blob())
+    if (tab) tab.location.href = url; else window.location.href = url
+    setTimeout(() => URL.revokeObjectURL(url), 60_000)
+  } catch (e) { tab?.close(); throw e }
+}
+
 // Цвет балла для сотрудника: зелёный — авто-одобрение, жёлтый — пограничный,
 // красный — ручная проверка, чёрный — отказ/стоп-фактор.
 export const scoreTone = (cls: string | null | undefined, status?: string): string =>

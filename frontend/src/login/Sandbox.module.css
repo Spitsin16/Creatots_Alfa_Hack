@@ -122,12 +122,10 @@ h2.title {
 .summary span {
   display: block;
   margin-bottom: 2px;
-  font-size: 12px;
-  line-height: 16px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--app-text-tertiary);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--app-text);
 }
 
 .alert {

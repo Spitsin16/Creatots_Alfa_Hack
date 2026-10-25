@@ -7,6 +7,7 @@
 
 import random
 import string
+from typing import Literal
 
 import yaml
 from fastapi import APIRouter, Depends
@@ -42,7 +43,8 @@ class SandboxIn(BaseModel):
     credit_history: str = Field(default="clean", pattern="^(clean|none|past_lt30|past_gte30)$")
     current_overdue_days: int = Field(default=0, ge=0, le=365)
     tax_debt: int = Field(default=0, ge=0, le=50_000_000)
-    real_estate_value: int = Field(default=0, ge=0, le=1_000_000_000)
+    real_estate_value: int = Field(default=0, ge=0, le=1_000_000_000)  # оценка имущества для залога, ₽
+    asset_kind: Literal["real_estate", "vehicle", "equipment"] = "real_estate"
 
 
 def _sandbox_count(session: Session) -> int:

@@ -133,12 +133,21 @@
 /* ——— Профиль ——— */
 .profile {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: column;
+  gap: 12px;
   margin-top: auto;
   padding: 16px 4px 0 8px;
   border-top: 1px solid var(--app-border);
 }
+
+.profileRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.logoutButton { flex: none; }
 
 .avatar {
   display: grid;

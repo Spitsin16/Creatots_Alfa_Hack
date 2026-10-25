@@ -12,6 +12,7 @@ from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
+from app.api.fixtures import IN_PROGRESS, issued_loans, load_fixture, own_loan_ids
 from app.api.schemas import (
     AdviceResponse,
     ApplicationCreateRequest,
@@ -35,7 +36,6 @@ from app.models import (
     Business,
     Consent,
     Contract,
-    DataSnapshot,
     Decision,
     Membership,
     Outbox,
@@ -168,11 +168,7 @@ def create_pre_offer(
     session: Session = Depends(get_session),
 ) -> PreOfferResponse:
     require_membership(session, user, business_id, "FILL")
-    snapshots = session.scalars(select(DataSnapshot).where(DataSnapshot.business_id == business_id)).all()
-    source_data = {snapshot.source.lower(): snapshot.payload for snapshot in snapshots}
-    required_sources = {"profile", "alfa", "registry", "fns", "bki"}
-    if not required_sources.issubset(source_data):
-        raise APIError(409, "DATA_INCOMPLETE", "Для расчёта не хватает данных")
+    fixture = load_fixture(session, business_id)
 
     rule = session.scalar(select(Rule).where(Rule.active.is_(True)).order_by(Rule.version.desc()))
     if rule is None:
@@ -186,13 +182,6 @@ def create_pre_offer(
         "priority": payload.priority,
         "repayment": payload.repayment,
         "assets": payload.assets,
-    }
-    fixture = {
-        "persona": source_data["profile"],
-        "alfa": source_data["alfa"],
-        "registry": source_data["registry"],
-        "fns": source_data["fns"],
-        "bki": source_data["bki"],
     }
     try:
         result = decide(yaml.safe_load(rule.yaml), fixture, scenario=scenario)
@@ -213,6 +202,7 @@ def create_pre_offer(
         "advice": [item.model_dump() for item in advice],
         "decision_snapshot": result,
         "scenario": scenario,
+        "own_loans": own_loan_ids(fixture),
     }
     pre_offer = PreOffer(
         business_id=business_id,
@@ -271,6 +261,11 @@ def create_application(
         raise APIError(409, "PRE_OFFER_EXPIRED", "Срок предложения истёк")
     if pre_offer.explanation.get("outcome") == "REJECTED" or pre_offer.limit_kopecks <= 0:
         raise APIError(409, "PRE_OFFER_NOT_ELIGIBLE", "По этому предложению нельзя создать заявку")
+    # кредит после кредита: предложение, посчитанное до выдачи прошлого кредита, устарело
+    used = set((pre_offer.explanation or {}).get("own_loans") or [])
+    if {loan["application_id"] for loan in issued_loans(session, pre_offer.business_id)} - used:
+        raise APIError(409, "PRE_OFFER_STALE",
+                       "С момента расчёта у вас появился новый кредит — пересчитайте предложение")
     segment = session.scalar(
         select(Segment).where(Segment.business_id == pre_offer.business_id).order_by(Segment.detected_at.desc())
     )
@@ -328,6 +323,12 @@ def submit_application(
     membership = require_membership(session, user, application.business_id, "FILL")
     if application.status not in {"DRAFT", "AWAITING_SIGNATURE"}:
         return _application_response(application)
+    busy = session.scalar(select(Application.id).where(
+        Application.business_id == application.business_id, Application.id != application.id,
+        Application.status.in_(IN_PROGRESS), Application.status != "AWAITING_SIGNATURE"))
+    if busy:
+        raise APIError(409, "APPLICATION_IN_PROGRESS",
+                       "У организации уже есть заявка в работе — дождитесь решения по ней", {"application_id": busy})
 
     if "SUBMIT" not in membership.permissions:
         if application.status == "DRAFT":

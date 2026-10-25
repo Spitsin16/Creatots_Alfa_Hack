@@ -15,16 +15,17 @@ from uuid import uuid4
 
 import yaml
 from fastapi import APIRouter, Depends, Request
-from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.dependencies import get_current_user, get_session, require_membership
 from app.api.errors import APIError
-from app.models import AuditLog, DataSnapshot, Outbox, PreOffer, Rule, Statement, User
+from app.api.fixtures import issued_loans, load_fixture, own_loan_ids
+from app.models import AuditLog, Outbox, PreOffer, Rule, Statement, User
 from app.services.explain.llm import configured as llm_configured
 from app.services.explain.templates import explain_for_client
 from app.services.forecast.cashflow import forecast_for_client
 from app.services.scoring.engine import decide, derive
+from app.services.scoring.own_loans import forecast_payments
 from app.services.seasonal.schedule import build as build_seasonal
 from app.services.statement_1c.parser import MAX_FILE_BYTES, StatementError, extra_revenue_for_scoring
 
@@ -38,11 +39,7 @@ def _today() -> date:
 
 
 def _fixture(session: Session, business_id: str) -> dict:
-    snapshots = session.scalars(select(DataSnapshot).where(DataSnapshot.business_id == business_id)).all()
-    data = {snapshot.source.lower(): snapshot.payload for snapshot in snapshots}
-    if not {"profile", "alfa", "registry", "fns", "bki"}.issubset(data):
-        raise APIError(409, "DATA_INCOMPLETE", "Для расчёта не хватает данных")
-    return {"persona": data["profile"], **{k: data[k] for k in ("alfa", "registry", "fns", "bki")}}
+    return load_fixture(session, business_id)
 
 
 def _pre_offer(session: Session, user: User, pre_offer_id: str, permission: str = "VIEW") -> PreOffer:
@@ -128,7 +125,9 @@ def cash_gap_forecast(
     """Прогноз остатка на 30 дней и ближайший кассовый разрыв."""
     require_membership(session, user, business_id, "VIEW")
     limit = overdraft_limit_kopecks / 100 if overdraft_limit_kopecks else None
-    return forecast_for_client(_fixture(session, business_id), overdraft_limit=limit)
+    # платежи по кредитам, выданным в кабинете, — тоже регулярные списания (в снимке счёта их ещё нет)
+    return forecast_for_client(_fixture(session, business_id), overdraft_limit=limit,
+                               extra_recurring=forecast_payments(issued_loans(session, business_id)))
 
 
 @router.post("/pre-offers/{pre_offer_id}/statement", status_code=201)
@@ -210,6 +209,7 @@ async def upload_statement(
             "advice": advice,
             "decision_snapshot": result,
             "scenario": scenario,
+            "own_loans": own_loan_ids(fixture),
             "statement_id": statement.id,
             "previous_pre_offer_id": pre_offer.id,
         },

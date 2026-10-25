@@ -125,8 +125,7 @@
   line-height: 16px;
   font-weight: 600;
   color: var(--app-text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 .title {
@@ -168,8 +167,7 @@
 .youText small {
   font-size: 11px;
   line-height: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
 }
 
 .youText b {
@@ -481,8 +479,7 @@
   font-size: 11px;
   line-height: 14px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: var(--app-text-secondary);
 }
 
@@ -557,8 +554,7 @@
   font-size: 12px;
   line-height: 16px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
   color: var(--app-text-secondary);
 }
 

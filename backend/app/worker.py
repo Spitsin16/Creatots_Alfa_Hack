@@ -9,9 +9,11 @@ import yaml
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.api.loans import loan_terms
 from app.db import make_session_factory
-from app.models import Application, AuditLog, Business, Contract, Decision, Outbox, PreOffer, Rule
+from app.models import Application, AuditLog, Business, Contract, Decision, Outbox, PreOffer, Rule, User
 from app.services.application_flow import transition_application
+from app.services.documents.contract_html import render_contract
 from app.services.documents.storage import store_signed_contract
 from app.services.expiry import expire_offers
 from app.services.explain.llm import rephrase
@@ -66,6 +68,18 @@ def _explain_pre_offer(session: Session, pre_offer_id: str) -> None:
     )
 
 
+def _contract_html(session: Session, application: Application, contract: Contract) -> str:
+    terms = loan_terms(session, application)
+    business = session.get(Business, application.business_id)
+    signer = session.get(User, contract.signed_by)
+    return render_contract(
+        application_id=application.id, product=application.product, purpose=application.purpose,
+        amount=terms.amount, rate=terms.rate, term_months=application.term_months, signed_at=terms.signed,
+        business={"name": business.name, "inn": business.inn, "ogrn": business.ogrn, "type": business.type},
+        signer=signer.full_name if signer else "Руководитель", schedule=terms.schedule, seasonal=terms.seasonal,
+    )
+
+
 def process_one(session: Session) -> bool:
     """Process one pending event and commit it with all resulting records."""
     event = session.scalar(
@@ -85,7 +99,7 @@ def process_one(session: Session) -> bool:
             transition_application(session, application, "ISSUED", actor_id=None, comment="Средства выданы на счёт")
             contract = session.scalar(select(Contract).where(Contract.application_id == application.id))
             if contract is not None:
-                store_signed_contract(session, application, contract)
+                store_signed_contract(session, application, contract, _contract_html(session, application, contract))
             session.add(
                 AuditLog(
                     actor_id=None,

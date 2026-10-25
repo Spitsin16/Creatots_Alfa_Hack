@@ -100,7 +100,11 @@ def derive(p, extra_statement_revenue=None, overrides=None):
     age = o.get("age_months", months_between(reg, AS_OF))
 
     bki = p["bki"]
-    if not bki["has_history"] and not p["alfa"]["credits"]:
+    # кредиты, выданные в кабинете (source=CABINET), идут в нагрузку сразу, а в историю —
+    # только после 6 месяцев: без платежей они ещё ничего не говорят о дисциплине
+    history = [c for c in p["alfa"]["credits"] if c.get("source") != "CABINET"
+               or months_between(date.fromisoformat(c["opened"]), AS_OF) >= 6]
+    if not bki["has_history"] and not history:
         ch = "NO_HISTORY"
     elif bki["past_max_overdue_days_12m"] >= 30:
         ch = "PAST_OVERDUE_GTE_30"
@@ -109,9 +113,9 @@ def derive(p, extra_statement_revenue=None, overrides=None):
     else:
         ch = "CLEAN_12M"
     ch = o.get("credit_history", ch)
-    if not p["alfa"]["credits"]:
+    if not history:
         ah = "NOT_BORROWER"
-    elif any(c["max_overdue_days"] > 0 for c in p["alfa"]["credits"]):
+    elif any(c["max_overdue_days"] > 0 for c in history):
         ah = "HAD_OVERDUE"
     else:
         ah = "GOOD_BORROWER"
@@ -292,7 +296,7 @@ def advice(rules, p, d, sc, base):
     if d["tax_debt"] > 0:
         try_("PAY_TAX_DEBT", f"Закройте налоговый долг {d['tax_debt']:,} ₽".replace(",", " "), overrides=dict(tax_debt=0))
     if p["alfa"]["credits"] and d["credit_history"] != "CLEAN_12M":
-        try_("PAY_ON_TIME", "Платите без просрочек — пересмотр через 6 месяцев",
+        try_("PAY_ON_TIME", "Вносите платежи по графику — через 6 месяцев пересчитаем предложение",
              overrides=dict(credit_history="CLEAN_12M"))
     # залог: отдельный расчёт
     assets = [a for a in sc.get("assets", []) if a != "none"]
@@ -318,7 +322,8 @@ def advice(rules, p, d, sc, base):
 
 
 # ------------------------------------------------------------------ прогноз кассового разрыва
-def cashflow_forecast(p, days=30):
+def cashflow_forecast(p, days=30, extra_recurring=None):
+    """`extra_recurring` — известные будущие платежи (кредиты, выданные в кабинете)."""
     tx = p["alfa"]["transactions"]
     end = date.fromisoformat(p["alfa"]["account"]["balance_as_of"])
     start90 = end - timedelta(days=89)
@@ -344,6 +349,7 @@ def cashflow_forecast(p, days=30):
             # квартальные (налог): 2+ раза с шагом ~90 дней
         if kind == "TAX" and len(items) >= 1:
             pass
+    recurring += list(extra_recurring or [])
     taxes = [t for t in tx if t["kind"] == "TAX"]
     rec_cps = {(r["counterparty"], r["kind"]) for r in recurring}
     # средние поступления по дню недели и средние нерегулярные расходы в день
