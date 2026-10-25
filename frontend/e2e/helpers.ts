@@ -11,9 +11,12 @@ export function collectPageErrors(page: Page) {
   return errors
 }
 
-/** Вход с экрана выбора учётки: карточка персоны по имени («Войти: Иванов Артём, …»). */
+/** Вход с экрана выбора учётки: строка персоны по имени («Войти: Иванов Артём, …»). */
 export async function enterAs(page: Page, title: string) {
   if (!new URL(page.url()).pathname.startsWith('/login')) await page.goto('/login')
+  // Учётки лежат в раскрывающихся плашках — раскрываем закрытые
+  const closed = page.locator('[data-login-group][aria-expanded="false"]')
+  while (await closed.count()) await closed.first().click()
   await page.getByRole('button', { name: new RegExp(`^Войти: ${title}`) }).click()
   await expect(page).not.toHaveURL(/\/login/)
 }

@@ -4,6 +4,7 @@ import { Button } from '@alfalab/core-components/button/esm'
 import { IconButton } from '@alfalab/core-components/icon-button/esm'
 import { Input } from '@alfalab/core-components/input/esm'
 import { CakeMIcon } from '@alfalab/icons-glyph/CakeMIcon'
+import { ChevronDownMIcon } from '@alfalab/icons-glyph/ChevronDownMIcon'
 import { ChevronForwardMIcon } from '@alfalab/icons-glyph/ChevronForwardMIcon'
 import { ContainerMIcon } from '@alfalab/icons-glyph/ContainerMIcon'
 import { CrossMIcon } from '@alfalab/icons-glyph/CrossMIcon'
@@ -69,7 +70,7 @@ export function LoginPage() {
   return <LoginFrame
     title="Вход в демо-стенд"
     lead={<>Выберите, кем войти, пароль подставится сам. Договор подписывается кодом {DEMO_SIGN_CODE}.</>}
-    footnote="Все компании, люди и операции на стенде вымышленные. Справа в кабинете есть панель «Демо-сценарий»: она ведёт по шагам показа и переключает участников без выхода."
+    footnote="Все компании, люди и операции на стенде вымышленные. В кабинете слева внизу — переход между клиентом и сотрудниками банка в одно нажатие, справа — панель «Демо-сценарий» с шагами показа."
   >
     <section className={styles.start} aria-labelledby="start-title">
       <span className={styles.startIcon} aria-hidden><PfmCoffeCupMIcon /></span>
@@ -87,40 +88,86 @@ export function LoginPage() {
       </Button>
     </section>
 
-    <Group id="clients" title="Клиенты банка" note="Счёт уже в Альфе, поэтому банк видит обороты сам">
+    <Group id="clients" title="Клиенты банка" count={clients.length}
+      note="Кофейня, пекарня, опт, автосервис, салон, стройматериалы, грузоперевозки — у каждого свой исход">
       {clients.map(p => <PersonaRow key={p.login} persona={p} demo={demo} />)}
     </Group>
 
-    <Group id="bank" title="Сотрудники банка" note="Очередь ручной проверки, согласования, правила решения и журнал">
+    <Group id="bank" title="Сотрудники банка" count={bank.length}
+      note="Андеррайтеры, риск-менеджер и администратор правил">
       {bank.map(p => <PersonaRow key={p.login} persona={p} demo={demo} />)}
     </Group>
 
-    <Group id="other" title="Других вариантов нет в списке?">
-      {guest && <li><Link to={guest.path ?? '/login/guest'} className={styles.row}>
-        <span className={styles.icon} aria-hidden><DoorOpenMIcon /></span>
-        <span className={styles.who}><b className={styles.name}>Ещё не клиент</b><span className={styles.hint}>{guest.hint}</span></span>
-        <ChevronForwardMIcon className={styles.chevron} aria-hidden />
-      </Link></li>}
-      <li><Link to="/login/sandbox" className={styles.row}>
-        <span className={styles.icon} aria-hidden><MagicWandMIcon /></span>
-        <span className={styles.who}><b className={styles.name}>Создать своего клиента</b>
-          <span className={styles.hint}>Задайте выручку, кредиты и историю, решение посчитает тот же движок</span></span>
-        <ChevronForwardMIcon className={styles.chevron} aria-hidden />
-      </Link></li>
-    </Group>
-
-    <SandboxReturn demo={demo} />
+    <OtherGroup demo={demo} guest={guest} />
   </LoginFrame>
 }
 
-function Group({ id, title, note, children }: { id: string; title: string; note?: string; children: ReactNode }) {
-  return <section className={styles.group} aria-labelledby={`${id}-title`}>
-    <div className={styles.groupHead}>
-      <h2 id={`${id}-title`} className={styles.groupTitle}>{title}</h2>
-      {note && <p className={styles.groupNote}>{note}</p>}
+// Какие плашки раскрыты — помним до закрытия вкладки, чтобы после «Выйти из кабинета» список был там же
+const OPEN_KEY = 'login.openGroups'
+function readOpen(): string[] {
+  try { return JSON.parse(sessionStorage.getItem(OPEN_KEY) ?? '[]') as string[] } catch { return [] }
+}
+function useOpenGroup(id: string) {
+  const [open, setOpen] = useState(() => readOpen().includes(id))
+  const toggle = () => setOpen(was => {
+    const next = !was
+    try {
+      const rest = readOpen().filter(g => g !== id)
+      sessionStorage.setItem(OPEN_KEY, JSON.stringify(next ? [...rest, id] : rest))
+    } catch { /* приватный режим — просто не запоминаем */ }
+    return next
+  })
+  return [open, toggle] as const
+}
+
+/**
+ * Плашка со списком учёток (просьба команды 25.10: «три плашки, которые раскрываются»).
+ * Закрыта — видно только, кто внутри; нажатие раскрывает список, повторное — сворачивает.
+ */
+function Group({ id, title, note, count, children, after }: {
+  id: string; title: string; note?: string; count?: number; children: ReactNode; after?: ReactNode
+}) {
+  const [open, toggle] = useOpenGroup(id)
+  return <section className={[styles.group, open ? styles.groupOpen : ''].filter(Boolean).join(' ')} aria-labelledby={`${id}-title`}>
+    <h2 className={styles.groupHeading}>
+      <button type="button" className={styles.groupToggle} onClick={toggle} aria-expanded={open} aria-controls={`${id}-list`}
+        data-login-group={id}>
+        <span className={styles.groupText}>
+          <span id={`${id}-title`} className={styles.groupTitle}>{title}</span>
+          {note && <span className={styles.groupNote}>{note}</span>}
+        </span>
+        {count != null ? <span className={styles.groupCount}>{count}</span> : <span aria-hidden />}
+        <ChevronDownMIcon className={styles.groupChevron} aria-hidden />
+      </button>
+    </h2>
+    <div id={`${id}-list`} className={styles.panel}>
+      <div className={styles.panelInner}>
+        <ul className={styles.list}>{children}</ul>
+        {after}
+      </div>
     </div>
-    <ul className={styles.list}>{children}</ul>
   </section>
+}
+
+/** Третья плашка: путь без счёта в Альфе, свой клиент в песочнице и вход по логину. */
+function OtherGroup({ demo, guest }: { demo: Enter; guest?: Persona }) {
+  const { clients, forget } = useSandboxClients()
+  return <Group id="other" title="Ещё не клиент или свой клиент"
+    note="Путь без счёта в Альфе, свой клиент с заданной выручкой и историей, вход по логину"
+    after={<LoginByName demo={demo} />}>
+    {guest && <li><Link to={guest.path ?? '/login/guest'} className={styles.row}>
+      <span className={styles.icon} aria-hidden><DoorOpenMIcon /></span>
+      <span className={styles.who}><b className={styles.name}>Ещё не клиент</b><span className={styles.hint}>{guest.hint}</span></span>
+      <ChevronForwardMIcon className={styles.chevron} aria-hidden />
+    </Link></li>}
+    <li><Link to="/login/sandbox" className={styles.row}>
+      <span className={styles.icon} aria-hidden><MagicWandMIcon /></span>
+      <span className={styles.who}><b className={styles.name}>Создать своего клиента</b>
+        <span className={styles.hint}>Задайте выручку, кредиты и историю, решение посчитает тот же движок</span></span>
+      <ChevronForwardMIcon className={styles.chevron} aria-hidden />
+    </Link></li>
+    {clients.map(c => <SavedRow key={c.login} client={c} demo={demo} onForget={() => forget(c.login)} />)}
+  </Group>
 }
 
 function Outcome({ text, tone }: { text: string; tone: Tone }) {
@@ -154,12 +201,8 @@ function PersonaRow({ persona: p, demo }: { persona: Persona; demo: Enter }) {
   </li>
 }
 
-/**
- * Возврат к клиентам песочницы: созданные в этом браузере — списком с входом в одно нажатие,
- * любой другой — по логину (пароль у всех демо-учёток один).
- */
-function SandboxReturn({ demo }: { demo: Enter }) {
-  const { clients, forget } = useSandboxClients()
+/** Вход по логину — например, клиента песочницы, созданного в другом браузере (пароль у всех демо-учёток один). */
+function LoginByName({ demo }: { demo: Enter }) {
   const [value, setValue] = useState('')
   const [empty, setEmpty] = useState(false)
   const typed = value.trim()
@@ -170,23 +213,18 @@ function SandboxReturn({ demo }: { demo: Enter }) {
     demo.enter({ login: typed }, 'form')
   }
 
-  return <>
-    {clients.length > 0 && <Group id="sandbox-clients" title="Ваши клиенты из песочницы" note="Созданы в этом браузере">
-      {clients.map(c => <SavedRow key={c.login} client={c} demo={demo} onForget={() => forget(c.login)} />)}
-    </Group>}
-    <form className={styles.byLogin} onSubmit={submit} noValidate>
-      <div className={styles.byLoginText}>
-        <b>Войти по логину</b>
-        <span>Например, клиента из песочницы. Пароль {DEMO_PASSWORD} подставим сами</span>
-      </div>
-      <div className={styles.byLoginRow}>
-        <Input size={48} block label="Логин" value={value} placeholder="sbx…" autoComplete="off" autoCapitalize="off" spellCheck={false}
-          error={formError ?? undefined} disabled={demo.busy && !demo.isBusy('form')}
-          onChange={(_, { value: v }) => { setValue(v); setEmpty(false) }} className={styles.byLoginInput} />
-        <Button type="submit" view="secondary" size={48} loading={demo.isBusy('form')} disabled={demo.busy && !demo.isBusy('form')}>Войти</Button>
-      </div>
-    </form>
-  </>
+  return <form className={styles.byLogin} onSubmit={submit} noValidate>
+    <div className={styles.byLoginText}>
+      <b>Войти по логину</b>
+      <span>Например, клиента из песочницы. Пароль {DEMO_PASSWORD} подставим сами</span>
+    </div>
+    <div className={styles.byLoginRow}>
+      <Input size={48} block label="Логин" value={value} placeholder="sbx…" autoComplete="off" autoCapitalize="off" spellCheck={false}
+        error={formError ?? undefined} disabled={demo.busy && !demo.isBusy('form')}
+        onChange={(_, { value: v }) => { setValue(v); setEmpty(false) }} className={styles.byLoginInput} />
+      <Button type="submit" view="secondary" size={48} loading={demo.isBusy('form')} disabled={demo.busy && !demo.isBusy('form')}>Войти</Button>
+    </div>
+  </form>
 }
 
 function SavedRow({ client: c, demo, onForget }: { client: SavedSandboxClient; demo: Enter; onForget: () => void }) {
