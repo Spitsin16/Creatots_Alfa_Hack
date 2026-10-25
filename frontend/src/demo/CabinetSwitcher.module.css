@@ -1,0 +1,142 @@
+/* ——— Кабинеты демо: слева внизу сайдбара ——— */
+.switcher {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: var(--app-text-tertiary);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--app-radius-control);
+  background: none;
+  color: var(--app-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.row:hover:not(:disabled) {
+  background: var(--app-surface-muted);
+}
+
+.row:disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--app-link);
+  outline-offset: -2px;
+}
+
+/* вы здесь */
+.active {
+  background: var(--app-surface-muted);
+  cursor: default;
+}
+
+.active .avatar {
+  background: var(--app-surface-dark);
+  color: #fff;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-light-neutral-200);
+  color: var(--app-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* клиент — красная буква: сразу отличить от сотрудников банка */
+.avatarClient {
+  background: color-mix(in srgb, var(--app-accent) 12%, transparent);
+  color: var(--app-accent);
+}
+
+.active .avatarClient {
+  background: var(--app-accent);
+  color: #fff;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.text b,
+.text small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text b {
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.active .text b {
+  font-weight: 700;
+}
+
+.text small {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-text-secondary);
+}
+
+/* непрочитанные уведомления в чужом кабинете */
+.count {
+  display: grid;
+  place-items: center;
+  flex: none;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background: var(--app-accent);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.error {
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--app-negative);
+}

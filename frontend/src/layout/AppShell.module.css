@@ -134,72 +134,13 @@
 .profile {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   margin-top: auto;
-  padding: 16px 4px 0 8px;
+  padding: 12px 0 0;
   border-top: 1px solid var(--app-border);
 }
 
-.profileRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
 .logoutButton { flex: none; }
-
-.avatar {
-  display: grid;
-  place-items: center;
-  flex: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-light-neutral-200);
-  color: var(--app-text);
-  font-weight: 700;
-}
-
-.who {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
-
-.who b {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* роль / фирма — до двух строк: «Администратор правил», «ООО «СтройБаза» · по МЧД» */
-.who small {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-.who b {
-  font-size: 14px;
-  line-height: 19px;
-}
-
-.who small {
-  font-size: 12px;
-  line-height: 16px;
-  color: var(--app-text-secondary);
-}
-
-.logout {
-  flex: none;
-}
-
-.logoutText {
-  display: none;
-}
 
 .scrim {
   display: none;
@@ -285,31 +226,6 @@
   .profile {
     margin-top: 12px;
     padding: 12px 0 0;
-  }
-
-  /* Тултип на касание не работает — на телефоне выход подписан текстом */
-  .logout {
-    display: none;
-  }
-
-  .logoutText {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    flex: none;
-    padding: 8px 12px;
-    border: 0;
-    border-radius: 99px;
-    background: var(--app-surface-muted);
-    color: var(--app-text);
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  .logoutText svg {
-    width: 20px;
-    height: 20px;
   }
 
   .scrim {

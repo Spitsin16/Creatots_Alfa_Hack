@@ -17,9 +17,9 @@ import { Me } from '../api'
 import { homePath, isBank, useAuth, useSession, wasSignedOut } from '../auth'
 import { Assistant } from '../client/Assistant'
 import { lastOfferId } from '../client/offerStore'
+import { CabinetSwitcher } from '../demo/CabinetSwitcher'
 import { DemoPanel } from '../demo/DemoPanel'
 import { useHiddenFlag } from '../demo/demoStore'
-import { roleTitle } from '../demo/personas'
 import { useMyApplications } from '../queries'
 import { ErrorBoundary } from '../ui/ErrorBoundary'
 import { ErrorState, LoadingState } from '../ui/States'
@@ -83,13 +83,6 @@ const displayName = (me: Me) => {
   return me.full_name.replace(/^(Андеррайтер|Риск-менеджер|Админ правил)\s+/, '')
 }
 
-const profileNote = (me: Me) => {
-  if (isBank(me.role)) return roleTitle[me.role] ?? me.role
-  const business = me.businesses[0]
-  if (!business) return roleTitle.CLIENT
-  return business.membership_kind === 'MCHD' ? `${business.name} · по МЧД` : business.name
-}
-
 /** Оболочка кабинета: сайдбар (на узком экране — верхняя панель с меню), контент, ассистент, демо-панель. */
 export function AppShell() {
   const { logout } = useAuth()
@@ -142,16 +135,10 @@ export function AppShell() {
           <RouteLineMIcon aria-hidden />Показать демо-панель
         </button>}
 
-        {/* Правка ментора 25.10: выход — подписанной кнопкой, а не иконкой-стрелкой */}
+        {/* Правки ментора 25.10: внизу — кабинеты демо (клиент и сотрудники в один клик) и подписанная кнопка выхода */}
         <div className={styles.profile}>
-          <div className={styles.profileRow}>
-            <span className={styles.avatar} aria-hidden>{displayName(me)[0]}</span>
-            <span className={styles.who}>
-              <b title={me.full_name}>{displayName(me)}</b>
-              <small title={profileNote(me)}>{profileNote(me)}</small>
-            </span>
-          </div>
-          <Button view="secondary" size={40} block leftAddons={<LogOutMIcon aria-hidden />} onClick={exit} className={styles.logoutButton}>
+          <CabinetSwitcher shortName={displayName(me)} />
+          <Button view="secondary" size={32} block leftAddons={<LogOutMIcon aria-hidden />} onClick={exit} className={styles.logoutButton}>
             Выйти из кабинета
           </Button>
         </div>
