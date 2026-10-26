@@ -4,7 +4,6 @@ from pathlib import Path
 
 from app.main import app
 
-
 ROOT = Path(__file__).resolve().parents[2]
 HTTP_METHODS = {"GET", "POST", "PUT", "PATCH", "DELETE"}
 
