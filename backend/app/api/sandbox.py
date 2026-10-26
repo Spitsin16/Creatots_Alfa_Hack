@@ -20,6 +20,7 @@ from app.api.errors import APIError
 from app.models import AuditLog, Business, DataSnapshot, Notification, Rule, User
 from app.security import issue_access_token
 from app.seed import seed_fixture
+from app.services.demo.reset import reset_demo
 from app.services.sandbox.generator import SandboxParams, build
 from app.services.scoring.engine import decide
 
@@ -111,3 +112,12 @@ def demo_unread(logins: str = "", session: Session = Depends(get_session)) -> di
         out[u.login] = session.scalar(select(func.count()).select_from(Notification).where(
             Notification.user_id == u.id, Notification.channel == "IN_APP", Notification.read_at.is_(None))) or 0
     return {"unread": out}
+
+
+@demo_router.post("/reset")
+def demo_reset(session: Session = Depends(get_session)) -> dict:
+    """Демо-стенд «как после первого запуска»: удаляет заявки, решения, чаты, документы, журнал,
+    клиентов песочницы и новые версии правил. Демо-учётки и их данные остаются."""
+    removed = reset_demo(session)
+    session.commit()
+    return {"reset": True, "removed": removed}

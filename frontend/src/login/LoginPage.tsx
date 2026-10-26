@@ -21,6 +21,7 @@ import { SlidersMIcon } from '@alfalab/icons-glyph/SlidersMIcon'
 import { UserTieMIcon } from '@alfalab/icons-glyph/UserTieMIcon'
 import { Spinner } from '../common/Spinner'
 import { DEMO_PASSWORD, DEMO_SIGN_CODE, Persona, personas, personasOf } from '../demo/personas'
+import { DemoReset } from './DemoReset'
 import { LoginFrame } from './LoginFrame'
 import { SavedSandboxClient, useSandboxClients } from './sandboxClients'
 import { useDemoEnter } from './useDemoEnter'
@@ -99,6 +100,8 @@ export function LoginPage() {
     </Group>
 
     <OtherGroup demo={demo} guest={guest} />
+
+    <DemoReset />
   </LoginFrame>
 }
 
