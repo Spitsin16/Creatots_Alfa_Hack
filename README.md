@@ -44,6 +44,20 @@ docker compose up --build
 | API и Swagger | http://localhost:8000/docs |
 | Моки внешних систем | http://localhost:8100/docs |
 
+### Материалы API
+
+- интерактивный Swagger запущенного стенда: http://localhost:8000/docs;
+- статическая схема: [docs/openapi.json](docs/openapi.json);
+- Postman-коллекция: [docs/postman/Smart_Credit_Cabinet.postman_collection.json](docs/postman/Smart_Credit_Cabinet.postman_collection.json).
+
+Импортируйте коллекцию в Postman и запускайте запросы внутри выбранного сценария сверху вниз. Переменная `baseUrl` уже настроена на `http://localhost:8000`; токены, идентификаторы бизнеса, предложения, заявки и согласования сохраняются автоматически. Для полного прогона лучше начать с чистой базы. В запросе загрузки выписки нужно выбрать локальный файл `data/statements/p3b_other_bank_1c.txt`.
+
+Если API изменился, материалы можно пересобрать из корня репозитория:
+
+```bash
+python tools/export_api_materials.py
+```
+
 Остановить проект:
 
 ```bash
