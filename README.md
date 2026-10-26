@@ -113,7 +113,7 @@ flowchart LR
 | `mocks/` | Локальные ответы Альфы, ФНС, БКИ, реестра и МЧД, включая симуляцию сбоев |
 | `data/` | Правила, синтетические персоны, эталон расчёта и демо-выписка |
 
-Основной API публикует OpenAPI и Swagger на `/docs`. Подробное описание компонентов находится в [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), статусы заявки — в [docs/STATES.md](docs/STATES.md), правила решения — в [docs/DECISION_RULES.md](docs/DECISION_RULES.md), допущения — в [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
+Основной API публикует OpenAPI и Swagger на `/docs`. Подробное описание компонентов находится в [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md), модель данных и ER-диаграмма — в [docs/DATA_MODEL.md](docs/DATA_MODEL.md), статусы заявки — в [docs/STATES.md](docs/STATES.md), правила решения — в [docs/DECISION_RULES.md](docs/DECISION_RULES.md), допущения — в [docs/ASSUMPTIONS.md](docs/ASSUMPTIONS.md).
 
 ### Как принимается решение
 
