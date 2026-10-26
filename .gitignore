@@ -12,7 +12,7 @@ frontend/*.tsbuildinfo
 frontend/vite.config.js
 frontend/vite.config.d.ts
 prototype/credit-cabinet/node_modules
-.codex-build/
+.*-build/
 output/
 /PROJECT_MEMORY.md
 /prototype/
