@@ -2,6 +2,7 @@ import { ComponentType, lazy, ReactNode, Suspense } from 'react'
 import { Navigate, Route, Routes } from 'react-router'
 import { homePath, useAuth } from './auth'
 import { AppShell, RequireAuth, RequireRole, RequireSide } from './layout/AppShell'
+import { ScrollToTop } from './common/ScrollToTop'
 import { LoginPage } from './login/LoginPage'
 import { LoadingState } from './ui/States'
 
@@ -29,7 +30,9 @@ const Showcase = import.meta.env.DEV ? lazy(() => import('./ui/Showcase')) : nul
 // Карта экранов. Права здесь только прячут чужие страницы — проверяет доступ бэк.
 // Внутри кабинета ожидание загрузки экрана показывает оболочка (Suspense вокруг Outlet в AppShell).
 export default function App() {
-  return <Routes>
+  return <>
+  <ScrollToTop />
+  <Routes>
     <Route path="/login" element={<GuestOnly><LoginPage /></GuestOnly>} />
     <Route path="/login/guest" element={<Loading><NonClientPage /></Loading>} />
     <Route path="/login/sandbox" element={<GuestOnly><Loading><SandboxPage /></Loading></GuestOnly>} />
@@ -57,6 +60,7 @@ export default function App() {
     </Route>
     <Route path="*" element={<Navigate to="/" replace />} />
   </Routes>
+  </>
 }
 
 function Loading({ children }: { children: ReactNode }) {
